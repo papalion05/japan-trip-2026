@@ -3,140 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>富士山東京 · 智能助理</title>
+    <title>富士山東京 · 智能隨身助理</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #f7f5f0; --text-main: #2c3e50; --accent-green: #2d5a27;
+            --bg-color: #f4f6f8; --text-main: #2c3e50; --accent-green: #2d5a27;
             --accent-blue: #2980b9; --accent-gold: #b8860b; --tag-food: #e67e22;
-            --white: #ffffff; --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --tag-drama: #9b59b6; --white: #ffffff;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
-        #app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 100px; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-size: 15px; }
+        #app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 110px; }
 
         /* 天氣頂欄 */
-        .weather-header { background: linear-gradient(135deg, #7d9685, #a7b5a9); color: white; padding: 15px 20px; border-radius: 0 0 20px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .weather-info { font-size: 0.9rem; font-weight: 500; }
-        .temp-now { font-size: 1.8rem; font-weight: 700; }
+        .weather-banner { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px; border-radius: 0 0 25px 25px; margin-bottom: 10px; }
+        .weather-flex { display: flex; justify-content: space-between; align-items: center; }
+        .temp-val { font-size: 1.8rem; font-weight: 700; }
 
-        /* 行程標題 */
-        .day-header { padding: 20px 15px 10px; display: flex; justify-content: space-between; align-items: baseline; }
-        .day-header h2 { font-size: 1.2rem; color: var(--accent-green); position: relative; }
-        .day-header h2::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 30px; height: 3px; background: var(--accent-gold); }
-
-        /* 卡片設計 */
-        .card { background: var(--white); border-radius: 16px; padding: 18px; margin: 10px 15px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); }
-        .type-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; color: white; margin-bottom: 8px; display: inline-block; font-weight: 700; }
-        .tag-transport { background: var(--accent-blue); }
-        .tag-spot { background: var(--accent-green); }
-        .tag-food { background: var(--tag-food); }
-
-        .card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 5px; display: flex; justify-content: space-between; }
-        .card-body { font-size: 0.85rem; color: #555; }
+        /* 每日區分 */
+        .day-header { padding: 25px 20px 5px; font-weight: 700; font-size: 1.1rem; color: #1e3c72; border-bottom: 2px solid var(--accent-gold); display: inline-block; margin-left: 20px; margin-top: 10px; }
         
-        /* 導遊職責區塊 */
-        .guide-tips { background: #fffcf0; border-radius: 10px; padding: 12px; margin-top: 12px; border-left: 3px solid var(--accent-gold); }
-        .tip-label { font-size: 0.75rem; font-weight: 700; color: var(--accent-gold); display: block; margin-bottom: 4px; }
-        .guide-tips b { color: #d35400; } /* 必吃美食 */
-        .guide-tips u { color: #2980b9; text-decoration: none; font-weight: 700; } /* 必買/預約 */
+        /* 卡片系統 */
+        .card { background: var(--white); border-radius: 18px; padding: 18px; margin: 12px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid transparent; }
+        .card-trans { border-left-color: var(--accent-blue); }
+        .card-food { border-left-color: var(--tag-food); }
+        .card-spot { border-left-color: var(--accent-green); }
+        .card-drama { border-left-color: var(--tag-drama); }
+
+        .type-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: white; margin-bottom: 8px; display: inline-block; }
+        .tag-blue { background: var(--accent-blue); }
+        .tag-orange { background: var(--tag-food); }
+        .tag-purple { background: var(--tag-drama); }
+
+        .card-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; color: #333; }
+        
+        /* 導遊職責區 */
+        .guide-box { background: #fdfaf0; border-radius: 10px; padding: 12px; margin-top: 10px; border: 1px solid #f9e79f; font-size: 0.85rem; line-height: 1.6; }
+        .guide-box b { color: #d35400; } /* 必吃 */
+        .guide-box u { color: var(--accent-blue); font-weight: 700; text-decoration: none; } /* 必買/預約 */
+        .warning-txt { color: #c53030; font-weight: 700; font-size: 0.75rem; }
 
         /* 導航按鈕 */
-        .btn-nav { display: inline-flex; align-items: center; background: #f8f9fa; padding: 8px 15px; border-radius: 20px; color: var(--text-main); text-decoration: none; font-size: 0.75rem; border: 1px solid #ddd; margin-top: 15px; font-weight: 500; }
-        .btn-nav i { margin-right: 6px; color: var(--accent-blue); }
+        .nav-btn { display: flex; align-items: center; justify-content: center; background: #f8f9fa; color: #1e3c72; text-decoration: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; border: 1px solid #ddd; margin-top: 12px; }
+        .nav-btn i { margin-right: 8px; }
 
-        /* 底部導覽 */
-        nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: rgba(255,255,255,0.95); display: flex; padding: 12px 0 25px; border-top: 1px solid #eee; backdrop-filter: blur(10px); }
-        .nav-item { flex: 1; text-align: center; color: #bbb; font-size: 0.7rem; }
-        .nav-item.active { color: var(--accent-green); font-weight: 700; }
-        .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+        nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: white; display: flex; padding: 15px 0 30px; border-top: 1px solid #eee; }
+        .nav-item { flex: 1; text-align: center; color: #bdc3c7; font-size: 0.75rem; }
+        .nav-item.active { color: #1e3c72; font-weight: 700; }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <div class="weather-header">
-        <div class="weather-info">
-            <div id="current-loc">📍 預估天氣：富士山</div>
-            <div id="current-date">2026.05.14</div>
-        </div>
-        <div class="temp-now">16° <i class="fa-solid fa-cloud-sun"></i></div>
-    </div>
-
-    <div class="day-header">
-        <h2>Day 2 富士巡禮</h2>
-        <span style="font-size: 0.8rem; color: #999;">05月14日 (四)</span>
-    </div>
-
-    <div class="card">
-        <span class="type-tag tag-transport">交通 · 火車</span>
-        <div class="card-title">富士迴遊 7 號 <span>09:30 發車</span></div>
-        <div class="card-body">
-            新宿站 9-10 月台 ➔ 河口湖站 (11:28 抵達)<br>
-            <u>重要預約代號：請檢查電子票券</u>
+    <div class="weather-banner">
+        <div class="weather-flex">
+            <div>📍 東京新宿 · 5/13</div>
+            <div class="temp-val">20°C <i class="fa-solid fa-cloud-sun"></i></div>
         </div>
     </div>
-
-    <div class="card">
-        <span class="type-tag tag-spot">景點 · 日劇巡禮</span>
-        <div class="card-title">新倉山淺間公園</div>
-        <div class="card-body">
-            富士山經典「忠靈塔＋富士山」構圖拍攝地。
-            <div class="guide-tips">
-                <span class="tip-label"><i class="fa-solid fa-wand-sparkles"></i> 導遊攻略</span>
-                景點故事：這裡是日劇《那年夏天》經典取景點。建議<b>步行 398 階梯</b>抵達展望台，視角最佳。
-            </div>
+    <div class="day-header">5/13 (三) 抵達東京</div>
+    <div class="card card-trans">
+        <span class="type-tag tag-blue">交通 · 機場接駁</span>
+        <div class="card-title">JL8664 抵達成田 ➔ 新宿</div>
+        <div class="guide-box">
+            <b>重要預約：</b> <u>N'EX 特急券</u>。由西口出站前往 **新宿西鐵 INN** 步行約 8 分鐘。
         </div>
-        <a href="https://www.google.com/maps/search/?api=1&query=Churito+Pagoda" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> 開啟導航</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Nishitetsu+Inn+Shinjuku" class="nav-btn"><i class="fa-solid fa-map-location-dot"></i> 導航至新宿飯店</a>
     </div>
 
-    <div class="card">
-        <span class="type-tag tag-food">餐廳 · 在地名物</span>
-        <div class="card-title">不動茶屋 (東戀路店)</div>
-        <div class="card-body">
-            河口湖最具代表性的白雲造型建築餐廳。
-            <div class="guide-tips">
-                <span class="tip-label"><i class="fa-solid fa-utensils"></i> 必吃攻略</span>
-                必吃美食：<b>味噌蔬菜餺飥麵</b> (Houtou)。<br>
-                必點菜單：<b>生馬肉刺身</b> (在地特色)、馬肉握壽司。
-            </div>
+    <div class="weather-banner">
+        <div class="weather-flex">
+            <div>📍 富士吉田 · 5/14</div>
+            <div class="temp-val">18°C <i class="fa-solid fa-sun"></i></div>
         </div>
-        <a href="https://www.google.com/maps/search/?api=1&query=Houtou+Fudo+Higashiguchi" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> 開啟導航</a>
+    </div>
+    <div class="day-header">5/14 (四) 小鎮星熱點聖地 A</div>
+    <div class="card card-drama">
+        <span class="type-tag tag-purple">聖地巡禮 · 徒步踩點</span>
+        <div class="card-title">下吉田本町通 & 市杵島神社</div>
+        <div class="guide-box">
+            景點故事：劇中清美騎車經過的場景。<br>
+            <span class="warning-txt">⚠️ 提醒：請在兩側人行道拍攝！</span><br>
+            <b>必買伴手禮：</b> <u>富士山造型吐司</u> (FUJISAN SHOKUPAN)。
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Hikawa+Clock+Shop" class="nav-btn"><i class="fa-solid fa-camera"></i> 前往本町通</a>
+    </div>
+    <div class="card card-food">
+        <span class="type-tag tag-orange">美食 · 劇中下午茶</span>
+        <div class="card-title">Mont Blanc (もんぶらん)</div>
+        <div class="guide-box">
+            <b>必點菜單：</b> <b>超浮誇蒙布朗聖代</b>。<br>
+            攻略：這家是清美和閨蜜聚會的老店，昭和感十足。
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Mont+Blanc+Fujiyoshida" class="nav-btn"><i class="fa-solid fa-utensils"></i> 前往咖啡廳</a>
     </div>
 
-    <div class="day-header">
-        <h2>Day 5 上野採買</h2>
-        <span style="font-size: 0.8rem; color: #999;">05月17日 (日)</span>
+    <div class="weather-banner">
+        <div class="weather-flex">
+            <div>📍 河口湖 · 5/15</div>
+            <div class="temp-val">17°C <i class="fa-solid fa-cloud"></i></div>
+        </div>
+    </div>
+    <div class="day-header">5/15 (五) 河口湖深度遊</div>
+    <div class="card card-spot">
+        <span class="type-tag tag-green">景點 · 湖畔絕景</span>
+        <div class="card-title">大石公園 & 天上山纜車</div>
+        <div class="guide-box">
+            <b>必拍攻略：</b> 5月可拍粉蝶花海。纜車頂有 <b>卡奇卡奇山鞦韆</b>。
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Oishi+Park" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 前往大石公園</a>
     </div>
 
-    <div class="card">
-        <span class="type-tag tag-spot">購物 · 烘焙與藥妝</span>
-        <div class="card-title">合羽橋道具街 & 多慶屋</div>
-        <div class="card-body">
-            <div class="guide-tips">
-                <span class="tip-label"><i class="fa-solid fa-bag-shopping"></i> 購物清單</span>
-                必買伴手禮：<b>多慶屋限定零食</b>、<b>合羽橋職人烤盤</b> (適合家裡象印烤箱)。<br>
-                <u>Bic Camera 優惠代碼：請見預算分頁</u>
-            </div>
+    <div class="day-header">5/16 (六) 小鎮星熱點聖地 B</div>
+    <div class="card card-drama">
+        <span class="type-tag tag-purple">聖地巡禮 · 徒步</span>
+        <div class="card-title">月江寺通 & 金鳥居 & 忠靈塔</div>
+        <div class="guide-box">
+            景點故事：走過昭和商店街與金鳥居，最後登上 398 階梯俯瞰星熱點小鎮。
         </div>
-        <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu-gai" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> 開啟導航</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Chureito+Pagoda" class="nav-btn"><i class="fa-solid fa-mountain"></i> 導航至忠靈塔</a>
+    </div>
+
+    <div class="weather-banner">
+        <div class="weather-flex">
+            <div>📍 上野採買 · 5/17</div>
+            <div class="temp-val">22°C <i class="fa-solid fa-bag-shopping"></i></div>
+        </div>
+    </div>
+    <div class="day-header">5/17 (日) 最終採買戰</div>
+    <div class="card card-food">
+        <span class="type-tag tag-orange">美食 · 上野戰區</span>
+        <div class="card-title">鴨 to 蔥 & 三浦三崎港</div>
+        <div class="guide-box">
+            <b>必吃美食：</b> <b>鴨肉拉麵</b>、<b>堆疊壽司</b>。<br>
+            <b>必買伴手禮：</b> <u>多慶屋</u> 藥妝零食。
+        </div>
+    </div>
+
+    <div class="day-header">5/18 (一) 完美歸途</div>
+    <div class="card card-trans">
+        <span class="type-tag tag-blue">交通 · 歸國</span>
+        <div class="card-title">上野曼迪 ➔ 京成上野 ➔ 成田</div>
+        <div class="guide-box">
+            <b>重要攻略：</b> 13:45 飯店門口直接攔 <b>計程車</b>。搭 14:40 Skyliner。<br>
+            <u>Skyliner 預約代號：請見電子郵件</u>
+        </div>
     </div>
 
     <nav>
         <div class="nav-item active"><i class="fa-solid fa-map-location-dot"></i> 智能行程</div>
-        <div class="nav-item"><i class="fa-solid fa-suitcase-rolling"></i> 住宿資訊</div>
-        <div class="nav-item"><i class="fa-solid fa-receipt"></i> 預算後勤</div>
+        <div class="nav-item"><i class="fa-solid fa-hotel"></i> 住宿</div>
+        <div class="nav-item"><i class="fa-solid fa-wallet"></i> 預算</div>
     </nav>
 </div>
 
-<script>
-    // 簡單的倒數與天氣模擬邏輯
-    const target = new Date('2026-05-13').getTime();
-    const now = new Date().getTime();
-    if (now < target) {
-        document.getElementById('current-loc').innerText = "📍 距離出發還有 " + Math.floor((target - now) / 86400000) + " 天";
-    }
-</script>
 </body>
 </html>
