@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>富士山與東京巡禮｜專屬行程表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f7f5f0;
+            --text-main: #333333;
+            --text-light: #666666;
+            --accent-green: #7d9685;
+            --accent-gold: #cba36d;
+            --white: #ffffff;
+            --tag-food: #e57373;
+            --tag-buy: #64b5f6;
+            --tag-alert: #ffb74d;
+            --tag-code: #90a4ae;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body { background-color: #e0e0e0; display: flex; justify-content: center; color: var(--text-main); }
+
+        #app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 20px 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            z-index: 10;
+        }
+        header h1 { font-size: 1.25rem; font-weight: 700; color: var(--accent-green); letter-spacing: 2px; }
+        header p { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            padding-bottom: 90px;
+            display: none;
+        }
+        main.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Weather Bar */
+        .weather-bar {
+            background: linear-gradient(135deg, #a7b5a9 0%, #7d9685 100%);
+            color: var(--white);
+            padding: 10px 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(125, 150, 133, 0.3);
+        }
+
+        /* Day Header */
+        .day-header { margin: 25px 0 15px; border-left: 4px solid var(--accent-gold); padding-left: 10px; }
+        .day-header h2 { font-size: 1.1rem; color: var(--text-main); }
+        .day-header span { font-size: 0.8rem; color: var(--text-light); }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .card-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .card-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; margin-right: 12px; font-size: 0.85rem;}
+        
+        .type-flight .card-icon { background-color: #5c7285; }
+        .type-hotel .card-icon { background-color: var(--accent-gold); }
+        .type-transport .card-icon { background-color: #728c94; }
+        .type-attraction .card-icon { background-color: var(--accent-green); }
+        .type-shop .card-icon { background-color: #e59866; }
+
+        .card-time { font-size: 0.8rem; font-weight: 700; color: var(--accent-green); width: 45px; flex-shrink:0;}
+        .card-title { font-size: 1rem; font-weight: 700; flex: 1; }
+
+        /* Card Content & Tags */
+        .card-body { padding-left: 44px; font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+        .highlight-box { background-color: #fcfbf9; border-radius: 8px; padding: 10px; margin-top: 10px; border-left: 3px solid var(--accent-gold); }
+        .tag { display: inline-block; padding: 3px 6px; border-radius: 4px; color: white; font-size: 0.7rem; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
+        .tag.food { background-color: var(--tag-food); }
+        .tag.buy { background-color: var(--tag-buy); }
+        .tag.alert { background-color: var(--tag-alert); color: #fff; }
+        .tag.code { background-color: var(--tag-code); }
+        .bold-text { font-weight: 700; color: var(--text-main); }
+
+        /* Buttons */
+        .nav-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: #f0f0f0; color: var(--text-main); text-decoration: none;
+            padding: 8px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 500;
+            margin-top: 10px; margin-right: 8px; transition: all 0.2s;
+        }
+        .nav-btn i { margin-right: 5px; color: var(--accent-green); }
+
+        /* Bottom Nav */
+        nav {
+            position: absolute; bottom: 0; width: 100%; background: var(--white);
+            display: flex; justify-content: space-around; padding: 10px 0 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05); border-top: 1px solid #eaeaea; z-index: 20;
+        }
+        .nav-item { text-align: center; color: #b0b0b0; font-size: 0.7rem; flex: 1; padding: 5px 0; cursor: pointer; }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; display: block; }
+        .nav-item.active { color: var(--accent-green); font-weight: 700; }
+
+        /* Info Tab */
+        .info-section { background: var(--white); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .info-section h3 { font-size: 1rem; color: var(--accent-green); border-bottom: 1px solid #eaeaea; padding-bottom: 8px; margin-bottom: 12px; }
+        .info-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #eee; }
+        .info-row:last-child { border-bottom: none; }
+        .coupon-box { border: 1px dashed var(--accent-gold); padding: 10px; border-radius: 8px; background: #fffcf5; margin-bottom: 10px;}
+        .coupon-title { font-weight: bold; color: #d35400; font-size: 0.9rem;}
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <header>
+        <h1>富士山與東京巡禮</h1>
+        <p>2026.05.13 - 05.18 ｜ 專屬行程導覽</p>
+    </header>
+
+    <main id="view-itinerary" class="active">
+        
+        <div class="weather-bar">
+            <span><i class="fa-solid fa-cloud-sun"></i> 預估天氣：春季舒適</span>
+            <span>15°C - 22°C</span>
+        </div>
+
+        <div class="day-header">
+            <h2>Day 1 ｜ 啟程與安頓</h2>
+            <span>5月13日・台北 → 東京新宿</span>
+        </div>
+        <div class="card type-flight">
+            <div class="card-header"><div class="card-time">17:15</div><div class="card-icon"><i class="fa-solid fa-plane-arrival"></i></div><div class="card-title">抵達成田機場 (搭乘 N'EX)</div></div>
+            <div class="card-body">下車找「西口」，平坦道路直達新宿西鐵飯店。</div>
+        </div>
+
+        <div class="day-header">
+            <h2>Day 2 ｜ 日劇絕景巡禮</h2>
+            <span>5月14日・新宿 → 富士山</span>
+        </div>
+        <div class="card type-attraction">
+            <div class="card-header"><div class="card-time">下午</div><div class="card-icon"><i class="fa-solid fa-camera-retro"></i></div><div class="card-title">下吉田本町二丁目 & 淺間公園</div></div>
+            <div class="card-body">
+                前往網路上最紅的日劇拍攝地！復古商店街配上巨大的富士山背景。接著爬 398 階石梯到「新倉山淺間公園」拍攝經典的五重塔與富士山。<br>
+                <div class="highlight-box">
+                    <span class="tag food">必吃美食</span> 不動茶屋 (ほうとう不動) 的餺飥麵！<br>
+                    <span class="tag alert">拍照提醒</span> 商店街為主要幹道，拍照請注意來車安全喔。
+                </div>
+                <a href="https://maps.google.com/?q=富士吉田市下吉田1-4-25" target="_blank" class="nav-btn"><i class="fa-solid fa-location-dot"></i> 導航至日劇老街</a>
+            </div>
+        </div>
+
+        <div class="day-header">
+            <h2>Day 4 ｜ 電器採購與時尚銀座</h2>
+            <span>5月16日・富士山 → 東京上野</span>
+        </div>
+        
+        <div class="card type-hotel">
+            <div class="card-header"><div class="card-time">14:00</div><div class="card-icon"><i class="fa-solid fa-bed"></i></div><div class="card-title">進駐大空間：曼迪高級酒店</div></div>
+            <div class="card-body">抵達上野御徒町。這間 20㎡ 的豪華雙床房是我們接下來三天的戰利品集散地！</div>
+        </div>
+
+        <div class="card type-shop">
+            <div class="card-header"><div class="card-time">15:30</div><div class="card-icon"><i class="fa-solid fa-plug"></i></div><div class="card-title">Bic Camera 買按摩椅</div></div>
+            <div class="card-body">
+                搭一站到秋葉原或直達有樂町店。看好按摩椅/按摩椅墊後，立刻結帳並安排寄送！<br>
+                <div class="highlight-box">
+                    <span class="tag buy">女友專屬</span> 挑選輕巧型按摩椅墊或腿部按摩機。<br>
+                    <span class="tag alert">神級優惠</span> 手機出示優惠券享 <span class="bold-text">免稅10%+7%折扣</span>！<br>
+                    <span class="tag alert">物流戰術</span> 結帳時請店員協助「機場配送(空港配送)」，直接寄到成田 T2，免提回飯店！
+                </div>
+                <a href="https://maps.google.com/?q=Bic+Camera+Akihabara" target="_blank" class="nav-btn"><i class="fa-solid fa-location-dot"></i> 導航 Bic Camera</a>
+            </div>
+        </div>
+
+        <div class="card type-shop">
+            <div class="card-header"><div class="card-time">17:30</div><div class="card-icon"><i class="fa-solid fa-shirt"></i></div><div class="card-title">銀座：衣服血拼之夜</div></div>
+            <div class="card-body">
+                搭乘地鐵銀座線直達！這裡有 12 層樓的 UNIQLO 全球旗艦店、GU、以及各大平價與專櫃服飾，款式最齊全！<br>
+                <div class="highlight-box">
+                    <span class="tag buy">服飾必逛</span> UNIQLO 旗艦店 (銀座 6-9-5)、GU、銀座三越。<br>
+                    <span class="tag alert">免稅</span> 買滿 5000 日圓記得帶護照辦理免稅！
+                </div>
+            </div>
+        </div>
+
+        <div class="day-header">
+            <h2>Day 5 ｜ 烘焙道具與藥妝掃貨</h2>
+            <span>5月17日・上野商圈完全制霸</span>
+        </div>
+
+        <div class="card type-attraction">
+            <div class="card-header"><div class="card-time">10:00</div><div class="card-icon"><i class="fa-solid fa-kitchen-set"></i></div><div class="card-title">合羽橋道具街 (職人朝聖)</div></div>
+            <div class="card-body">
+                為家裡的象印烘烤微波爐添購優質日本模具、打蛋器、精緻餐盤。買完重的模具可以直接先走回飯店放好！
+            </div>
+        </div>
+
+        <div class="card type-shop">
+            <div class="card-header"><div class="card-time">14:00</div><div class="card-icon"><i class="fa-solid fa-pills"></i></div><div class="card-title">多慶屋 & 阿美橫町大採購</div></div>
+            <div class="card-body">
+                飯店旁邊的「多慶屋 (TAKEYA)」是內行人的藥妝與伴手禮神店！不用在唐吉訶德人擠人。<br>
+                <div class="highlight-box">
+                    <span class="tag buy">必買清單</span> EVE止痛藥、合利他命、各類零食伴手禮。<br>
+                    <span class="tag alert">多慶屋優惠</span> 滿萬享 <span class="bold-text">免稅10%+7%折扣</span> (需出示優惠畫面)。<br>
+                    <span class="tag alert">唐吉優惠</span> 若去唐吉訶德，享免稅10%+5%折扣。
+                </div>
+            </div>
+        </div>
+
+        <div class="day-header">
+            <h2>Day 6 ｜ 最後衝刺與優雅回程</h2>
+            <span>5月18日・上野 → 台北</span>
+        </div>
+
+        <div class="card type-shop">
+            <div class="card-header"><div class="card-time">10:00</div><div class="card-icon"><i class="fa-solid fa-gift"></i></div><div class="card-title">上野車站：伴手禮補齊</div></div>
+            <div class="card-body">
+                退房後行李寄放飯店。前往上野站 atre 或 ecute 購買機場可能買不到的限定精緻伴手禮。<br>
+                <div class="highlight-box">
+                    <span class="tag food">必買伴手禮</span> 焦糖奶油樹 (Sugar Butter Tree)、Tokyo Banana。
+                </div>
+            </div>
+        </div>
+
+        <div class="card type-transport">
+            <div class="card-header"><div class="card-time">14:40</div><div class="card-icon"><i class="fa-solid fa-train"></i></div><div class="card-title">Skyliner 直達機場</div></div>
+            <div class="card-body">41分鐘直達機場！抵達機場後，記得先去黑貓櫃檯領取第一天寄送的「按摩椅」再去航空公司掛行李喔！</div>
+        </div>
+
+    </main>
+
+    <main id="view-info">
+        
+        <div class="info-section">
+            <h3><i class="fa-solid fa-ticket"></i> 必備購物優惠券 (結帳出示)</h3>
+            <div class="coupon-box">
+                <div class="coupon-title">📍 Bic Camera (買按摩椅必用)</div>
+                <div style="font-size:0.8rem; margin-top:5px;">免稅 10% ＋ 額外 7% 折扣<br><span style="color:var(--text-light)">(網頁搜尋「Bic Camera 2026優惠券」存在手機即可)</span></div>
+            </div>
+            <div class="coupon-box">
+                <div class="coupon-title">📍 上野 多慶屋 TAKEYA</div>
+                <div style="font-size:0.8rem; margin-top:5px;">免稅 10% ＋ 額外 5~7% 折扣<br><span style="color:var(--text-light)">(避開人潮買藥妝/零食的最佳地點)</span></div>
+            </div>
+            <div class="coupon-box">
+                <div class="coupon-title">📍 唐吉訶德 (驚安殿堂)</div>
+                <div style="font-size:0.8rem; margin-top:5px;">免稅 10% ＋ 滿萬額外 5% 折扣</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3><i class="fa-solid fa-wallet"></i> 機加酒預算表</h3>
+            <div class="info-row"><span>機票 (2人來回)</span><span>NT$ 29,781</span></div>
+            <div class="info-row"><span>新宿西鐵飯店 (1晚)</span><span>NT$ 4,682</span></div>
+            <div class="info-row"><span>富士山站酒店 (2晚)</span><span>NT$ 7,182</span></div>
+            <div class="info-row"><span>上野曼迪酒店 (2晚)</span><span>NT$ 11,063</span></div>
+            <div class="total-budget">總計：NT$ 52,708</div>
+            <div style="text-align:right; font-size:0.75rem; color:#888; margin-top:5px;">(平均單人約 NT$ 26,354)</div>
+        </div>
+
+        <div class="info-section">
+            <h3><i class="fa-solid fa-phone-volume"></i> 緊急聯絡電話</h3>
+            <div class="info-row"><span>報警 (通英語)</span><span style="font-weight:bold;">110</span></div>
+            <div class="info-row"><span>救護車/消防</span><span style="font-weight:bold;">119</span></div>
+        </div>
+
+    </main>
+
+    <nav>
+        <div class="nav-item active" onclick="switchTab('view-itinerary', this)">
+            <i class="fa-regular fa-calendar-check"></i>
+            <span>每日行程</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('view-info', this)">
+            <i class="fa-solid fa-suitcase-rolling"></i>
+            <span>預算與優惠券</span>
+        </div>
+    </nav>
+</div>
+
+<script>
+    function switchTab(tabId, element) {
+        document.querySelectorAll('main').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        element.classList.add('active');
+        document.getElementById(tabId).scrollTop = 0;
+    }
+</script>
+
+</body>
+</html>
