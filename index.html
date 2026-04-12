@@ -33,13 +33,13 @@
         .day-view.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 15px; background-color: #d1cdc7; }
+        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 15px; background-color: #8C847B; }
         .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0) 100%); }
         .hero-text { position: absolute; top: 20px; left: 20px; color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
         .h-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px;}
         
-        /* 獨立置頂資訊卡 (航班與飯店) */
+        /* 獨立置頂資訊卡 */
         .highlight-box { margin: 0 20px 20px; padding: 18px; border-radius: 8px; background: rgba(255,255,255,0.85); border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .highlight-box .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 0.65rem; color: #fff; background: var(--accent); padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600; font-family: -apple-system, sans-serif;}
         .highlight-box .tag.hotel { background: #C08A5D; }
@@ -99,7 +99,7 @@
         <div id="view-itinerary" class="main-view" style="display: block;">
             
             <div id="day-1" class="day-view active">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 1</div><div class="h-title">東京到着</div></div>
                 </div>
 
@@ -120,7 +120,7 @@
                         <strong>地址：</strong>東京都新宿區西新宿7-23-2<br>
                         <strong>交通：</strong>新宿站「西口」出站步行 8 分鐘
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="http://googleusercontent.com/maps.google.com/search?q=Nishitetsu+Inn+Shinjuku" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
@@ -140,7 +140,7 @@
             </div>
 
             <div id="day-2" class="day-view">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 2</div><div class="h-title">富士山巡禮</div></div>
                 </div>
 
@@ -151,7 +151,7 @@
                         <strong>地址：</strong>山梨縣富士吉田市松山2-7-12<br>
                         <strong>交通：</strong>富士山站步行 3 分鐘
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Fujisan+Station+Hotel" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="http://googleusercontent.com/maps.google.com/search?q=Fujisan+Station+Hotel" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
@@ -173,15 +173,15 @@
                         
                         <div class="sub-spot">
                             <div class="sub-spot-title"><i class="fa-solid fa-torii-gate" style="color:var(--accent);"></i> 1. 金鳥居 (Kin Torii)</div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=金鳥居+富士吉田" class="map-btn map-btn-sm" target="_blank">導航至金鳥居</a>
+                            <a href="http://googleusercontent.com/maps.google.com/search?q=Kin+Torii+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至金鳥居</a>
                         </div>
                         <div class="sub-spot">
                             <div class="sub-spot-title"><i class="fa-solid fa-mountain" style="color:var(--accent);"></i> 2. 富士吉田本町通</div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=富士吉田本町通り" class="map-btn map-btn-sm" target="_blank">導航至本町通</a>
+                            <a href="http://googleusercontent.com/maps.google.com/search?q=Honcho+Street+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至本町通</a>
                         </div>
                         <div class="sub-spot">
                             <div class="sub-spot-title"><i class="fa-solid fa-vihara" style="color:var(--accent);"></i> 3. 市杵島神社</div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=市杵島神社+富士吉田" class="map-btn map-btn-sm" target="_blank">導航至神社</a>
+                            <a href="http://googleusercontent.com/maps.google.com/search?q=Ichikishima+Shrine+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至神社</a>
                         </div>
                     </div>
 
@@ -193,7 +193,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士吉田市下吉田3-8-4</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Mont+Blanc+富士吉田" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Mont+Blanc+Cafe+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
                     </div>
 
                     <div class="tl-item">
@@ -204,13 +204,13 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：南都留郡富士河口湖町船津2458</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Houtou+Fudou+Higashikoiji" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
                 </div>
             </div>
 
             <div id="day-3" class="day-view">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 3</div><div class="h-title">河口湖水陸</div></div>
                 </div>
                 
@@ -223,7 +223,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>乘車處：山中湖 旭日丘巴士總站</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=山中湖のKABA" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Yamanakako+KABA+Bus" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
                     </div>
 
                     <div class="tl-item">
@@ -235,7 +235,7 @@
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士吉田市上吉田3-4-23</div></div>
                             <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>訂位：無法訂位，僅中午營業需排隊。</strong></div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=手打ちうどん+蔵ノ介" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Kuranosuke+Udon+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
 
                     <div class="tl-item">
@@ -247,13 +247,13 @@
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士河口湖町船津3486-4</div></div>
                             <div class="i-row"><i class="fa-solid fa-mobile-screen i-icon"></i> <div><strong>訂位：到達現場掃描門口 QR Code 候位。</strong></div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Fuji+Tempura+IDATEN" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Fuji+Tempura+IDATEN" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
                 </div>
             </div>
 
             <div id="day-4" class="day-view">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 4</div><div class="h-title">重返東京</div></div>
                 </div>
 
@@ -264,7 +264,7 @@
                         <strong>地址：</strong>東京都台東區台東3-41-7<br>
                         <strong>特色：</strong>20.38㎡ 寬敞大空間
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="http://googleusercontent.com/maps.google.com/search?q=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
@@ -283,7 +283,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士河口湖町船津3495-2</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=ローソン+河口湖駅前店" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Lawson</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Lawson+Kawaguchiko+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Lawson</a>
                     </div>
 
                     <div class="tl-item">
@@ -292,14 +292,14 @@
                         <div class="i-title">富士回遊號 (返程東京)</div>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div>上車：<strong>河口湖站</strong> (14:58 發車)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div>下車：JR 新宿站 (轉乘前往上野)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div>下車：JR 新宿站 (轉乘山手線前往上野)</div></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="day-5" class="day-view">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1557404763-69708ce14f80?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1542931287-023b922fa89b?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 5</div><div class="h-title">銀座與潮流</div></div>
                 </div>
                 
@@ -312,7 +312,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：東京都台東區松谷3-18-2周邊</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Kappabashi+Dogu+Street" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
                     </div>
 
                     <div class="tl-item">
@@ -323,7 +323,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-location-dot i-icon"></i> <div>推薦分店：Bic Camera 有樂町店</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+Yurakucho" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Bic Camera</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Bic+Camera+Yurakucho" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Bic Camera</a>
                     </div>
 
                     <div class="tl-item">
@@ -333,7 +333,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：東京都中央區銀座6-9-5</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=UNIQLO+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 UNIQLO</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=UNIQLO+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 UNIQLO</a>
                     </div>
 
                     <div class="tl-item">
@@ -344,7 +344,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：東京都中央區銀座3-2-12</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=ABC-MART+GRAND+STAGE+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=ABC-MART+Grand+Stage+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
                     </div>
                     
                     <div class="tl-item">
@@ -355,13 +355,13 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：東京都台東區台東4-33-2</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=多慶屋" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Takeya+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
                     </div>
                 </div>
             </div>
 
             <div id="day-6" class="day-view">
-                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1512273222628-4daea6e55f40?auto=format&fit=crop&w=800&q=80');">
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1080&auto=format');">
                     <div class="hero-text"><div class="h-tag">DAY 6</div><div class="h-title">滿載歸途</div></div>
                 </div>
 
@@ -388,7 +388,7 @@
                         <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
                         <div class="i-title">京成電鐵 Skyliner</div>
                         <div class="i-desc">搭計程車帶 5 咖行李直達「京成上野站」，41 分鐘抵達機場。</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=京成上野駅" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至車站</a>
+                        <a href="http://googleusercontent.com/maps.google.com/search?q=Keisei+Ueno+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至車站</a>
                     </div>
 
                     <div class="tl-item">
@@ -402,7 +402,7 @@
         </div>
 
         <div id="view-budget" class="main-view">
-            <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1580982335439-0d866a88ab05?auto=format&fit=crop&w=800&q=80'); height: 260px;">
+            <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1080&auto=format'); height: 260px;">
                 <div class="hero-text" style="top: 40px;"><div class="h-tag">EXPENSES & INFO</div><div class="h-title">預算與後勤資訊</div></div>
             </div>
             
@@ -437,6 +437,7 @@
     </div>
 
     <script>
+        // 不需更動 Firebase 設定
         const firebaseConfig = { 
             apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA", 
             authDomain: "fuji-trip-2026-4018b.firebaseapp.com", 
@@ -445,7 +446,6 @@
             messagingSenderId: "291332266749", 
             appId: "1:291332266749:web:558cd8008f32509095bc94" 
         };
-        firebase.initializeApp(firebaseConfig);
         
         function tab(t) {
             document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
