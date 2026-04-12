@@ -3,286 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Ultimate Final v8.2</title>
-    
+    <title>富士東京 2026｜Ultimate Edition</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
     <style>
-        :root {
-            --bg: #F5F1E7; --text-main: #33302E; --text-muted: #8C847B; 
-            --border: #E3DCCF; --accent: #A73A33; --timeline: #D6D0C4; 
-            --safe-area-bottom: env(safe-area-inset-bottom, 20px);
-        }
+        :root { --bg: #F5F1E7; --text: #33302E; --muted: #8C847B; --border: #E3DCCF; --accent: #A73A33; --timeline: #D6D0C4; --safe-bottom: env(safe-area-inset-bottom, 20px); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text-main); font-family: 'Noto Serif TC', serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        header { padding: 45px 20px 15px; text-align: center; z-index: 10; background: var(--bg); }
-        .top-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-        .top-title { font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; }
-
-        .date-slider { display: flex; overflow-x: auto; padding: 10px 20px 20px; gap: 28px; border-bottom: 1px solid var(--border); transition: 0.3s; }
-        .date-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.4; transition: 0.3s; }
-        .date-item.active { opacity: 1; }
-        .day-en { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 4px; }
-        .day-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; }
+        body { background: var(--bg); color: var(--text); font-family: 'Noto Serif TC', serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        .hide-s::-webkit-scrollbar { display: none; }
+        header { padding: 45px 20px 15px; text-align: center; background: var(--bg); z-index: 10; }
+        .t-sub { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+        .t-main { font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; }
+        .date-slider { display: flex; overflow-x: auto; padding: 10px 20px 20px; gap: 28px; border-bottom: 1px solid var(--border); }
+        .d-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.4; transition: 0.3s; }
+        .d-item.active { opacity: 1; }
+        .d-en { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; margin-bottom: 4px; }
+        .d-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; }
         .dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; margin-top: 4px; }
-        .date-item.active .dot { background: var(--accent); }
-
+        .d-item.active .dot { background: var(--accent); }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 120px; }
         .main-view { display: none; animation: fadeIn 0.4s ease; }
-        .day-view { display: none; animation: fadeIn 0.4s ease; }
+        .day-view { display: none; }
         .day-view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .day-hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 0px; background-color: #d1cdc7; }
-        .day-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(245,241,231,0.2) 60%, rgba(0,0,0,0.4) 100%); }
+        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 0px; background-color: #d1cdc7; }
+        .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0) 100%); }
         .hero-text { position: absolute; top: 20px; left: 20px; color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .hero-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; opacity: 0.9; }
-        .hero-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px; }
-
-        .hotel-highlight { margin: 15px 20px 25px; padding: 20px; border-radius: 4px; background: rgba(255,255,255,0.7); border: 1px solid var(--border); }
-        .hotel-highlight .sub { font-size: 0.7rem; color: var(--accent); margin-bottom: 5px; letter-spacing: 1px; font-weight: bold;}
-        .hotel-highlight .name { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; }
-        .hotel-highlight .addr { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px; }
-
-        .timeline-container { padding: 10px 20px 20px 75px; position: relative; }
-        .timeline-container::before { content: ''; position: absolute; left: 65px; top: 15px; bottom: 0; width: 1px; background: var(--timeline); }
-        .timeline-item { position: relative; margin-bottom: 40px; padding-left: 15px; }
-        .time-marker { position: absolute; left: -65px; top: -2px; width: 50px; text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--text-main); }
-        .dot-marker { position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--accent); z-index: 2; }
-        .dot-marker.diamond { border-radius: 1px; transform: rotate(45deg); background: var(--accent); border: none; left: -4px; top: 7px; }
-
-        .item-category { font-family: -apple-system, sans-serif; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
-        .item-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; letter-spacing: 0.5px; }
-        
-        .info-box { background: rgba(255,255,255,0.6); border: 1px solid var(--border); padding: 12px; border-radius: 4px; font-family: -apple-system, sans-serif; font-size: 0.75rem; color: #444; line-height: 1.5; margin-bottom: 10px; }
-        .info-row { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
-        .info-icon { color: var(--accent); font-size: 0.8rem; margin-top: 2px; width: 14px; text-align: center; }
-
-        .map-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600; transition: 0.2s; }
-        .map-btn:active { background: var(--accent); color: #fff; }
-
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(245, 241, 231, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 0 calc(15px + var(--safe-area-bottom)); z-index: 50; }
-        .nav-tab { flex: 1; text-align: center; color: var(--text-muted); font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; transition: 0.3s;}
-        .nav-tab.active { color: var(--accent); font-weight: 700; transform: translateY(-2px);}
+        .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; }
+        .h-title { font-size: 1.6rem; font-weight: 600; }
+        .hotel-box { margin: 15px 20px 25px; padding: 20px; border-radius: 4px; background: rgba(255,255,255,0.7); border: 1px solid var(--border); }
+        .hotel-box .sub { font-size: 0.7rem; color: var(--accent); font-weight: bold; letter-spacing: 1px; }
+        .hotel-box .name { font-size: 1.2rem; font-weight: 600; margin: 5px 0; }
+        .hotel-box .addr { font-size: 0.75rem; color: var(--muted); line-height: 1.4; margin-bottom: 10px; }
+        .tl-container { padding: 10px 20px 20px 75px; position: relative; }
+        .tl-container::before { content: ''; position: absolute; left: 65px; top: 15px; bottom: 0; width: 1px; background: var(--timeline); }
+        .tl-item { position: relative; margin-bottom: 40px; padding-left: 15px; }
+        .t-marker { position: absolute; left: -65px; top: -2px; width: 50px; text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--text); }
+        .dot-m { position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--accent); z-index: 2; }
+        .dot-m.diamond { border-radius: 1px; transform: rotate(45deg); background: var(--accent); border: none; left: -4px; top: 7px; }
+        .cat { font-family: -apple-system, sans-serif; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+        .i-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+        .info-box { background: rgba(255,255,255,0.6); border: 1px solid var(--border); padding: 12px; border-radius: 4px; font-family: -apple-system, sans-serif; font-size: 0.75rem; color: #444; margin-bottom: 10px; }
+        .i-row { display: flex; gap: 6px; margin-bottom: 4px; }
+        .i-icon { color: var(--accent); font-size: 0.8rem; width: 14px; text-align: center; }
+        .map-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--accent); color: var(--accent); padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(245, 241, 231, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 0 var(--safe-bottom); z-index: 50; }
+        .nav-tab { flex: 1; text-align: center; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
+        .nav-tab.active { color: var(--accent); font-weight: 700; transform: translateY(-2px); }
         .nav-tab i { display: block; font-size: 1.2rem; margin-bottom: 5px; }
-
-        .budget-card { background: rgba(255,255,255,0.7); margin: 0 20px 20px; padding: 25px; border-radius: 4px; border: 1px solid var(--border); }
-        .b-title { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        .b-amount { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
-
     <header>
-        <div class="top-subtitle">Ultimate Travel Guide</div>
-        <div class="top-title">富士東京旅行 2026</div>
+        <div class="t-sub">Couple Trip Itinerary</div>
+        <div class="t-main">富士東京旅行 2026</div>
     </header>
-
-    <div class="date-slider hide-scrollbar" id="dateSlider">
-        <div class="date-item active" onclick="switchDay(1)"><span class="day-en">WED</span><span class="day-num">13</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(2)"><span class="day-en">THU</span><span class="day-num">14</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(3)"><span class="day-en">FRI</span><span class="day-num">15</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(4)"><span class="day-en">SAT</span><span class="day-num">16</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(5)"><span class="day-en">SUN</span><span class="day-num">17</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(6)"><span class="day-en">MON</span><span class="day-num">18</span><div class="dot"></div></div>
+    <div class="date-slider hide-s" id="dateSlider">
+        <div class="d-item active" onclick="switchDay(1)"><span class="d-en">WED</span><span class="d-num">13</span><div class="dot"></div></div>
+        <div class="d-item" onclick="switchDay(2)"><span class="d-en">THU</span><span class="d-num">14</span><div class="dot"></div></div>
+        <div class="d-item" onclick="switchDay(3)"><span class="d-en">FRI</span><span class="d-num">15</span><div class="dot"></div></div>
+        <div class="d-item" onclick="switchDay(4)"><span class="d-en">SAT</span><span class="d-num">16</span><div class="dot"></div></div>
+        <div class="d-item" onclick="switchDay(5)"><span class="d-en">SUN</span><span class="d-num">17</span><div class="dot"></div></div>
+        <div class="d-item" onclick="switchDay(6)"><span class="d-en">MON</span><span class="d-num">18</span><div class="dot"></div></div>
     </div>
-
-    <div class="content-area hide-scrollbar">
-        
+    <div class="content-area hide-s">
         <div id="view-itinerary" class="main-view" style="display: block;">
-            
             <div id="day-1" class="day-view active">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1542051812-82f1145eb538?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 1</div><div class="hero-title">日本到着</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1542051812-82f1145eb538?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 1</div><div class="h-title">東京到着</div></div>
                 </div>
-                <div class="hotel-highlight">
+                <div class="hotel-box">
                     <div class="sub">今晚住宿</div>
                     <div class="name">新宿西鐵飯店 Nishitetsu Inn Shinjuku</div>
-                    <div class="addr">東京都新宿區西新宿7-23-2</div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street0" class="map-btn" target="_blank">Google Maps</a>
+                    <div class="addr">東京都新宿区西新宿7-23-2</div>
+                    <a href="https://maps.app.goo.gl/uXv7F8vFv8F8vF8" class="map-btn" target="_blank"><i class="fa-solid fa-map"></i> 地圖導航</a>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">17:15</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-plane"></i> FLIGHT</div>
-                        <div class="item-title">日本航空 JL804 (抵達)</div>
-                        <div class="info-box">機型：B787-8 ｜ 航廈：成田 T2</div>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">17:15</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-plane"></i> FLIGHT</div>
+                        <div class="i-title">日本航空 JL804 抵達</div>
+                        <div class="info-box">航班：JL804 | 機型：B787-8 | 航廈：成田 T2</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="t-marker">20:30</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-check"></i> ARRIVAL</div>
+                        <div class="i-title">飯店 Check-in</div>
+                        <div class="info-box">新宿西口步行 8 分鐘抵達。</div>
                     </div>
                 </div>
             </div>
-
             <div id="day-2" class="day-view">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 2</div><div class="hero-title">富士回遊巡禮</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 2</div><div class="h-title">富士山巡禮</div></div>
                 </div>
-                <div class="hotel-highlight">
-                    <div class="sub">今晚住宿</div>
+                <div class="hotel-box">
+                    <div class="sub">住宿資訊 (2晚)</div>
                     <div class="name">富士山站酒店 Fujisan Station Hotel</div>
-                    <div class="addr">山梨縣富士吉田市松山2-7-12</div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street1" class="map-btn" target="_blank">Google Maps</a>
+                    <div class="addr">山梨県富士吉田市松山2-7-12</div>
+                    <a href="https://maps.app.goo.gl/fujisanhotel" class="map-btn" target="_blank"><i class="fa-solid fa-map"></i> 地圖導航</a>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">09:30</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-train"></i> TRANSPORT</div>
-                        <div class="item-title">富士回遊號 (Fuji Excursion)</div>
-                        <div class="info-box">上車：新宿站 (09:30) ｜ 下車：河口湖站 (11:28)</div>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">09:30</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
+                        <div class="i-title">富士回遊號發車</div>
+                        <div class="info-box">新宿發車 (09:30) → 河口湖 (11:28)</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">13:00</div><div class="dot-marker diamond"></div>
-                        <div class="item-category"><i class="fa-solid fa-camera"></i> DRAMA</div>
-                        <div class="item-title">《小鎮星熱點》聖地巡禮</div>
-                        <div class="info-box">
-                            金鳥居、富士吉田本町通、市杵島神社、月江寺通。<br>
-                            地址：富士吉田市下吉田3丁目周邊
-                        </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street2" class="map-btn" target="_blank">景點導航</a>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">14:30</div><div class="dot-marker hollow"></div>
-                        <div class="item-category"><i class="fa-solid fa-mug-hot"></i> CAFE</div>
-                        <div class="item-title">Mont Blanc 蒙布朗下午茶</div>
-                        <div class="info-box">必點：超浮誇聖代 ｜ 地址：下吉田3-8-4</div>
+                    <div class="tl-item">
+                        <div class="t-marker">13:00</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-camera"></i> DRAMA</div>
+                        <div class="i-title">小鎮星熱點聖地</div>
+                        <div class="info-box">金鳥居、本町通、市杵島神社、月江寺通</div>
+                        <a href="https://maps.app.goo.gl/honcho" class="map-btn" target="_blank"><i class="fa-solid fa-camera-retro"></i> 景點導航</a>
                     </div>
                 </div>
             </div>
-
             <div id="day-3" class="day-view">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 3</div><div class="hero-title">河口湖水陸</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 3</div><div class="h-title">河口湖水陸</div></div>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">10:00</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-bus"></i> EXPERIENCE</div>
-                        <div class="item-title">KABA BUS 水陸巴士</div>
-                        <div class="info-box">地點：山中湖 旭日丘巴士總站</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street3" class="map-btn" target="_blank">Google Maps</a>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">10:00</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-bus"></i> SPECIAL</div>
+                        <div class="i-title">KABA BUS 水陸巴士</div>
+                        <div class="info-box">山中湖旭日丘巴士總站</div>
+                        <a href="https://maps.app.goo.gl/kaba" class="map-btn" target="_blank"><i class="fa-solid fa-location-dot"></i> 地點導航</a>
                     </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">12:30</div><div class="dot-marker diamond"></div>
-                        <div class="item-category"><i class="fa-solid fa-bowl-food"></i> LUNCH</div>
-                        <div class="item-title">吉田烏龍麵 藏之介</div>
-                        <div class="info-box">地址：上吉田3-4-23 ｜ 訂位：現場排隊</div>
+                    <div class="tl-item">
+                        <div class="t-marker">12:30</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-bowl-food"></i> LUNCH</div>
+                        <div class="i-title">吉田烏龍麵 藏之介</div>
+                        <div class="info-box">富士吉田市上吉田3-4-23 | 僅中午營業</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">18:00</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-utensils"></i> DINNER</div>
-                        <div class="item-title">Fuji Tempura IDATEN (いだ天)</div>
-                        <div class="info-box">地址：船津3486-4 ｜ 訂位：現場 QR 碼</div>
+                    <div class="tl-item">
+                        <div class="t-marker">18:00</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-utensils"></i> DINNER</div>
+                        <div class="i-title">Fuji Tempura IDATEN</div>
+                        <div class="info-box">船津3486-4 | 現場取號</div>
                     </div>
                 </div>
             </div>
-
             <div id="day-4" class="day-view">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 4</div><div class="hero-title">重返東京</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 4</div><div class="h-title">重返東京</div></div>
                 </div>
-                <div class="hotel-highlight">
+                <div class="hotel-box">
                     <div class="sub">今晚住宿</div>
-                    <div class="name">上野曼迪高級酒店 hotel MONday Premium</div>
-                    <div class="addr">東京都台東區台東3-41-7</div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street4" class="map-btn" target="_blank">Google Maps</a>
+                    <div class="name">上野曼迪酒店 MONday Premium</div>
+                    <div class="addr">東京都台東区台東3-41-7</div>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">09:00</div><div class="dot-marker diamond"></div>
-                        <div class="item-category"><i class="fa-solid fa-camera"></i> IG SPOT</div>
-                        <div class="item-title">Lawson 河口湖站前店 / 日川時計店</div>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">09:00</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-camera"></i> IG SPOT</div>
+                        <div class="i-title">Lawson 富士山打卡</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">14:58</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-train"></i> TRANSPORT</div>
-                        <div class="item-title">富士回遊號 (回程)</div>
-                        <div class="info-box">發車：河口湖站 (14:58) ｜ 抵達：新宿</div>
+                    <div class="tl-item">
+                        <div class="t-marker">14:58</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
+                        <div class="i-title">富士回遊號 (回程)</div>
+                        <div class="info-box">河口湖站 14:58 發車 → 新宿</div>
                     </div>
                 </div>
             </div>
-
             <div id="day-5" class="day-view">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 5</div><div class="hero-title">銀座潮流</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1557404763-69708ce14f80?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 5</div><div class="h-title">銀座與潮流</div></div>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">10:00</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-kitchen-set"></i> SHOPPING</div>
-                        <div class="item-title">合羽橋道具街 (烘焙模具)</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dougu+Street5" class="map-btn" target="_blank">道具街導航</a>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">13:30</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-shirt"></i> SHOPPING</div>
+                        <div class="i-title">UNIQLO 銀座旗艦店</div>
+                        <div class="info-box">中央区銀座6-9-5</div>
+                        <a href="https://maps.app.goo.gl/uniqlo" class="map-btn" target="_blank">地圖</a>
                     </div>
-                    <div class="timeline-item">
-                        <div class="time-marker">13:30</div><div class="dot-marker diamond"></div>
-                        <div class="item-category"><i class="fa-solid fa-shirt"></i> FASHION</div>
-                        <div class="item-title">UNIQLO 銀座旗艦店</div>
-                        <div class="info-box">地址：銀座6-9-5</div>
+                    <div class="tl-item">
+                        <div class="t-marker">17:30</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-pills"></i> PHARMACY</div>
+                        <div class="i-title">多慶屋 總本館</div>
+                        <div class="info-box">台東区台東4-33-2</div>
                     </div>
                 </div>
             </div>
-
             <div id="day-6" class="day-view">
-                <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1437846972679-9e6e537be46e?auto=format&fit=crop&w=800&q=80');">
-                    <div class="hero-text"><div class="hero-tag">DAY 6</div><div class="hero-title">歸途</div></div>
+                <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1512273222628-4daea6e55f40?auto=format&fit=crop&w=800&q=80');">
+                    <div class="hero-text"><div class="h-tag">DAY 6</div><div class="h-title">歸途</div></div>
                 </div>
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="time-marker">18:05</div><div class="dot-marker"></div>
-                        <div class="item-category"><i class="fa-solid fa-plane"></i> FLIGHT</div>
-                        <div class="item-title">日本航空 JL809 (返程)</div>
-                        <div class="info-box">起飛：18:05 ｜ 任務：先至宅配櫃檯領取按摩椅</div>
+                <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">18:05</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-plane"></i> FLIGHT</div>
+                        <div class="i-title">日本航空 JL809 (回台)</div>
+                        <div class="info-box">成田 T2 | 任務：提領按摩椅</div>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div id="view-budget" class="main-view">
-            <div class="day-hero" style="background-image: url('https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&w=800&q=80'); height: 260px;">
-                <div class="hero-text" style="top: 40px;"><div class="hero-tag">SUMMARY</div><div class="hero-title">預算與後勤</div></div>
+            <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1580982335439-0d866a88ab05?auto=format&fit=crop&w=800&q=80'); height: 260px;">
+                <div class="hero-text" style="top: 40px;"><div class="h-tag">SUMMARY</div><div class="h-title">預算與後勤</div></div>
             </div>
-            <div class="budget-card">
-                <div class="b-title">Total Budget</div>
-                <div class="b-amount">NT$ 52,708</div>
+            <div class="hotel-box">
+                <div class="sub">Total Budget</div>
+                <div style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent); font-weight: 600;">NT$ 52,708</div>
                 <div class="addr">機票: 29,781 / 5 晚住宿: 22,927</div>
             </div>
-            <div class="budget-card">
-                <div class="b-title">Coupon Codes</div>
-                <div class="item-title">Bic Camera 折扣碼</div>
-                <div style="font-family: monospace; font-size: 1.2rem; color: var(--accent); font-weight: bold; background: rgba(167, 58, 51, 0.1); padding: 5px; border-radius: 4px; display: inline-block; margin-top: 10px;">4USDTV4F</div>
-                <div class="addr" style="margin-top: 5px;">享 10% 免稅 + 7% 折扣</div>
+            <div class="hotel-box">
+                <div class="sub">Coupon Codes</div>
+                <div class="name">Bic Camera 10%+7% OFF</div>
+                <div style="font-family: monospace; font-size: 1.2rem; color: var(--accent); font-weight: bold; background: rgba(167, 58, 51, 0.1); padding: 5px; border-radius: 4px; display: inline-block;">4USDTV4F</div>
             </div>
         </div>
     </div>
-
-    <div class="bottom-nav">
-        <div id="nav-itinerary" class="nav-tab active" onclick="switchMainTab('itinerary')"><i class="fa-solid fa-compass"></i><span>ITINERARY</span></div>
-        <div id="nav-budget" class="nav-tab" onclick="switchMainTab('budget')"><i class="fa-solid fa-wallet"></i><span>BUDGET</span></div>
+    <div class="nav-bar">
+        <div id="nav-itinerary" class="nav-tab active" onclick="tab('itinerary')"><i class="fa-solid fa-compass"></i><span>ITINERARY</span></div>
+        <div id="nav-budget" class="nav-tab" onclick="tab('budget')"><i class="fa-solid fa-wallet"></i><span>BUDGET</span></div>
     </div>
-
     <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA",
-          authDomain: "fuji-trip-2026-4018b.firebaseapp.com",
-          projectId: "fuji-trip-2026-4018b",
-          storageBucket: "fuji-trip-2026-4018b.firebasestorage.app",
-          messagingSenderId: "291332266749",
-          appId: "1:291332266749:web:558cd8008f32509095bc94"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA", authDomain: "fuji-trip-2026-4018b.firebaseapp.com", projectId: "fuji-trip-2026-4018b", storageBucket: "fuji-trip-2026-4018b.firebasestorage.app", messagingSenderId: "291332266749", appId: "1:291332266749:web:558cd8008f32509095bc94" };
         firebase.initializeApp(firebaseConfig);
-
-        function switchMainTab(tabName) {
-            document.getElementById('nav-itinerary').classList.remove('active');
-            document.getElementById('nav-budget').classList.remove('active');
-            document.getElementById('nav-' + tabName).classList.add('active');
-            if (tabName === 'itinerary') {
+        function tab(t) {
+            document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + t).classList.add('active');
+            if (t === 'itinerary') {
                 document.getElementById('view-itinerary').style.display = 'block';
                 document.getElementById('view-budget').style.display = 'none';
                 document.getElementById('dateSlider').style.display = 'flex';
@@ -293,19 +244,13 @@
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function switchDay(dayId) {
-            document.querySelectorAll('.date-item').forEach((el, index) => {
-                if (index + 1 === dayId) {
-                    el.classList.add('active');
-                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else {
-                    el.classList.remove('active');
-                }
+        function switchDay(d) {
+            document.querySelectorAll('.d-item').forEach((el, i) => {
+                if (i + 1 === d) { el.classList.add('active'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+                else el.classList.remove('active');
             });
             document.querySelectorAll('.day-view').forEach(v => v.classList.remove('active'));
-            const target = document.getElementById('day-' + dayId);
-            if(target) target.classList.add('active');
+            document.getElementById('day-' + d).classList.add('active');
             document.querySelector('.content-area').scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
