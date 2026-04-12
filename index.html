@@ -3,348 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士山東京行｜Travel Pro v4.0</title>
+    <title>富士東京旅行｜Aesthetic Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --mucha: #4a5d4e; --sakura: #f5e1da; --wood: #c08a5d; --bg-color: #f7f9f8;
-            --safe-area-bottom: env(safe-area-inset-bottom, 20px);
+            --bg: #FCFAF5;
+            --text-main: #1A1A1A;
+            --text-muted: #9E9993;
+            --border: #E8E5DF;
+            --accent-red: #8B1E1E;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, "SF Pro TC", "Noto Sans TC", sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-color); color: #2c3e50; height: 100vh; overflow: hidden; }
-        #app { height: 100vh; display: flex; flex-direction: column; }
-        header { 
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: calc(20px + env(safe-area-inset-top, 40px)) 24px 15px; 
-            display: flex; justify-content: space-between; align-items: flex-end;
-            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        header h1 { font-size: 1.4rem; font-weight: 800; color: var(--mucha); }
-        .weather-chip { font-size: 0.8rem; color: var(--wood); font-weight: 700; background: rgba(192, 138, 93, 0.1); padding: 4px 10px; border-radius: 20px; }
-        .content { flex: 1; overflow-y: auto; padding: 10px 20px 140px; scroll-behavior: smooth; }
-        .view { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
-        .view.active { display: block; opacity: 1; transform: translateY(0); }
-        
-        .day-label { margin: 35px 0 15px; font-size: 1rem; font-weight: 900; color: var(--mucha); display: flex; align-items: center; gap: 8px; border-bottom: 2px solid rgba(192, 138, 93, 0.2); padding-bottom: 8px;}
-        .day-label::before { content: ''; width: 4px; height: 16px; background: var(--wood); border-radius: 4px; }
-        
-        .card { background: #fff; border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); }
-        .category-tag { font-size: 0.65rem; padding: 5px 10px; border-radius: 8px; color: #fff; font-weight: 800; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 5px; letter-spacing: 0.5px;}
-        
-        /* 標籤配色 */
-        .cat-flight { background: linear-gradient(135deg, #2c3e50, #34495e); }
-        .cat-transport { background: linear-gradient(135deg, #7f9b84, #5c6b5e); }
-        .cat-hotel { background: linear-gradient(135deg, #d4a373, #c08a5d); }
-        .cat-eat { background: linear-gradient(135deg, #e78267, #d6644a); }
-        .cat-spot { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .cat-drama { background: linear-gradient(135deg, #9b59b6, #8e44ad); } /* 日劇專屬紫 */
-        .cat-shop { background: linear-gradient(135deg, #f39c12, #e67e22); }
-        .cat-logistics { background: linear-gradient(135deg, #16a085, #1abc9c); }
 
-        .card h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 800; line-height: 1.3;}
-        .card p { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 12px; line-height: 1.5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text-main); font-family: 'Noto Serif TC', serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         
-        .guide-intel { background: #fdfaf5; border-radius: 14px; padding: 14px; border: 1px solid #f0efeb; font-size: 0.8rem; line-height: 1.6; }
-        .intel-title { font-size: 0.75rem; color: var(--wood); font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .highlight { color: #d64a4a; font-weight: 800; }
-        .code-badge { background: #2c3e50; color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;}
+        /* 隱藏捲軸但可滾動 */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 頂部 Header */
+        header { padding: 40px 20px 10px; text-align: center; background: linear-gradient(to bottom, var(--bg) 80%, rgba(252,250,245,0)); z-index: 10; }
+        .top-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+        .top-title { font-size: 1.5rem; font-weight: 600; letter-spacing: 2px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .year-badge { font-family: 'Cormorant Garamond', serif; font-size: 0.8rem; border: 1px solid var(--border); border-radius: 20px; padding: 2px 10px; color: var(--text-muted); font-weight: 400; }
+
+        /* 日期選擇器 */
+        .date-slider { display: flex; overflow-x: auto; padding: 15px 20px; gap: 25px; border-bottom: 1px solid var(--border); }
+        .date-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.5; transition: 0.3s; min-width: 30px; }
+        .date-item.active { opacity: 1; }
+        .day-en { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 4px; }
+        .day-num { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; margin-top: 4px; }
+        .date-item.active .dot { background: var(--accent-red); }
+
+        /* 內容區 */
+        .content-area { flex: 1; overflow-y: auto; padding-bottom: 100px; }
+        .day-view { display: none; animation: fadeIn 0.4s ease; }
+        .day-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Hero 視覺圖 */
+        .hero-img-box { margin: 15px 15px 25px; height: 180px; border-radius: 4px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: #fff; }
+        .hero-tag { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 6px; }
+        .hero-tag span { border: 0.5px solid rgba(255,255,255,0.6); padding: 2px 8px; font-family: 'Cormorant Garamond', serif; }
+        .hero-title { font-size: 1.4rem; font-weight: 600; letter-spacing: 1.5px; }
+
+        /* 天氣模組 */
+        .weather-section { padding: 0 20px 25px; border-bottom: 1px solid var(--border); margin-bottom: 25px; }
+        .w-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 15px; }
+        .w-city { font-size: 1.3rem; font-weight: 600; }
+        .w-sub { font-size: 0.7rem; color: var(--text-muted); }
+        .w-badge { margin-left: auto; font-family: -apple-system, sans-serif; font-size: 0.6rem; background: #f0f0f0; padding: 3px 8px; border-radius: 10px; color: #666; }
+        .w-scroll { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 10px; }
+        .w-hour { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 40px; }
+        .w-time { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--text-muted); }
+        .w-icon { font-size: 1.2rem; color: var(--text-main); }
+        .w-temp { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; }
+
+        /* 質感卡片 */
+        .list-container { padding: 0 20px; }
+        .item-card { margin-bottom: 30px; position: relative; padding-left: 15px; border-left: 1px solid var(--border); }
+        .item-time { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--accent-red); font-weight: 700; margin-bottom: 5px; display: block; }
+        .item-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .item-desc { font-family: -apple-system, sans-serif; font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 10px; }
         
-        .nav-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #f0f4f8; color: #2980b9; font-size: 0.85rem; font-weight: 700; padding: 12px; border-radius: 14px; text-decoration: none; margin-top: 12px; transition: 0.2s; }
-        .nav-btn:active { transform: scale(0.98); background: #e1e8f0; }
-        
-        .tab-bar { position: fixed; bottom: 0; width: 100%; max-width: 500px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 15px 0 calc(10px + var(--safe-area-bottom)); border-top: 1px solid rgba(0,0,0,0.05); }
-        .tab { color: #a0aec0; text-align: center; flex: 1; font-size: 0.65rem; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .tab.active { color: var(--mucha); transform: translateY(-2px);}
-        .tab i { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        /* 攻略區塊 (精簡版) */
+        .intel-box { background: #F5F3ED; padding: 12px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #333; line-height: 1.5; margin-bottom: 10px; border-radius: 2px; }
+        .intel-box b { color: var(--accent-red); font-weight: 600; }
+
+        .nav-link { font-family: -apple-system, sans-serif; font-size: 0.75rem; color: #1A1A1A; text-decoration: none; border-bottom: 1px solid #1A1A1A; padding-bottom: 2px; display: inline-flex; align-items: center; gap: 5px; }
+
+        /* 底部選單 */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--bg); border-top: 1px solid var(--border); display: flex; padding: 15px 0 calc(15px + var(--safe-area-bottom)); }
+        .nav-tab { flex: 1; text-align: center; color: var(--text-muted); font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 1px; cursor: pointer; }
+        .nav-tab.active { color: var(--text-main); font-weight: 700; }
+        .nav-tab i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
     </style>
 </head>
 <body>
-<div id="app">
+
     <header>
-        <h1 id="view-title">專屬導覽行程</h1>
-        <div class="weather-chip"><i class="fa-solid fa-cloud-sun"></i> 春季 15-22°C</div>
+        <div class="top-subtitle">Couple Trip</div>
+        <div class="top-title">富士東京旅行 <span class="year-badge">2026</span></div>
     </header>
 
-    <div class="content">
-        <div id="itinerary" class="view active">
-            
-            <div class="day-label">DAY 1 ｜ 5月13日 (週三) - 啟程與安頓</div>
-            
-            <div class="card">
-                <span class="category-tag cat-flight"><i class="fa-solid fa-plane-arrival"></i> 航班抵達</span>
-                <h3>台北 (TPE) → 東京成田 (NRT)</h3>
-                <p>17:15 降落於成田機場 第二航廈 (T2)。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-flag"></i> 導遊提醒</div>
-                    預計 18:30 完成通關。領取 5 咖行李後，推車直接前往 B1 鐵道層購票。
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-transport"><i class="fa-solid fa-train"></i> 機場快線</span>
-                <h3>JR 成田特快 (N'EX)</h3>
-                <p>成田機場直達新宿車站，無需轉車。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-briefcase"></i> 總務攻略</div>
-                    N'EX 車廂連接處設有密碼鎖大型行李架，請務必將 5 咖行李妥善安置，安心入座休息。
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-hotel"><i class="fa-solid fa-bed"></i> 飯店 Check-in</span>
-                <h3>新宿西鐵飯店 (Nishitetsu Inn)</h3>
-                <p>今晚的落腳處，周邊機能極佳。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-map-pin"></i> 避走迷宮秘訣</div>
-                    抵達新宿站後，抬頭尋找黃色指標往<span class="highlight">「西口」</span>出站，沿著平面馬路直行約 8 分鐘即可抵達，千萬別在地下街繞！
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=新宿西鐵飯店" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 開啟飯店導航</a>
-            </div>
-
-            <div class="day-label">DAY 2 ｜ 5月14日 (週四) - 日劇聖地巡禮</div>
-            
-            <div class="card">
-                <span class="category-tag cat-transport"><i class="fa-solid fa-train-tram"></i> 景觀特急</span>
-                <h3>富士回遊號 (Fuji Excursion)</h3>
-                <p>從新宿直達富士山站，沿途欣賞漸漸變大的富士山。</p>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-hotel"><i class="fa-solid fa-suitcase-rolling"></i> 行李寄放</span>
-                <h3>富士山站酒店</h3>
-                <p>抵達後先至飯店寄放行李，準備輕裝踩點。</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=Fujisan+Station+Hotel" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至飯店</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-drama"><i class="fa-solid fa-clapperboard"></i> 《小鎮星熱點》第一站</span>
-                <h3>金鳥居 (Kin Torii)</h3>
-                <p>矗立在馬路中央、守護富士山入口的金色大鳥居。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-camera-retro"></i> 導遊視角</div>
-                    從鳥居正下方望過去，富士山會被完美框住，充滿莊嚴的神聖感，是絕佳的開場打卡點。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=富士吉田+金鳥居" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至金鳥居</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-drama"><i class="fa-solid fa-clapperboard"></i> 《小鎮星熱點》第二站</span>
-                <h3>富士吉田本町通 (Honcho Street)</h3>
-                <p>清美騎腳踏車經過的經典場景。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-camera-retro"></i> 導遊視角</div>
-                    網路上最紅的「富士山就在街道盡頭」打卡點！<br><span class="highlight">安全提醒：</span>務必站在兩側人行道拍攝，注意來車喔。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=富士吉田本町通" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至本町通</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-drama"><i class="fa-solid fa-clapperboard"></i> 《小鎮星熱點》第三站</span>
-                <h3>市杵島神社 & 十字路口</h3>
-                <p>高橋先生發揮外星人神力的地點！</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-camera-retro"></i> 導遊視角</div>
-                    第一集清美差點出車禍的關鍵十字路口。可以在這裡重溫劇中英雄救美的浪漫氛圍。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=富士吉田+市杵島神社" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至神社</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-drama"><i class="fa-solid fa-clapperboard"></i> 《小鎮星熱點》第四站</span>
-                <h3>月江寺通 (月江寺通り)</h3>
-                <p>充滿昭和氣息的木造建築窄巷。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-camera-retro"></i> 導遊視角</div>
-                    跟著清美趕赴約會的腳步，漫步在這條復古商店街，非常有日本老電影的氛圍。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=月江寺通り" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至月江寺通</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-eat"><i class="fa-solid fa-ice-cream"></i> 劇中下午茶</span>
-                <h3>Mont Blanc (もんぶらん)</h3>
-                <p>清美與閨蜜聚會的老字號在地咖啡廳。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-utensils"></i> 必點推薦</div>
-                    一定要點一份劇中出現的<span class="highlight">「超浮誇蒙布朗聖代」</span>，拍出跟主角一樣的照片！
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=もんぶらん+富士吉田" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至 Mont Blanc</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-eat"><i class="fa-solid fa-bowl-food"></i> 在地特色晚餐</span>
-                <h3>不動茶屋 (東戀路店)</h3>
-                <p>外型像是一朵落在富士山腳下的巨大白雲。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-utensils"></i> 點餐攻略</div>
-                    招牌必吃：<span class="highlight">味噌蔬菜餺飥麵 (Houtou)</span>。<br>
-                    備註：已為您將原行程的生馬肉剔除，請安心享用熱騰騰的蔬菜麵！
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至不動茶屋</a>
-            </div>
-
-            <div class="day-label">DAY 3 ｜ 5月15日 (週五) - 湖畔悠閒時光</div>
-            
-            <div class="card">
-                <span class="category-tag cat-spot"><i class="fa-solid fa-mountain-sun"></i> 絕景公園</span>
-                <h3>大石公園 & 河口湖自然生活館</h3>
-                <p>湖畔花海與富士山同框的最佳地點。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-flag"></i> 導遊推薦</div>
-                    今天不趕行程。在生活館內有非常多「富士山造型」的精緻伴手禮與手作餅乾，適合買回去送禮。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=大石公園" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至大石公園</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-hotel"><i class="fa-solid fa-moon"></i> 續住一晚</span>
-                <h3>富士山站酒店</h3>
-                <p>晚上整理戰利品，準備隔天回東京的行李。</p>
-            </div>
-
-            <div class="day-label">DAY 4 ｜ 5月16日 (週六) - 採購與轉移陣地</div>
-
-            <div class="card">
-                <span class="category-tag cat-logistics"><i class="fa-solid fa-box-open"></i> 黑貓物流</span>
-                <h3>行李分離戰術 (極重要)</h3>
-                <p>早上退房時，透過飯店櫃檯寄送行李。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-truck-fast"></i> 總務操作</div>
-                    請將 <span class="highlight">2 個最重的大箱</span> 直接寄往上野曼迪高級酒店，並在託運單備註 <span class="code-badge">5/16 Check-in</span>。讓您們能輕鬆搭車回東京。
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-hotel"><i class="fa-solid fa-bed"></i> 飯店 Check-in</span>
-                <h3>上野御徒町曼迪高級酒店</h3>
-                <p>回到東京，領取早上寄來的行李。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-star"></i> 房型亮點</div>
-                    為您安排了 20.38㎡ 的寬敞空間，方便最後幾天將 5 咖行李完全攤開整理！
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至曼迪酒店</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-shop"><i class="fa-solid fa-chair"></i> 重點採購</span>
-                <h3>Bic Camera (有樂町或秋葉原)</h3>
-                <p>女友指定：按摩椅 / 按摩機墊大戰場。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-ticket"></i> 總務結帳攻略</div>
-                    1. 結帳出示折扣碼 <span class="code-badge">4USDTV4F</span> 享免稅10%+7%優惠。<br>
-                    2. <span class="highlight">務必請店員辦理「空港配送」</span>，直接把按摩椅寄到成田機場 T2，千萬不要自己提！
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+有樂町" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至 Bic Camera</a>
-            </div>
-
-            <div class="day-label">DAY 5 ｜ 5月17日 (週日) - 職人烘焙與藥妝</div>
-
-            <div class="card">
-                <span class="category-tag cat-shop"><i class="fa-solid fa-kitchen-set"></i> 烘焙迷聖地</span>
-                <h3>合羽橋道具街 (Kappabashi)</h3>
-                <p>整條街都是超專業的餐廚用品。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-flag"></i> 導遊推薦</div>
-                    記得替家裡那台<span class="highlight">象印 ES-SAF26 烘烤微波爐</span>找幾個尺寸完美的日本職人深烤盤和不沾模具！搭配您的調理機，回台灣做巴斯克蛋糕絕對無敵。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至合羽橋</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-shop"><i class="fa-solid fa-pills"></i> 藥妝掃貨</span>
-                <h3>多慶屋 (TAKEYA)</h3>
-                <p>上野地區最著名的便宜免稅超市。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-cart-shopping"></i> 掃貨清單</div>
-                    合利他命、EVE、大包裝限定零食。優勢：買完直接提回隔壁的曼迪酒店放，完全不累。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=多慶屋" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至多慶屋</a>
-            </div>
-
-            <div class="day-label">DAY 6 ｜ 5月18日 (週一) - 最後衝刺與回程</div>
-
-            <div class="card">
-                <span class="category-tag cat-shop"><i class="fa-solid fa-gift"></i> 伴手禮補齊</span>
-                <h3>上野車站 (atre / ecute)</h3>
-                <p>退房後寄放行李，進行最後的採買。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-flag"></i> 導遊推薦</div>
-                    專攻 Sugar Butter Tree (焦糖奶油樹) 和 Tokyo Banana 等精緻禮盒。
-                </div>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-transport"><i class="fa-solid fa-train"></i> 直達機場</span>
-                <h3>京成電鐵 Skyliner</h3>
-                <p>從「京成上野站」搭車，41 分鐘直達機場。</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-briefcase"></i> 總務提醒</div>
-                    請搭計程車帶著 5 咖行李前往車站（起跳價距離），推薦搭乘 14:40 或 15:00 的班次。
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=京成上野站" target="_blank" class="nav-btn"><i class="fa-solid fa-location-arrow"></i> 導航至京成上野站</a>
-            </div>
-
-            <div class="card">
-                <span class="category-tag cat-flight"><i class="fa-solid fa-plane-departure"></i> 滿載歸國</span>
-                <h3>成田 (NRT) → 台北 (TPE)</h3>
-                <p>18:05 起飛 ｜ 第二航廈 (T2)</p>
-                <div class="guide-intel">
-                    <div class="intel-title"><i class="fa-solid fa-triangle-exclamation"></i> 極重要任務</div>
-                    抵達機場後，<span class="highlight">報到掛行李前，務必先去黑貓宅配櫃檯領取 Bic Camera 寄來的按摩椅！</span>
-                </div>
-            </div>
-
+    <div class="date-slider hide-scrollbar" id="dateSlider">
+        <div class="date-item active" onclick="switchDay(1)">
+            <span class="day-en">WED</span><span class="day-num">13</span><div class="dot"></div>
         </div>
-
-        <div id="info" class="view">
-            <div class="day-label">全行程摘要</div>
-            <div class="card">
-                <h3><i class="fa-solid fa-hotel"></i> 飯店統整</h3>
-                <p><b>5/13:</b> 新宿西鐵飯店</p>
-                <p><b>5/14-16:</b> 富士山站酒店</p>
-                <p><b>5/16-18:</b> 上野曼迪高級酒店 (20.38㎡)</p>
-            </div>
-            <div class="card">
-                <h3><i class="fa-solid fa-wallet"></i> 預算分配</h3>
-                <p>總預算：<b style="color:#d64a4a; font-size: 1.2rem;">NT$ 52,708</b></p>
-                <p>(機票 2 人: 29,781 / 住宿: 22,927)</p>
-            </div>
+        <div class="date-item" onclick="switchDay(2)">
+            <span class="day-en">THU</span><span class="day-num">14</span><div class="dot"></div>
+        </div>
+        <div class="date-item" onclick="switchDay(3)">
+            <span class="day-en">FRI</span><span class="day-num">15</span><div class="dot"></div>
+        </div>
+        <div class="date-item" onclick="switchDay(4)">
+            <span class="day-en">SAT</span><span class="day-num">16</span><div class="dot"></div>
+        </div>
+        <div class="date-item" onclick="switchDay(5)">
+            <span class="day-en">SUN</span><span class="day-num">17</span><div class="dot"></div>
+        </div>
+        <div class="date-item" onclick="switchDay(6)">
+            <span class="day-en">MON</span><span class="day-num">18</span><div class="dot"></div>
         </div>
     </div>
 
-    <nav class="tab-bar">
-        <div class="tab active" onclick="show('itinerary', '專屬導覽行程', this)"><i class="fa-solid fa-compass"></i><span>行程</span></div>
-        <div class="tab" onclick="show('info', '詳細資訊', this)"><i class="fa-solid fa-circle-info"></i><span>資訊</span></div>
-    </nav>
-</div>
+    <div class="content-area hide-scrollbar">
+        
+        <div id="day-1" class="day-view active">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1542051812-82f1145eb538?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 1</span> <i class="fa-solid fa-location-dot"></i> 東京新宿</div>
+                    <div class="hero-title">啟程與安頓</div>
+                </div>
+            </div>
 
-<script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA",
-      authDomain: "fuji-trip-2026-4018b.firebaseapp.com",
-      projectId: "fuji-trip-2026-4018b",
-      storageBucket: "fuji-trip-2026-4018b.firebasestorage.app",
-      messagingSenderId: "291332266749",
-      appId: "1:291332266749:web:558cd8008f32509095bc94",
-      measurementId: "G-S2M01MJR5S"
-    };
-    firebase.initializeApp(firebaseConfig);
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">17:15</span>
+                    <div class="item-title">成田機場 (NRT) 降落</div>
+                    <div class="item-desc">抵達第二航廈 (T2)。預計 18:30 完成通關，領取 5 咖行李後前往 B1 鐵道層。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">19:00</span>
+                    <div class="item-title">搭乘 N'EX 成田特快</div>
+                    <div class="item-desc">直達新宿車站。</div>
+                    <div class="intel-box">車廂連接處設有密碼鎖大型行李架，請妥善放置 5 咖行李。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">20:30</span>
+                    <div class="item-title">新宿西鐵飯店 Check-in</div>
+                    <div class="intel-box">出新宿站尋找黃色指標往 <b>「西口」</b> 出站，平面馬路直行約 8 分鐘抵達，避開地下街。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="nav-link">開啟地圖導航 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
 
-    function show(id, title, el) {
-        document.querySelectorAll('.view').forEach(v => {
-            v.classList.remove('active');
-            setTimeout(() => { if(!v.classList.contains('active')) v.style.display = 'none'; }, 300);
-        });
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        const targetView = document.getElementById(id);
-        targetView.style.display = 'block';
-        setTimeout(() => targetView.classList.add('active'), 10);
-        document.getElementById('view-title').innerText = title;
-        el.classList.add('active');
-        document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
-    }
-</script>
+        <div id="day-2" class="day-view">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 2</span> <i class="fa-solid fa-location-dot"></i> 富士吉田</div>
+                    <div class="hero-title">小鎮星熱點巡禮</div>
+                </div>
+            </div>
+
+            <div class="weather-section">
+                <div class="w-header">
+                    <span class="w-city">富士吉田</span>
+                    <span class="w-sub">未來預報</span>
+                    <span class="w-badge">Open-Meteo</span>
+                </div>
+                <div class="w-scroll hide-scrollbar">
+                    <div class="w-hour"><span class="w-time">09:00</span><i class="fa-solid fa-sun w-icon"></i><span class="w-temp">15°</span></div>
+                    <div class="w-hour"><span class="w-time">12:00</span><i class="fa-solid fa-sun w-icon"></i><span class="w-temp">18°</span></div>
+                    <div class="w-hour"><span class="w-time">15:00</span><i class="fa-solid fa-cloud-sun w-icon"></i><span class="w-temp">17°</span></div>
+                    <div class="w-hour"><span class="w-time">18:00</span><i class="fa-solid fa-cloud w-icon"></i><span class="w-temp">14°</span></div>
+                    <div class="w-hour"><span class="w-time">21:00</span><i class="fa-solid fa-moon w-icon"></i><span class="w-temp">12°</span></div>
+                </div>
+            </div>
+
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">Morning</span>
+                    <div class="item-title">富士山站酒店 寄放行李</div>
+                    <div class="item-desc">搭乘富士回遊號抵達後，先至飯店寄放行李，準備輕裝踩點。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Spot 1</span>
+                    <div class="item-title">金鳥居 (Kin Torii)</div>
+                    <div class="item-desc">矗立馬路中央的大鳥居。從正下方望去，富士山被完美框住，充滿神聖感。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=富士吉田+金鳥居" class="nav-link">導航至金鳥居 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Spot 2</span>
+                    <div class="item-title">富士吉田本町通</div>
+                    <div class="intel-box">《小鎮星熱點》清美騎車場景。務必站在兩側人行道拍攝，注意來車。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Spot 3</span>
+                    <div class="item-title">市杵島神社 & 十字路口</div>
+                    <div class="item-desc">高橋先生發揮外星人神力，救下差點出車禍的清美的關鍵場景。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Spot 4</span>
+                    <div class="item-title">月江寺通 & Mont Blanc</div>
+                    <div class="intel-box">復古商店街漫步。下午茶必點劇中同款：<b>超浮誇蒙布朗聖代</b>。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=もんぶらん+富士吉田" class="nav-link">導航至咖啡廳 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Dinner</span>
+                    <div class="item-title">不動茶屋 (東戀路店)</div>
+                    <div class="item-desc">雲朵造型特色建築。</div>
+                    <div class="intel-box">招牌必吃：<b>味噌蔬菜餺飥麵</b>。(已剔除馬肉選項，請安心享用)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" class="nav-link">導航至餐廳 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-3" class="day-view">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 3</span> <i class="fa-solid fa-location-dot"></i> 河口湖</div>
+                    <div class="hero-title">湖畔悠閒時光</div>
+                </div>
+            </div>
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">Relax</span>
+                    <div class="item-title">大石公園 & 自然生活館</div>
+                    <div class="item-desc">湖畔花海與富士山同框的最佳地點。館內有非常多富士山造型伴手禮。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=大石公園" class="nav-link">導航至大石公園 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Night</span>
+                    <div class="item-title">富士山站酒店 (續住)</div>
+                    <div class="item-desc">晚上整理戰利品，準備隔天回東京的行李。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-4" class="day-view">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 4</span> <i class="fa-solid fa-location-dot"></i> 東京銀座</div>
+                    <div class="hero-title">採購與轉移陣地</div>
+                </div>
+            </div>
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">Morning</span>
+                    <div class="item-title">行李分離戰術 (黑貓宅急便)</div>
+                    <div class="intel-box">退房時，將 <b>2 個最重的大箱</b> 寄往上野曼迪酒店，託運單備註 <b>5/16 Check-in</b>。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Afternoon</span>
+                    <div class="item-title">Bic Camera (有樂町/秋葉原)</div>
+                    <div class="item-desc">按摩椅 / 按摩機墊大戰場。</div>
+                    <div class="intel-box">結帳出示折扣碼 <b>4USDTV4F</b>。務必請店員辦理 <b>「機場配送」</b> 至成田 T2。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">16:00</span>
+                    <div class="item-title">上野曼迪高級酒店 Check-in</div>
+                    <div class="item-desc">領取早上寄來的行李。20.38㎡ 寬敞空間可將 5 咖行李完全攤開。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-5" class="day-view">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1557404763-69708ce14f80?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 5</span> <i class="fa-solid fa-location-dot"></i> 淺草上野</div>
+                    <div class="hero-title">職人烘焙與藥妝</div>
+                </div>
+            </div>
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">Morning</span>
+                    <div class="item-title">合羽橋道具街 (Kappabashi)</div>
+                    <div class="intel-box">替家裡的 <b>象印 ES-SAF26</b> 挑選尺寸完美的日本職人深烤盤和不沾模具。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" class="nav-link">導航至合羽橋 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">Afternoon</span>
+                    <div class="item-title">多慶屋 (TAKEYA)</div>
+                    <div class="item-desc">合利他命、EVE、大包裝限定零食。買完直接提回隔壁飯店。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-6" class="day-view">
+            <div class="hero-img-box" style="background-image: url('https://images.unsplash.com/photo-1512273222628-4daea6e55f40?q=80&w=800&auto=format&fit=crop');">
+                <div class="hero-overlay">
+                    <div class="hero-tag"><span>DAY 6</span> <i class="fa-solid fa-location-dot"></i> 東京成田</div>
+                    <div class="hero-title">滿載歸國</div>
+                </div>
+            </div>
+            <div class="list-container">
+                <div class="item-card">
+                    <span class="item-time">Morning</span>
+                    <div class="item-title">上野車站伴手禮補齊</div>
+                    <div class="item-desc">專攻 Sugar Butter Tree 和 Tokyo Banana。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">14:40</span>
+                    <div class="item-title">搭乘京成電鐵 Skyliner</div>
+                    <div class="item-desc">搭計程車帶 5 咖行李前往京成上野站，41 分鐘直達機場。</div>
+                </div>
+                <div class="item-card">
+                    <span class="item-time">18:05</span>
+                    <div class="item-title">成田 (NRT) → 台北 (TPE)</div>
+                    <div class="intel-box"><b>極重要：</b> 報到掛行李前，先去黑貓宅配櫃檯領取 Bic Camera 寄來的按摩椅！</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-tab active"><i class="fa-solid fa-compass"></i><span>ITINERARY</span></div>
+        <div class="nav-tab"><i class="fa-solid fa-wallet"></i><span>BUDGET</span></div>
+    </div>
+
+    <script>
+        // Firebase Config 保留
+        const firebaseConfig = {
+          apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA",
+          authDomain: "fuji-trip-2026-4018b.firebaseapp.com",
+          projectId: "fuji-trip-2026-4018b",
+          storageBucket: "fuji-trip-2026-4018b.firebasestorage.app",
+          messagingSenderId: "291332266749",
+          appId: "1:291332266749:web:558cd8008f32509095bc94"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // 日期切換邏輯
+        function switchDay(dayId) {
+            // 切換上方日期樣式
+            document.querySelectorAll('.date-item').forEach((el, index) => {
+                if (index + 1 === dayId) {
+                    el.classList.add('active');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            // 切換下方內容
+            document.querySelectorAll('.day-view').forEach(v => v.classList.remove('active'));
+            document.getElementById('day-' + dayId).classList.add('active');
+            
+            // 滾動回頂部
+            document.querySelector('.content-area').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
