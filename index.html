@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Editorial v4.2</title>
+    <title>富士東京旅行｜Timeline Edition</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -15,8 +15,8 @@
 
     <style>
         :root {
-            --bg: #FCFAF5; --text-main: #1A1A1A; --text-muted: #9E9993;
-            --border: #E8E5DF; --accent-red: #8B1E1E; --travel-path: #D1CDC7;
+            --bg: #FDFCF9; --text-main: #1A1A1A; --text-muted: #9E9993;
+            --border: #E8E5DF; --accent: #C08A5D; --line-color: #E8E5DF;
             --safe-area-bottom: env(safe-area-inset-bottom, 20px);
         }
 
@@ -25,46 +25,54 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        header { padding: 40px 20px 10px; text-align: center; z-index: 10; }
-        .top-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-        .top-title { font-size: 1.5rem; font-weight: 600; letter-spacing: 2px; }
+        header { padding: 45px 20px 15px; text-align: center; z-index: 10; background: var(--bg); }
+        .top-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+        .top-title { font-size: 1.4rem; font-weight: 600; letter-spacing: 2px; }
 
-        .date-slider { display: flex; overflow-x: auto; padding: 15px 20px; gap: 25px; border-bottom: 1px solid var(--border); }
-        .date-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.5; min-width: 30px; }
+        .date-slider { display: flex; overflow-x: auto; padding: 10px 20px 20px; gap: 28px; border-bottom: 1px solid var(--border); }
+        .date-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.4; transition: 0.3s; }
         .date-item.active { opacity: 1; }
-        .day-num { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; }
+        .day-en { font-family: 'Cormorant Garamond', serif; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 4px; }
+        .day-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; }
         .dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; margin-top: 4px; }
-        .date-item.active .dot { background: var(--accent-red); }
+        .date-item.active .dot { background: var(--accent); }
 
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 120px; }
-        .main-view { display: none; animation: fadeIn 0.4s ease; }
-        .day-view { display: none; }
+        .day-view { display: none; animation: fadeIn 0.4s ease; }
         .day-view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-img { margin: 15px 15px 25px; height: 200px; border-radius: 4px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: #fff; }
-        .hero-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 1px; }
+        /* 住宿 Highlight 區塊 */
+        .hotel-highlight { margin: 20px; padding: 20px; border-radius: 8px; background: #F7F5F0; border: 1px solid var(--border); }
+        .hotel-highlight .sub { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 5px; }
+        .hotel-highlight .name { font-size: 1.3rem; font-weight: 600; font-family: 'Cormorant Garamond', serif; }
+        .hotel-highlight .desc { font-size: 0.8rem; color: #777; margin-top: 5px; font-family: -apple-system, sans-serif; }
 
-        .list-container { padding: 0 25px; }
-        .item-card { position: relative; padding-bottom: 40px; }
+        /* 垂直時間軸設計 */
+        .timeline-container { padding: 10px 20px 20px 75px; position: relative; }
+        .timeline-container::before { content: ''; position: absolute; left: 65px; top: 15px; bottom: 0; width: 1px; background: var(--line-color); }
         
-        /* 交通時程標示 */
-        .travel-time { 
-            position: absolute; left: -18px; bottom: 45px; height: 30px; 
-            border-left: 1px dashed var(--travel-path); display: flex; align-items: center;
-            padding-left: 10px; font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; color: var(--text-muted); font-style: italic;
-        }
+        .timeline-item { position: relative; margin-bottom: 35px; padding-left: 15px; }
+        
+        /* 時間標籤 */
+        .time-marker { position: absolute; left: -65px; top: -2px; width: 50px; text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: #1A1A1A; }
+        .time-marker.text { font-size: 1.1rem; font-weight: 600; }
+        
+        /* 節點 */
+        .dot-marker { position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #fff; border: 1.5px solid var(--accent); }
+        .dot-marker.hollow { border: 1.5px solid var(--text-muted); }
+        .dot-marker.diamond { border-radius: 1px; transform: rotate(45deg); background: var(--accent); border: none; left: -4px; top: 7px; }
 
-        .item-card::before { content: ''; position: absolute; left: -21px; top: 6px; width: 5px; height: 5px; background: var(--border); border-radius: 50%; }
-        .item-time { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--accent-red); font-weight: 700; display: block; margin-bottom: 4px; }
-        .item-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+        /* 內容區 */
+        .item-category { font-family: -apple-system, sans-serif; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+        .item-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; letter-spacing: 0.5px; }
         .item-desc { font-family: -apple-system, sans-serif; font-size: 0.85rem; color: #555; line-height: 1.6; }
-        
-        .intel-box { background: #F5F3ED; padding: 12px; font-family: -apple-system, sans-serif; font-size: 0.8rem; line-height: 1.5; margin: 10px 0; border-radius: 2px; border-left: 2px solid var(--accent-red); }
-        .nav-link { font-family: -apple-system, sans-serif; font-size: 0.75rem; color: #1A1A1A; border-bottom: 1px solid #1A1A1A; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; }
+        .highlight-text { font-weight: 600; color: #1A1A1A; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--bg); border-top: 1px solid var(--border); display: flex; padding: 15px 0 calc(15px + var(--safe-area-bottom)); z-index: 50; }
+        .nav-link { font-family: -apple-system, sans-serif; font-size: 0.75rem; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; }
+
+        /* 底部選單 */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(253, 252, 249, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 0 calc(15px + var(--safe-area-bottom)); z-index: 50; }
         .nav-tab { flex: 1; text-align: center; color: var(--text-muted); font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; }
         .nav-tab.active { color: var(--text-main); font-weight: 700; }
         .nav-tab i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
@@ -73,118 +81,223 @@
 <body>
 
     <header>
-        <div class="top-subtitle">Travel Editorial</div>
-        <div class="top-title">富士東京 2026</div>
+        <div class="top-subtitle">Travel Itinerary</div>
+        <div class="top-title">富士東京旅行</div>
     </header>
 
     <div class="date-slider hide-scrollbar" id="dateSlider">
-        <div class="date-item active" onclick="switchDay(1)"><span class="day-num">13</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(2)"><span class="day-num">14</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(3)"><span class="day-num">15</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(4)"><span class="day-num">16</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(5)"><span class="day-num">17</span><div class="dot"></div></div>
-        <div class="date-item" onclick="switchDay(6)"><span class="day-num">18</span><div class="dot"></div></div>
+        <div class="date-item active" onclick="switchDay(1)"><span class="day-en">WED</span><span class="day-num">13</span><div class="dot"></div></div>
+        <div class="date-item" onclick="switchDay(2)"><span class="day-en">THU</span><span class="day-num">14</span><div class="dot"></div></div>
+        <div class="date-item" onclick="switchDay(3)"><span class="day-en">FRI</span><span class="day-num">15</span><div class="dot"></div></div>
+        <div class="date-item" onclick="switchDay(4)"><span class="day-en">SAT</span><span class="day-num">16</span><div class="dot"></div></div>
+        <div class="date-item" onclick="switchDay(5)"><span class="day-en">SUN</span><span class="day-num">17</span><div class="dot"></div></div>
+        <div class="date-item" onclick="switchDay(6)"><span class="day-en">MON</span><span class="day-num">18</span><div class="dot"></div></div>
     </div>
 
     <div class="content-area hide-scrollbar">
         
         <div id="day-1" class="day-view active">
-            <div class="hero-img" style="background-image: url('https://images.unsplash.com/photo-1570933103426-80f74cc73330?q=80&w=800&auto=format&fit=crop');">
-                <div class="hero-overlay"><div class="hero-title">Arrival & Shinjuku</div></div>
+            <div class="hotel-highlight">
+                <div class="sub">住宿資訊</div>
+                <div class="name">Nishitetsu Inn Shinjuku</div>
+                <div class="desc">連住 1 晚．距離新宿西口步行 8 分鐘</div>
             </div>
-            <div class="list-container">
-                <div class="item-card">
-                    <span class="item-time">17:15</span>
-                    <div class="item-title">成田機場 第二航廈降落</div>
-                    <div class="item-desc">提領行李並前往鐵道層購票。</div>
-                    <div class="travel-time">Train ~ 90 min</div>
+            
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker">17:15</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-plane-arrival"></i> FLIGHT</div>
+                    <div class="item-title">成田機場 (NRT) 降落</div>
+                    <div class="item-desc">【出關預估】預計 18:30 完成通關。提領 5 咖行李後，推車前往 B1 鐵道層購票。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">20:30</span>
-                    <div class="item-title">新宿西鐵飯店 Check-in</div>
-                    <div class="intel-box">找黃色指標<b>「西口」</b>出站。平面直行避開迷宮。</div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="nav-link" target="_blank">Google Maps <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="timeline-item">
+                    <div class="time-marker">19:00</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-train"></i> TRANSPORT</div>
+                    <div class="item-title">搭乘 N'EX 成田特快</div>
+                    <div class="item-desc">【車程 90 分】直達新宿。車廂連接處設有密碼鎖大型行李架，請務必妥善放置 5 咖大行李。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">20:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
+                    <div class="item-title">新宿西鐵飯店</div>
+                    <div class="item-desc">【步行路徑】出新宿站抬頭找黃色指標往 <span class="highlight-text">「西口」</span> 出站，平面馬路直行抵達，避開地下街迷宮。</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="nav-link" target="_blank"><i class="fa-solid fa-location-arrow"></i> 開啟地圖</a>
                 </div>
             </div>
         </div>
 
         <div id="day-2" class="day-view">
-            <div class="hero-img" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=800&auto=format&fit=crop');">
-                <div class="hero-overlay"><div class="hero-title">Classic Fuji View</div></div>
+            <div class="hotel-highlight">
+                <div class="sub">住宿資訊</div>
+                <div class="name">Fujisan Station Hotel</div>
+                <div class="desc">連住 2 晚．距離富士山站步行 3 分鐘</div>
             </div>
-            <div class="list-container">
-                <div class="item-card">
-                    <span class="item-time">09:30</span>
-                    <div class="item-title">富士回遊號 啟程</div>
-                    <div class="item-desc">新宿站出發直達富士山站。</div>
-                    <div class="travel-time">Walk ~ 10 min</div>
+
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker">09:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-train-tram"></i> TRANSPORT</div>
+                    <div class="item-title">富士回遊號出發</div>
+                    <div class="item-desc">【車程 113 分】從新宿直達富士山站，沿途可見富士山逐漸變大。抵達後先至飯店放行李。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">12:30</span>
+                <div class="timeline-item">
+                    <div class="time-marker">12:00</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-camera"></i> DRAMA SPOT</div>
                     <div class="item-title">富士吉田本町通</div>
-                    <div class="intel-box">劇中同款視角：富士山就在街道盡頭。</div>
-                    <div class="travel-time">Walk ~ 15 min</div>
+                    <div class="item-desc">【小鎮星熱點】清美騎車經過的經典場景。請於兩側人行道拍攝，停留約 45 分鐘。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">14:30</span>
-                    <div class="item-title">下午茶 Mont Blanc</div>
-                    <div class="intel-box">必點：<b>超浮誇蒙布朗聖代</b>。</div>
+                <div class="timeline-item">
+                    <div class="time-marker">13:00</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-torii-gate"></i> SIGHTSEEING</div>
+                    <div class="item-title">金鳥居 & 市杵島神社</div>
+                    <div class="item-desc">【打卡亮點】從巨大鳥居望向富士山；接著重溫高橋先生神力救清美的十字路口。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">14:30</div><div class="dot-marker hollow"></div>
+                    <div class="item-category"><i class="fa-solid fa-mug-hot"></i> CAFE</div>
+                    <div class="item-title">Mont Blanc 下午茶</div>
+                    <div class="item-desc">【劇中同款】位於月江寺通，必點 <span class="highlight-text">超浮誇蒙布朗聖代</span>，享受昭和復古氛圍。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">17:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-bowl-food"></i> DINNER</div>
+                    <div class="item-title">不動茶屋 (東戀路店)</div>
+                    <div class="item-desc">【在地必吃】雲朵造型建築。招牌必點：<span class="highlight-text">味噌蔬菜餺飥麵</span>。(已剔除馬肉選項)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" class="nav-link" target="_blank"><i class="fa-solid fa-location-arrow"></i> 餐廳導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-3" class="day-view">
+            <div class="hotel-highlight">
+                <div class="sub">住宿資訊</div>
+                <div class="name">Fujisan Station Hotel</div>
+                <div class="desc">今晚續住，享受不用搬行李的輕鬆感</div>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker text">Dawn</div><div class="dot-marker hollow"></div>
+                    <div class="item-category"><i class="fa-solid fa-mountain-sun"></i> SIGHTSEEING</div>
+                    <div class="item-title">大石公園晨間漫步</div>
+                    <div class="item-desc">【夢幻絕景】湖畔花海與富士山同框的最佳地點，晨間光線最適合拍照。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">10:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-gift"></i> SHOPPING</div>
+                    <div class="item-title">自然生活館</div>
+                    <div class="item-desc">【伴手禮】館內有非常多「富士山造型」的精緻伴手禮與手作餅乾。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">14:00</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-camera-retro"></i> RELAX</div>
+                    <div class="item-title">河口湖周邊探索</div>
+                    <div class="item-desc">【彈性行程】可至網紅超商 (Lawson) 拍攝，或在湖畔咖啡廳度過悠閒下午。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="day-4" class="day-view">
+            <div class="hotel-highlight">
+                <div class="sub">住宿資訊</div>
+                <div class="name">hotel MONday Premium</div>
+                <div class="desc">連住 2 晚．上野御徒町 (20.38㎡ 大空間)</div>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker">08:30</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-box"></i> LOGISTICS</div>
+                    <div class="item-title">黑貓行李寄送</div>
+                    <div class="item-desc">【戰術執行】退房時，將 <span class="highlight-text">2 個最重的大箱</span> 寄往上野曼迪酒店，託運單備註 5/16 Check-in。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">09:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-train"></i> TRANSPORT</div>
+                    <div class="item-title">返回東京市區</div>
+                    <div class="item-desc">【移動路徑】搭乘富士回遊號回到新宿，轉乘山手線前往有樂町/秋葉原。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">13:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-plug"></i> SHOPPING</div>
+                    <div class="item-title">Bic Camera 採購</div>
+                    <div class="item-desc">【家電重頭戲】結帳出示折扣碼 <span class="highlight-text">4USDTV4F</span>。購買按摩椅/機墊後，務必辦理 <span class="highlight-text">「機場配送」</span>。</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">16:30</div><div class="dot-marker hollow"></div>
+                    <div class="item-category"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
+                    <div class="item-title">上野曼迪高級酒店</div>
+                    <div class="item-desc">領取早上寄來的行李。房間空間大，可將行李完全攤開。</div>
                 </div>
             </div>
         </div>
 
         <div id="day-5" class="day-view">
-            <div class="hero-img" style="background-image: url('https://images.unsplash.com/photo-1549400898-7264883f3609?q=80&w=800&auto=format&fit=crop');">
-                <div class="hero-overlay"><div class="hero-title">Baking & Fashion</div></div>
+            <div class="hotel-highlight">
+                <div class="sub">住宿資訊</div>
+                <div class="name">hotel MONday Premium</div>
+                <div class="desc">今日為重點血拚日，買完可隨時放回飯店</div>
             </div>
-            <div class="list-container">
-                <div class="item-card">
-                    <span class="item-time">10:00</span>
+
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker">10:00</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-kitchen-set"></i> BAKING</div>
                     <div class="item-title">合羽橋道具街</div>
-                    <div class="intel-box">尋找適合象印烤箱的職人深烤模。</div>
-                    <div class="travel-time">Train ~ 20 min</div>
+                    <div class="item-desc">【烘焙裝備】替家裡的 <span class="highlight-text">象印烤箱</span> 挑選尺寸完美的日本職人深烤盤與不沾模具。預計停留 2.5 小時。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">13:30</span>
-                    <div class="item-title">UNIQLO & 潮流服飾採購</div>
-                    <div class="item-desc">進駐 UNIQLO 旗艦店，挑選日系剪裁服飾。</div>
-                    <div class="travel-time">Walk ~ 10 min</div>
+                <div class="timeline-item">
+                    <div class="time-marker">13:30</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-shirt"></i> FASHION</div>
+                    <div class="item-title">UNIQLO 旗艦店</div>
+                    <div class="item-desc">【服飾採購】挑選日系剪裁服飾、發熱衣與聯名 T 恤。預計停留 2 小時。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">15:30</span>
-                    <div class="item-title">鞋類專賣店 (ABC-MART GS)</div>
-                    <div class="intel-box">入手日本限定款式球鞋或休閒鞋。</div>
-                    <div class="travel-time">Walk ~ 15 min</div>
+                <div class="timeline-item">
+                    <div class="time-marker">15:30</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-shoe-prints"></i> SNEAKERS</div>
+                    <div class="item-title">ABC-MART Grand Stage</div>
+                    <div class="item-desc">【鞋類採購】尋找日本限定配色的球鞋或休閒鞋。預計停留 1.5 小時。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">17:30</span>
+                <div class="timeline-item">
+                    <div class="time-marker">17:30</div><div class="dot-marker hollow"></div>
+                    <div class="item-category"><i class="fa-solid fa-pills"></i> PHARMACY</div>
                     <div class="item-title">多慶屋總本館</div>
-                    <div class="item-desc">最後藥妝、零食衝刺，直接提回隔壁飯店。</div>
+                    <div class="item-desc">【藥妝衝刺】合利他命、EVE、零食大補貨。買完直接手提回隔壁的飯店。</div>
                 </div>
             </div>
         </div>
 
         <div id="day-6" class="day-view">
-            <div class="hero-img" style="background-image: url('https://images.unsplash.com/photo-1512273222628-4daea6e55f40?q=80&w=800&auto=format&fit=crop');">
-                <div class="hero-overlay"><div class="hero-title">Final Departure</div></div>
+            <div class="hotel-highlight">
+                <div class="sub">航班資訊</div>
+                <div class="name">NRT → TPE</div>
+                <div class="desc">18:05 起飛．成田機場第二航廈</div>
             </div>
-            <div class="list-container">
-                <div class="item-card">
-                    <span class="item-time">11:00</span>
+
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="time-marker">10:00</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-gift"></i> SOUVENIR</div>
                     <div class="item-title">上野站最後採購</div>
-                    <div class="item-desc">購買 Sugar Butter Tree 等限定伴手禮。</div>
-                    <div class="travel-time">Taxi ~ 5 min</div>
+                    <div class="item-desc">【伴手禮】退房寄放行李後，於 atre/ecute 專攻 Sugar Butter Tree 和 Tokyo Banana。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">14:40</span>
-                    <div class="item-title">Skyliner 前往機場</div>
-                    <div class="item-desc">搭乘 41 分鐘直達車。</div>
-                    <div class="travel-time">Transit ~ 45 min</div>
+                <div class="timeline-item">
+                    <div class="time-marker">14:40</div><div class="dot-marker diamond"></div>
+                    <div class="item-category"><i class="fa-solid fa-train"></i> TRANSPORT</div>
+                    <div class="item-title">京成電鐵 Skyliner</div>
+                    <div class="item-desc">【車程 41 分】請搭計程車帶 5 咖行李前往京成上野站，直達成田機場。</div>
                 </div>
-                <div class="item-card">
-                    <span class="item-time">18:05</span>
-                    <div class="item-title">成田機場 起飛回台</div>
-                    <div class="intel-box"><b>極重要：</b>掛行李前先去領取宅配的按摩椅。</div>
+                <div class="timeline-item">
+                    <div class="time-marker">15:40</div><div class="dot-marker"></div>
+                    <div class="item-category"><i class="fa-solid fa-box"></i> PICKUP</div>
+                    <div class="item-title">機場宅配櫃檯</div>
+                    <div class="item-desc">【極重要】前往報到櫃檯掛行李前，務必先去領取 Bic Camera 寄來的 <span class="highlight-text">按摩椅</span>！</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time-marker">18:05</div><div class="dot-marker hollow"></div>
+                    <div class="item-category"><i class="fa-solid fa-plane-departure"></i> FLIGHT</div>
+                    <div class="item-title">起飛回台</div>
+                    <div class="item-desc">結束完美的富士東京旅程，滿載而歸。</div>
                 </div>
             </div>
         </div>
@@ -192,19 +305,12 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-tab active" onclick="switchMainTab('itinerary')"><i class="fa-solid fa-compass"></i><span>ITINERARY</span></div>
-        <div class="nav-tab" onclick="switchMainTab('budget')"><i class="fa-solid fa-wallet"></i><span>BUDGET</span></div>
+        <div class="nav-tab active"><i class="fa-solid fa-compass"></i><span>ITINERARY</span></div>
+        <div class="nav-tab"><i class="fa-solid fa-wallet"></i><span>BUDGET</span></div>
     </div>
 
     <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA",
-          authDomain: "fuji-trip-2026-4018b.firebaseapp.com",
-          projectId: "fuji-trip-2026-4018b",
-          appId: "1:291332266749:web:558cd8008f32509095bc94"
-        };
-        firebase.initializeApp(firebaseConfig);
-
+        // 日期切換邏輯
         function switchDay(dayId) {
             document.querySelectorAll('.date-item').forEach((el, index) => {
                 if (index + 1 === dayId) el.classList.add('active');
@@ -214,14 +320,6 @@
             const target = document.getElementById('day-' + dayId);
             if(target) target.classList.add('active');
             document.querySelector('.content-area').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function switchMainTab(tabName) {
-            if(tabName === 'itinerary') {
-                document.getElementById('dateSlider').style.display = 'flex';
-            } else {
-                document.getElementById('dateSlider').style.display = 'none';
-            }
         }
     </script>
 </body>
