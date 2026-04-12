@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京 2026｜Ultimate Guide</title>
+    <title>富士東京旅行｜Ultimate Guide v12</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
     <style>
         :root { --bg: #F5F1E7; --text: #33302E; --muted: #8C847B; --border: #E3DCCF; --accent: #A73A33; --timeline: #D6D0C4; --safe-bottom: env(safe-area-inset-bottom, 20px); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,6 +42,7 @@
         .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
         .h-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px;}
         
+        /* 置頂資訊卡 (航班與飯店) */
         .highlight-box { margin: 0 20px 20px; padding: 18px; border-radius: 8px; background: rgba(255,255,255,0.85); border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .highlight-box .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 0.65rem; color: #fff; background: var(--accent); padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600; font-family: -apple-system, sans-serif;}
         .highlight-box .tag.hotel { background: #C08A5D; }
@@ -46,6 +50,7 @@
         .highlight-box .detail { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 12px; font-family: -apple-system, sans-serif;}
         .highlight-box strong { color: var(--text); font-weight: 600;}
 
+        /* 時間軸設計 */
         .tl-container { padding: 10px 20px 20px 75px; position: relative; }
         .tl-container::before { content: ''; position: absolute; left: 65px; top: 15px; bottom: 0; width: 1px; background: var(--timeline); }
         .tl-item { position: relative; margin-bottom: 45px; padding-left: 15px; }
@@ -61,18 +66,18 @@
         .i-row { display: flex; gap: 8px; margin-bottom: 8px; line-height: 1.4;}
         .i-row:last-child { margin-bottom: 0; }
         .i-icon { color: var(--muted); font-size: 0.85rem; width: 16px; text-align: center; margin-top: 2px;}
-        
-        /* 導遊說故事區塊 */
+
+        /* 導遊說故事 & 攻略區塊 */
         .guide-story { background: #fdfaf5; border-left: 3px solid #C08A5D; padding: 10px 12px; margin-bottom: 12px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #555; line-height: 1.6; border-radius: 0 8px 8px 0;}
         .guide-story i { color: #C08A5D; margin-right: 5px; }
 
         /* 顏色標籤系統 */
-        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #fff; margin-bottom: 4px; margin-right: 5px; letter-spacing: 0.5px;}
+        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #fff; margin-bottom: 6px; margin-right: 5px; letter-spacing: 0.5px; font-family: -apple-system, sans-serif;}
         .badge-food { background: #E67E22; }
         .badge-menu { background: #D35400; }
         .badge-buy { background: #9B59B6; }
         .badge-code { background: #C0392B; font-family: monospace; font-size: 0.85rem; padding: 3px 8px;}
-
+        
         .map-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--accent); color: var(--accent); padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: 0.2s; background: transparent; font-family: -apple-system, sans-serif;}
         .map-btn:active { background: var(--accent); color: #fff; }
         .map-btn-sm { font-size: 0.75rem; padding: 5px 12px; margin-top: 5px; }
@@ -117,7 +122,8 @@
                     <div class="detail">
                         <strong>航空公司：</strong>日本航空 (JAL)<br>
                         <strong>班機號碼：</strong>JL804 (機型：Boeing 787-8)<br>
-                        <strong>抵達時間：</strong>17:15 於 第二航廈 (T2)
+                        <strong>起飛時間：</strong>12:45 於 桃園機場<br>
+                        <strong>抵達時間：</strong>17:15 於 成田 第二航廈 (T2)
                     </div>
                 </div>
 
@@ -126,9 +132,8 @@
                     <div class="title">新宿西鐵飯店 Nishitetsu Inn Shinjuku</div>
                     <div class="detail">
                         <strong>地址：</strong>東京都新宿區西新宿7-23-2<br>
-                        <strong>交通：</strong>新宿站「西口」出站步行 8 分鐘
                     </div>
-                    <a href="http://googleusercontent.com/maps.google.com/search?q=Nishitetsu+Inn+Shinjuku" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
@@ -136,14 +141,28 @@
                         <div class="t-marker">17:15</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-plane-arrival"></i> FLIGHT</div>
                         <div class="i-title">降落與通關</div>
-                        <div class="i-desc">預估 18:30 完成通關並提領 5 咖行李，推車前往 B1 鐵道層購票。</div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-clock"></i> <strong>導遊預估：</strong>大約 18:30 完成通關並提領 5 咖行李，請直接推行李車前往 B1 鐵道層購票。
+                        </div>
                     </div>
                     <div class="tl-item">
-                        <div class="t-marker">19:00</div><div class="dot-m diamond"></div>
+                        <div class="t-marker">19:19</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
                         <div class="i-title">搭乘 N'EX 成田特快</div>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>建議班次：</strong>19:19 或 19:49 (往新宿方向)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>JR 新宿站</div></div>
+                        </div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-lightbulb"></i> <strong>導遊攻略：</strong>N'EX 每一節車廂連接處都設有帶密碼鎖的大型行李架，請務必先將行李上鎖固定後，再安心入座。
+                            <i class="fa-solid fa-lightbulb"></i> <strong>導遊攻略：</strong>N'EX 每一節車廂連接處都有密碼鎖大型行李架，務必先鎖好這 5 咖重行李再入座。
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="t-marker">21:00</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
+                        <div class="i-title">入住 新宿西鐵飯店</div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-person-walking"></i> <strong>帶路攻略：</strong>到新宿站後千萬別走地下迷宮！抬頭找黃色指標往<strong>「西口」</strong>出站，走到平面大馬路直行約 8 分鐘即可抵達。
                         </div>
                     </div>
                 </div>
@@ -158,23 +177,22 @@
                     <div class="tag hotel"><i class="fa-solid fa-bed"></i> 住宿資訊 (連住 2 晚)</div>
                     <div class="title">富士山站酒店 Fujisan Station Hotel</div>
                     <div class="detail">
-                        <strong>地址：</strong>山梨縣富士吉田市松山2-7-12<br>
-                        <strong>交通：</strong>富士山站步行 3 分鐘
+                        <strong>地址：</strong>山梨縣富士吉田市松山2-7-12
                     </div>
-                    <a href="http://googleusercontent.com/maps.google.com/search?q=Fujisan+Station+Hotel" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Fujisan+Station+Hotel" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
                     <div class="tl-item">
                         <div class="t-marker">09:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-train-tram"></i> TRANSPORT</div>
-                        <div class="i-title">搭乘 富士回遊號</div>
-                        <div class="guide-story">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>搭乘富士回遊號時，建議劃位選擇 C、D 座位（左側），在列車漸漸駛近目的地時，有極大機率能從窗戶直接看見巨大的富士山迎接你們！
-                        </div>
+                        <div class="i-title">搭乘 富士回遊號 (Fuji Excursion)</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div>上車：JR 新宿站 (09:30 發車)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div>下車：<strong>「富士山站」</strong> (11:28 抵達)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車：</strong>JR 新宿站 (09:30 發車，9或10號月台)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車：</strong>「富士山站 (Mt. Fuji)」 (11:28 抵達)</div></div>
+                        </div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-camera"></i> <strong>導遊攻略：</strong>劃位時選 C、D 座位（左側），火車快到站時能從窗外看見巨大的富士山迎接你們！
                         </div>
                     </div>
 
@@ -182,20 +200,24 @@
                         <div class="t-marker">12:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-camera"></i> DRAMA SPOTS</div>
                         <div class="i-title">《小鎮星熱點》聖地巡禮</div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-train"></i> <strong>交通：</strong>從富士山站搭乘短程火車（1站）至<strong>「下吉田站」</strong>下車，開始步行踩點。
+                        </div>
                         
                         <div class="sub-spot">
                             <div class="sub-spot-title">1. 金鳥居 (Kin Torii)</div>
-                            <div class="guide-story">
-                                <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>這座屹立在馬路中央的金鳥居，自古以來被視為劃分「俗界」與「神域」的結界。穿過它，就等於正式踏入了富士山的信仰範圍。
-                            </div>
-                            <a href="http://googleusercontent.com/maps.google.com/search?q=Kin+Torii+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至金鳥居</a>
+                            <div class="i-desc">屹立馬路中央，被視為劃分「俗界」與「神域」的結界。</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kin+Torii+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至金鳥居</a>
                         </div>
                         <div class="sub-spot">
                             <div class="sub-spot-title">2. 富士吉田本町通</div>
-                            <div class="guide-story">
-                                <i class="fa-solid fa-camera-retro"></i> <strong>拍攝攻略：</strong>使用手機的「人像模式」或長焦鏡頭拍攝，能產生強烈的空間壓縮感，讓街景背後的富士山看起來無比巨大！
-                            </div>
-                            <a href="http://googleusercontent.com/maps.google.com/search?q=Honcho+Street+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至本町通</a>
+                            <div class="i-desc">清美騎車的經典場景！使用手機「人像模式」長焦拍攝，背後的富士山會顯得很巨大。請務必站兩側人行道。</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Honcho+Street+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至本町通</a>
+                        </div>
+                        <div class="sub-spot">
+                            <div class="sub-spot-title">3. 市杵島神社 (十字路口)</div>
+                            <div class="i-desc">高橋先生發揮外星人神力，救下清美的定情十字路口！</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Ichikishima+Shrine+Fujiyoshida" class="map-btn map-btn-sm" target="_blank">導航至神社</a>
                         </div>
                     </div>
 
@@ -205,9 +227,9 @@
                         <div class="i-title">Mont Blanc 咖啡廳</div>
                         <span class="badge badge-menu">必點菜單</span> <strong>超浮誇蒙布朗聖代</strong>
                         <div class="guide-story">
-                            <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>跟著劇中清美的腳步走進「月江寺通」，這家充滿昭和懷舊氣息的老字號咖啡廳，是當地人最愛的下午茶秘密基地。
+                            <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>跟著劇中清美的腳步走進充滿昭和懷舊氣息的「月江寺通」，這家老字號咖啡廳是當地人的最愛。
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Mont+Blanc+Cafe+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Mont+Blanc+Cafe+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
                     </div>
 
                     <div class="tl-item">
@@ -216,9 +238,12 @@
                         <div class="i-title">不動茶屋 (東戀路店)</div>
                         <span class="badge badge-food">必吃美食</span> <strong>味噌蔬菜餺飥麵 (Houtou)</strong>
                         <div class="guide-story">
-                            <i class="fa-solid fa-book-open"></i> <strong>建築故事：</strong>這棟外型像雲朵一般的雪白建築，是由日本知名建築師「保坂猛」親自操刀設計，象徵著一朵輕輕落在富士山腳下的白雲。
+                            <i class="fa-solid fa-book-open"></i> <strong>建築故事：</strong>這棟像雪白雲朵的建築由建築師保坂猛設計。招牌蔬菜麵絕對不含馬肉，請安心享用。
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Houtou+Fudou+Higashikoiji" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通：</strong>建議從河口湖站轉乘計程車或周遊巴士前往。</div></div>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Houtou+Fudou+Higashikoiji" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
                 </div>
             </div>
@@ -234,36 +259,40 @@
                         <div class="cat"><i class="fa-solid fa-bus-simple"></i> EXPERIENCE</div>
                         <div class="i-title">山中湖 KABA BUS (水陸巴士)</div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>「KABA」是日文河馬的意思。這台由設計大師水戶岡銳治操刀的巴士，從森林陸路直接俯衝進湖中的瞬間會激起巨大水花，絕對是整趟旅程的高潮！
+                            <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>「KABA」是河馬的意思。這台巴士從森林陸地直接俯衝進湖中，激起巨大水花的瞬間非常刺激！
                         </div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>乘車處：山中湖 旭日丘巴士總站</div></div>
-                            <div class="i-row"><i class="fa-solid fa-qrcode i-icon"></i> <div><span class="badge badge-code">重要預約代號</span> 請事先準備好乘車 QR Code。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通：</strong>從富士山站搭乘「富士急行巴士」前往。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>乘車處：</strong>山中湖 旭日丘巴士總站</div></div>
+                            <div class="i-row"><i class="fa-solid fa-qrcode i-icon"></i> <div><span class="badge badge-code">重要預約代號</span> (請攜帶您的線上購票 QR Code)</div></div>
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Yamanakako+KABA+Bus" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Yamanakako+KABA+Bus" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">12:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-bowl-food"></i> LUNCH</div>
                         <div class="i-title">吉田烏龍麵 藏之介</div>
-                        <span class="badge badge-food">必吃美食</span> <strong>在地肉烏龍麵</strong>
+                        <span class="badge badge-food">必吃美食</span> <strong>在地肉烏龍麵 (不含馬肉)</strong>
                         <div class="guide-story">
-                            <i class="fa-solid fa-lightbulb"></i> <strong>在地攻略：</strong>吉田烏龍麵以「全日本最硬、最具嚼勁」聞名，配上鮮甜的高麗菜是其最大特色。這類職人麵店通常只開中午，麵條賣完就打烊，建議提早去排隊！
+                            <i class="fa-solid fa-lightbulb"></i> <strong>導遊攻略：</strong>吉田烏龍麵以「全日本最硬、最Q彈」聞名。職人麵店通常只開中午，賣完就關，無法預約，請耐心排隊！
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Kuranosuke+Udon+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士吉田市上吉田3-4-23</div></div>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kuranosuke+Udon+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">18:00</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-utensils"></i> DINNER</div>
-                        <div class="i-title">Fuji Tempura IDATEN</div>
+                        <div class="i-title">Fuji Tempura IDATEN (いだ天)</div>
                         <span class="badge badge-menu">必點菜單</span> <strong>富士山巨大天婦羅</strong>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div>地址：富士河口湖町船津3486-4</div></div>
-                            <div class="i-row"><i class="fa-solid fa-mobile-screen i-icon"></i> <div><strong>訂位：到達現場掃描門口 QR Code 候位。</strong></div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通：</strong>餐廳位於河口湖車站附近，吃完可搭電車或計程車回飯店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-mobile-screen i-icon"></i> <div><strong>訂位：</strong>到達現場掃描門口 QR Code 候位。</div></div>
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Fuji+Tempura+IDATEN" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Fuji+Tempura+IDATEN" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
                 </div>
             </div>
@@ -280,28 +309,44 @@
                         <strong>地址：</strong>東京都台東區台東3-41-7<br>
                         <strong>特色：</strong>20.38㎡ 寬敞大空間
                     </div>
-                    <a href="http://googleusercontent.com/maps.google.com/search?q=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
                 <div class="tl-container">
+                    <div class="tl-item">
+                        <div class="t-marker">08:30</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-box"></i> LOGISTICS</div>
+                        <div class="i-title">總務後勤：黑貓寄行李</div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-truck-fast"></i> <strong>戰術執行：</strong>退房時，直接將 2 個最大的行李箱填單寄往東京上野的飯店，今天我們輕鬆去跑行程。
+                        </div>
+                    </div>
+
                     <div class="tl-item">
                         <div class="t-marker">09:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-camera"></i> IG SPOT</div>
                         <div class="i-title">Lawson 河口湖站前店</div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-camera-retro"></i> <strong>打卡攻略：</strong>超商標誌性的藍色屋頂剛好與背後的富士山完美呼應。早晨光線最為通透，是拍出日系清新感的最佳時機。
+                            <i class="fa-solid fa-camera-retro"></i> <strong>打卡攻略：</strong>超商藍色屋頂與背後的富士山完美呼應。早晨光線最通透，是拍出日系清新感的最佳時機。
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Lawson+Kawaguchiko+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Lawson</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Kawaguchiko+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Lawson</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">14:58</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
-                        <div class="i-title">富士回遊號 (返程東京)</div>
+                        <div class="i-title">富士回遊號 36號 (返程)</div>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div>上車：<strong>河口湖站</strong> (14:58 發車)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div>下車：JR 新宿站 (轉乘山手線前往上野)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div>下車：JR 新宿站 (轉乘山手線前往上野/御徒町)</div></div>
                         </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="t-marker">18:00</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
+                        <div class="i-title">入住 上野曼迪高級酒店</div>
+                        <div class="i-desc">抵達東京，順便領取早上寄放過來的大行李。</div>
                     </div>
                 </div>
             </div>
@@ -315,42 +360,53 @@
                     <div class="tl-item">
                         <div class="t-marker">10:00</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-kitchen-set"></i> BAKING</div>
-                        <div class="i-title">合羽橋道具街 (烘焙控)</div>
+                        <div class="i-title">合羽橋道具街</div>
                         <span class="badge badge-buy">必買伴手禮</span> <strong>日式職人深烤盤、不沾模具</strong>
                         <div class="guide-story">
-                            <i class="fa-solid fa-lightbulb"></i> <strong>採購攻略：</strong>這裡聚集了超過 170 家專業廚具店！幫家裡的烤箱挑選模具時，記得確認長寬尺寸是否符合 26L 微波烤箱的內部規格喔。
+                            <i class="fa-solid fa-lightbulb"></i> <strong>採購攻略：</strong>這裡聚集了超過 170 家專業廚具店！幫家裡的「象印烤箱」挑選模具時，記得確認長寬是否符合 26L 的規格。
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Kappabashi+Dogu+Street" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kappabashi+Dogu+Street" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">12:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-plug"></i> MISSION</div>
                         <div class="i-title">Bic Camera 按摩椅大作戰</div>
+                        <span class="badge badge-buy">必買伴手禮</span> <strong>大型按摩椅、按摩機墊</strong>
                         <div class="guide-story">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>大型按摩椅請務必第一時間結帳，出示護照與折價券後，立刻請店員辦理「空港配送 (機場宅配)」，讓物流直接把重物寄到成田機場 T2，絕對不要自己扛！
+                            <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>大型家電務必第一時間結帳，出示護照與下方優惠券後，立刻請店員辦理<strong>「空港配送 (機場宅配)」</strong>送至成田 T2，絕對不要自己扛！
                         </div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-ticket i-icon"></i> <div><span class="badge badge-code">重要預約代號</span> 結帳出示折扣碼：<strong>4USDTV4F</strong></div></div>
+                            <div class="i-row"><i class="fa-solid fa-location-dot i-icon"></i> <div>推薦：搭電車至「有樂町站」前往 Bic Camera 有樂町店。</div></div>
                         </div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Bic+Camera+Yurakucho" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Bic Camera</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+Yurakucho" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Bic Camera</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">14:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-shirt"></i> FASHION</div>
                         <div class="i-title">UNIQLO 銀座全球旗艦店</div>
-                        <div class="i-desc">高達 12 層樓的購物天堂，提供客製化 UT 服務與最齊全的日系款式。</div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=UNIQLO+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 UNIQLO</a>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-book-open"></i> <strong>景點故事：</strong>高達 12 層樓的購物天堂，提供客製化 UT 服務與全日本最齊全的服飾，逛完可直接退稅。
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=UNIQLO+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 UNIQLO</a>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="t-marker">16:30</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-shoe-prints"></i> SHOES</div>
+                        <div class="i-title">ABC-MART GS 銀座</div>
+                        <div class="i-desc">尋找日本限定配色的球鞋與休閒鞋。</div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=ABC-MART+Grand+Stage+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
                     </div>
                     
                     <div class="tl-item">
-                        <div class="t-marker">18:30</div><div class="dot-m diamond"></div>
+                        <div class="t-marker">18:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-pills"></i> PHARMACY</div>
                         <div class="i-title">多慶屋 (TAKEYA) 總本館</div>
                         <span class="badge badge-buy">必買伴手禮</span> <strong>合利他命、EVE、大包裝零食</strong>
                         <div class="i-desc">上野最著名的紫色免稅折扣店，買完直接手提回旁邊飯店。</div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Takeya+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Takeya+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
                     </div>
                 </div>
             </div>
@@ -366,7 +422,8 @@
                     <div class="detail">
                         <strong>航空公司：</strong>日本航空 (JAL)<br>
                         <strong>班機號碼：</strong>JL809 (機型：Boeing 787-8)<br>
-                        <strong>起飛時間：</strong>18:05 於 第二航廈 (T2)
+                        <strong>起飛時間：</strong>18:05 於 第二航廈 (T2)<br>
+                        <strong>抵達時間：</strong>21:00 於 桃園機場
                     </div>
                 </div>
                 
@@ -376,21 +433,29 @@
                         <div class="cat"><i class="fa-solid fa-gift"></i> SOUVENIR</div>
                         <div class="i-title">上野站伴手禮最後衝刺</div>
                         <span class="badge badge-buy">必買伴手禮</span> <strong>Sugar Butter Tree、Tokyo Banana</strong>
+                        <div class="i-desc">退房後，在 atre 或 ecute 商場購買精緻伴手禮。</div>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">14:40</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-train"></i> TRANSPORT</div>
                         <div class="i-title">京成電鐵 Skyliner</div>
-                        <div class="i-desc">搭計程車帶 5 咖行李直達「京成上野站」，41 分鐘舒暢抵達機場。</div>
-                        <a href="http://googleusercontent.com/maps.google.com/search?q=Keisei+Ueno+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至車站</a>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>搭車：</strong>京成上野站 (建議搭乘 14:40 或 15:00 班次)</div></div>
+                        </div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-taxi"></i> <strong>導遊攻略：</strong>請直接從飯店搭乘「計程車」帶著 5 咖行李直達京成上野站，車程很近不會貴，然後搭乘對號快車，41 分鐘舒暢抵達機場。
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Keisei+Ueno+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至車站</a>
                     </div>
 
                     <div class="tl-item">
                         <div class="t-marker">15:40</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-box-open"></i> MISSION</div>
                         <div class="i-title">機場宅配櫃檯領取按摩椅</div>
-                        <div class="i-desc"><strong>【極度重要】</strong>前往航空公司櫃檯報到掛行李前，一定要先去「宅配領貨櫃檯」領回按摩椅！</div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>【極度重要】</strong>前往 JAL 航空公司櫃檯報到掛行李前，一定要先推推車去 T2 的「宅配領貨櫃檯」領回按摩椅，再一起拿去托運！
+                        </div>
                     </div>
                 </div>
             </div>
@@ -413,7 +478,7 @@
             <div class="budget-card">
                 <div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Shopping Coupon</div>
                 <div style="font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--text);">Bic Camera 採購專用代碼</div>
-                <div style="font-family: monospace; font-size: 1.4rem; color: var(--accent); font-weight: bold; background: rgba(167, 58, 51, 0.1); padding: 8px 15px; border-radius: 6px; display: inline-block; letter-spacing: 2px;">4USDTV4F</div>
+                <div style="font-family: monospace; font-size: 1.4rem; color: #fff; background: #C0392B; padding: 8px 15px; border-radius: 6px; display: inline-block; letter-spacing: 2px;">4USDTV4F</div>
                 <div style="font-size: 0.85rem; color: #555; margin-top: 10px; line-height: 1.5;">
                     購買按摩椅或電器結帳時出示此條碼，<br>即可享有 <strong>10% 免稅 + 7% 折扣</strong>。<br>
                     <strong>*記得同時要求辦理「機場配送服務」。</strong>
