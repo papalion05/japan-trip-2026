@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Ultimate Guide V17</title>
+    <title>富士東京旅行｜Ultimate Guide V18</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
@@ -24,19 +24,20 @@
         .d-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; }
         .dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; margin-top: 4px; }
         .d-item.active .dot { background: var(--accent); }
+        
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 120px; scroll-behavior: smooth; }
         .main-view { display: none; animation: fadeIn 0.4s ease; }
         .day-view { display: none; }
         .day-view.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 45px; background-color: #d1cdc7; }
+        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 35px; background-color: #d1cdc7; }
         .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0) 100%); }
         .hero-text { position: absolute; top: 20px; left: 20px; color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
         .h-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px;}
         
-        /* 💎 原生氣象組件 UI 💎 */
+        /* 原生氣象組件 UI */
         .weather-native { background: #fff; border-radius: 12px; margin: -35px 20px 20px; position: relative; z-index: 5; box-shadow: 0 8px 20px rgba(0,0,0,0.06); overflow: hidden; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column;}
         .wn-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-bottom: 1px solid #eee;}
         .wn-header.fuji { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #fff;}
@@ -45,12 +46,10 @@
         .wn-loc { font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 6px; font-family: -apple-system, sans-serif;}
         .wn-temp { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); line-height: 1;}
         .wn-icon { font-size: 1.8rem; color: #555;}
-        
         .wn-stats { display: flex; padding: 12px 20px; background: #fff; justify-content: space-around; border-bottom: 1px solid #f0f0f0;}
         .wn-stat-item { display: flex; flex-direction: column; align-items: center; font-family: -apple-system, sans-serif;}
         .wn-stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;}
         .wn-stat-val { font-size: 0.9rem; font-weight: 600; color: var(--text);}
-        
         .weather-note { font-size: 0.8rem; color: #555; padding: 12px 20px; background: #fff; display: flex; flex-direction: column; gap: 4px; font-family: -apple-system, sans-serif; line-height: 1.5;}
         .weather-note-title { font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px;}
         .weather-note-title i { color: var(--accent); }
@@ -62,7 +61,6 @@
         .highlight-box .title { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; color: var(--text); line-height: 1.4;}
         .highlight-box .detail { font-size: 0.85rem; color: #444; line-height: 1.6; margin-bottom: 12px; font-family: -apple-system, sans-serif;}
         
-        /* 彩色攻略標籤 */
         .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; color: #fff; margin-bottom: 6px; margin-right: 5px; letter-spacing: 0.5px; font-family: -apple-system, sans-serif; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         .b-food { background: #E67E22; }
         .b-menu { background: #D35400; }
@@ -70,7 +68,6 @@
         .b-code { background: #C0392B; font-family: monospace; font-size: 0.9rem; padding: 4px 10px;}
         .highlight-text { font-weight: 800; color: var(--text); font-size: 1.05em; display: inline-block; margin-bottom: 5px;}
 
-        /* 時間軸設計 */
         .tl-container { padding: 10px 20px 20px 75px; position: relative; }
         .tl-container::before { content: ''; position: absolute; left: 65px; top: 15px; bottom: 0; width: 1px; background: var(--timeline); }
         .tl-item { position: relative; margin-bottom: 45px; padding-left: 15px; }
@@ -81,24 +78,33 @@
         .cat { font-family: -apple-system, sans-serif; font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; letter-spacing: 1px;}
         .i-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; color: var(--text); line-height: 1.4;}
         
-        /* 資訊卡與整合的交通圖示 */
         .info-box { background: rgba(255,255,255,0.7); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #333; margin-bottom: 12px;}
         .i-row { display: flex; gap: 8px; margin-bottom: 8px; line-height: 1.5;}
         .i-row:last-child { margin-bottom: 0; }
         .i-icon { color: var(--muted); font-size: 0.85rem; width: 16px; text-align: center; margin-top: 2px;}
-        .t-route { color: #005A9C; font-weight: 600; } /* JR色 */
-        .t-subway { color: #F39C12; font-weight: 600; } /* 地鐵色 */
+        .t-route { color: #005A9C; font-weight: 600; }
+        .t-subway { color: #F39C12; font-weight: 600; }
 
-        /* 導遊說故事區塊 */
         .guide-story { background: #fdfaf5; border-left: 3px solid #C08A5D; padding: 10px 12px; margin-bottom: 12px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #444; line-height: 1.6; border-radius: 0 8px 8px 0;}
         
-        /* 官方 Google Maps 按鈕 */
         .map-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--accent); color: var(--accent); padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: 0.2s; background: transparent; font-family: -apple-system, sans-serif;}
         .map-btn:active { background: var(--accent); color: #fff; }
         .map-btn-sm { font-size: 0.75rem; padding: 6px 14px; margin-top: 5px; border-color: #C08A5D; color: #C08A5D;}
         
         .sub-spot { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
         .sub-spot-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; color: var(--text); display: flex; align-items: center; gap: 6px;}
+
+        /* SOS 專區樣式 */
+        .sos-card { background: #fff; border-radius: 12px; padding: 20px; margin: 0 20px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #E74C3C; font-family: -apple-system, sans-serif;}
+        .sos-card.blue { border-left-color: #3498DB; }
+        .sos-card.green { border-left-color: #27AE60; }
+        .sos-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
+        .sos-title i { font-size: 1.3rem; }
+        .sos-desc { font-size: 0.85rem; color: #555; line-height: 1.5; margin-bottom: 15px;}
+        .sos-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #E74C3C; color: #fff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);}
+        .sos-btn.blue { background: #3498DB; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);}
+        .sos-btn.green { background: #27AE60; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);}
+        .sos-sub-btn { display: inline-flex; align-items: center; gap: 5px; color: #3498DB; text-decoration: none; font-size: 0.85rem; font-weight: 600; margin-top: 10px;}
         
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 0 var(--safe-bottom); z-index: 50; }
         .nav-tab { flex: 1; text-align: center; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: 0.3s; font-family: 'Cormorant Garamond', serif; font-weight: 600; letter-spacing: 1px;}
@@ -431,10 +437,12 @@
 
                 <div class="highlight-box">
                     <div class="tag hotel"><i class="fa-solid fa-bed"></i> 住宿資訊 (連住 2 晚)</div>
-                    <div class="title">上野 MONday Premium 飯店</div>
+                    <div class="title">上野御徒町曼迪高級酒店</div>
+                    <div class="detail">hotel MONday Premium Ueno Okachimachi</div>
                     <div class="info-box" style="margin-top: 10px; margin-bottom: 10px;">
                         <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區台東3-41-7</div></div>
-                        <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>抵達方式：</strong>從東京市區搭乘 <span class="t-route">【JR 山手線/京濱東北線】</span> 至「御徒町站」北口出站，步行約 7 分鐘；或搭乘地鐵至 <span class="t-subway">【日比谷線 仲御徒町站】</span> 3號出口步行 3 分鐘。</div></div>
+                        <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>入住時間：</strong>15:00 - 24:00</div></div>
+                        <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>抵達方式：</strong>從東京市區搭乘 <span class="t-route">【JR 山手線/京濱東北線】</span> 至「御徒町站」南口出站，步行約 7 分鐘；或搭乘地鐵至 <span class="t-subway">【日比谷線 仲御徒町站】</span> 1號出口步行 3 分鐘。</div></div>
                     </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
@@ -444,7 +452,7 @@
                         <div class="t-marker">08:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-box"></i> LOGISTICS</div>
                         <div class="i-title">黑貓 (Yamato) 寄送行李</div>
-                        <div class="guide-story">退房時，將 2 個最大的行李箱透過飯店櫃檯寄往東京上野的飯店，託運單備註「5/16 Check-in」。我們輕鬆背小包包去跑行程！</div>
+                        <div class="guide-story">退房時，將 2 個最大的行李箱透過飯店櫃檯寄往東京上野曼迪高級酒店，託運單備註「5/16 Check-in」。我們輕鬆背小包包去跑行程！</div>
                     </div>
 
                     <div class="tl-item">
@@ -471,8 +479,8 @@
                     <div class="tl-item">
                         <div class="t-marker">18:00</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
-                        <div class="i-title">入住 上野 MONday Premium</div>
-                        <div class="guide-story">抵達東京後直接 Check-in，順便向櫃檯領取早上寄來的大行李。</div>
+                        <div class="i-title">入住 上野御徒町曼迪高級酒店</div>
+                        <div class="guide-story">抵達東京後直接 Check-in，順便向櫃檯領取早上寄來的大行李。20.38 平方公尺大空間，終於可以把行李箱攤開啦！</div>
                     </div>
                 </div>
             </div>
@@ -520,7 +528,7 @@
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">象印烤箱深烤盤、不沾模具</span>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區松谷3-18-2周邊</div></div>
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從飯店走到「仲御徒町站」搭乘 <span class="t-subway">【東京地鐵日比谷線 (H線)】</span> 或 <span class="t-subway">【銀座線 (G線)】</span> 至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從飯店走到「仲御徒町站」搭乘 <span class="t-subway">【東京地鐵日比谷線 (H線)】</span> 至「上野站」，轉乘 <span class="t-subway">【銀座線 (G線)】</span> 至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
                     </div>
@@ -569,6 +577,7 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從銀座搭乘 <span class="t-subway">【東京地鐵銀座線】</span> 至「上野廣小路站」或搭 <span class="t-route">【JR山手線】</span> 至「御徒町站」，北口出站步行 3 分鐘。</div></div>
                         </div>
+                        <div class="guide-story">多慶屋離我們的曼迪高級酒店超近！買完直接手提回飯店，把戰利品塞進大行李箱。</div>
                         <a href="https://www.google.com/maps/search/?api=1&query=多慶屋" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
                     </div>
                 </div>
@@ -622,6 +631,15 @@
                 <div class="tl-container">
                     <div class="tl-item">
                         <div class="t-marker">10:00</div><div class="dot-m"></div>
+                        <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-OUT</div>
+                        <div class="i-title">飯店退房整理</div>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>退房時間：</strong>請於早上 10:00 以前完成退房手續。</div></div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="t-marker">10:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-gift"></i> SOUVENIR</div>
                         <div class="i-title">上野站伴手禮最後衝刺</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">Sugar Butter Tree</span>
@@ -636,7 +654,7 @@
                         <div class="i-title">搭乘 京成電鐵 Skyliner</div>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>建議車次：</strong>Skyliner 55號 (14:40發) 或 57號 (15:00發)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車站：</strong>京成上野站 (車程 41 分鐘)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車站：</strong>京成上野站 (直達車程約 41 分鐘)</div></div>
                         </div>
                         <div class="guide-story">
                             <i class="fa-solid fa-taxi"></i> <strong>導遊攻略：</strong>退房後，直接從飯店搭乘「計程車」帶著 5 咖行李直達京成上野站，車資在起跳價內，免去拖重物走馬路的崩潰感。
@@ -677,6 +695,41 @@
                 </div>
             </div>
         </div>
+
+        <div id="view-sos" class="main-view">
+            <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1573455494060-c5595004fb6c?auto=format&fit=crop&w=800&q=80'); height: 260px; margin-bottom: 20px;">
+                <div class="hero-text" style="top: 40px;"><div class="h-tag">EMERGENCY & HELP</div><div class="h-title">急難救助與指南</div></div>
+            </div>
+
+            <div class="sos-card blue">
+                <div class="sos-title"><i class="fa-solid fa-headset"></i> 24H 日本官方中文旅遊熱線</div>
+                <div class="sos-desc">由日本國家旅遊局 (JNTO) 提供，遇到護照遺失、交通阻斷、急病或需要翻譯協助時，隨時撥打。對應中文、英文。</div>
+                <a href="tel:05038162787" class="sos-btn blue"><i class="fa-solid fa-phone-volume"></i> 點此撥打：050-3816-2787</a>
+                <div style="text-align: center;">
+                    <a href="https://www.japan.travel/tw/plan/hotline/" target="_blank" class="sos-sub-btn">查看 JNTO 官方熱線說明 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+
+            <div class="sos-card">
+                <div class="sos-title"><i class="fa-solid fa-truck-medical"></i> 緊急報案 / 救護車</div>
+                <div class="sos-desc">在日本遇到重大事故、火災或需要救護車時，無需投幣即可使用公共電話或手機撥打。請用簡單英文說 "Taiwanese" 請求中文翻譯。</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <a href="tel:119" class="sos-btn" style="flex: 1;"><i class="fa-solid fa-ambulance"></i> 救護車/火警 119</a>
+                    <a href="tel:110" class="sos-btn" style="flex: 1; background: #2C3E50;"><i class="fa-solid fa-user-police"></i> 報警 110</a>
+                </div>
+                <div class="sos-desc" style="font-size: 0.75rem; border-top: 1px solid #eee; padding-top: 10px;">
+                    <strong>旅外國人急難救助全球免付費專線：</strong><br>
+                    <a href="tel:001010886800085095" style="color:#E74C3C; text-decoration: none; font-weight: bold;">001-010-886-800-085-095</a> (從日本撥打回台)
+                </div>
+            </div>
+
+            <div class="sos-card green">
+                <div class="sos-title"><i class="fa-solid fa-language"></i> 醫療溝通「指指通」會話卡</div>
+                <div class="sos-desc">身體不適到藥妝店買藥，或是去醫院就診時，若語言不通，請點擊下方按鈕開啟官方「手指會話卡」，直接指給店員或醫生看您的症狀。</div>
+                <a href="https://www.jnto.go.jp/safety-tips/chc/cmcard/index.html" target="_blank" class="sos-btn green"><i class="fa-regular fa-hand-pointer"></i> 開啟醫療手指會話卡</a>
+            </div>
+
+        </div>
     </div>
 
     <div class="nav-bar">
@@ -686,24 +739,24 @@
         <div id="nav-budget" class="nav-tab" onclick="tab('budget')">
             <i class="fa-solid fa-wallet"></i><span>BUDGET</span>
         </div>
+        <div id="nav-sos" class="nav-tab" onclick="tab('sos')">
+            <i class="fa-solid fa-truck-medical"></i><span>SOS 求助</span>
+        </div>
     </div>
 
     <script>
         // 即時天氣 API 抓取邏輯 (使用 Open-Meteo)
         async function fetchWeather() {
             try {
-                // 東京天氣 (Day 1, 4, 5, 6)
                 const resTokyo = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current_weather=true&timezone=Asia%2FTokyo');
                 const dataTokyo = await resTokyo.json();
                 
-                // 富士山/河口湖天氣 (Day 2, 3)
                 const resFuji = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.4836&longitude=138.8048&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current_weather=true&timezone=Asia%2FTokyo');
                 const dataFuji = await resFuji.json();
 
                 const tCode = dataTokyo.current_weather.weathercode;
                 const fCode = dataFuji.current_weather.weathercode;
                 
-                // 輔助函式：根據代碼返回圖示 className 與 提示文字
                 function getWeatherInfo(code, isFuji) {
                     if(code <= 3) {
                         return {
@@ -726,7 +779,6 @@
                 const tInfo = getWeatherInfo(tCode, false);
                 const fInfo = getWeatherInfo(fCode, true);
 
-                // 更新所有 東京 的氣象組件 (Day 1, 4, 5, 6)
                 const tokyoDays = [1, 4, 5, 6];
                 tokyoDays.forEach(day => {
                     const tempEl = document.getElementById(`w-temp-tokyo-${day}`);
@@ -734,10 +786,11 @@
                         tempEl.innerText = `${Math.round(dataTokyo.current_weather.temperature)}°`;
                         document.getElementById(`w-max-tokyo-${day}`).innerText = `${Math.round(dataTokyo.daily.temperature_2m_max[0])}°C`;
                         document.getElementById(`w-min-tokyo-${day}`).innerText = `${Math.round(dataTokyo.daily.temperature_2m_min[0])}°C`;
-                        document.getElementById(`w-pop-tokyo-${day}`).innerText = `${dataTokyo.daily.precipitation_probability_max[0]}%`;
+                        
+                        const tPop = dataTokyo.daily.precipitation_probability_max ? dataTokyo.daily.precipitation_probability_max[0] : '--';
+                        document.getElementById(`w-pop-tokyo-${day}`).innerText = `${tPop}%`;
                         document.getElementById(`w-icon-tokyo-${day}`).className = tInfo.icon;
                         
-                        // 依照特定天數給予專屬提示
                         let customNote = tInfo.note;
                         if(day === 4) customNote = "今天將從山區回到東京市區。建議穿著方便穿脫的針織衫搭配外套，以免在暖氣充足的地鐵內流汗。";
                         if(day === 5) customNote = "今天是暴走購物日！請穿上最舒服透氣的平底鞋。百貨公司內冷氣強，記得帶件薄襯衫或薄外套備用。";
@@ -747,7 +800,6 @@
                     }
                 });
 
-                // 更新所有 富士山 的氣象組件 (Day 2, 3)
                 const fujiDays = [2, 3];
                 fujiDays.forEach(day => {
                     const tempEl = document.getElementById(`w-temp-fuji-${day}`);
@@ -755,7 +807,9 @@
                         tempEl.innerText = `${Math.round(dataFuji.current_weather.temperature)}°`;
                         document.getElementById(`w-max-fuji-${day}`).innerText = `${Math.round(dataFuji.daily.temperature_2m_max[0])}°C`;
                         document.getElementById(`w-min-fuji-${day}`).innerText = `${Math.round(dataFuji.daily.temperature_2m_min[0])}°C`;
-                        document.getElementById(`w-pop-fuji-${day}`).innerText = `${dataFuji.daily.precipitation_probability_max[0]}%`;
+                        
+                        const fPop = dataFuji.daily.precipitation_probability_max ? dataFuji.daily.precipitation_probability_max[0] : '--';
+                        document.getElementById(`w-pop-fuji-${day}`).innerText = `${fPop}%`;
                         document.getElementById(`w-icon-fuji-${day}`).className = fInfo.icon;
                         
                         let customNote = fInfo.note;
@@ -770,10 +824,8 @@
             }
         }
 
-        // 頁面載入時執行抓取天氣
         document.addEventListener('DOMContentLoaded', fetchWeather);
 
-        // Firebase 初始化
         const firebaseConfig = { 
             apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA", 
             authDomain: "fuji-trip-2026-4018b.firebaseapp.com", 
@@ -787,15 +839,22 @@
         function tab(t) {
             document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
             document.getElementById('nav-' + t).classList.add('active');
+            
+            // 隱藏所有 view
+            document.getElementById('view-itinerary').style.display = 'none';
+            document.getElementById('view-budget').style.display = 'none';
+            document.getElementById('view-sos').style.display = 'none';
+            
+            // 根據點擊顯示對應 view
+            document.getElementById('view-' + t).style.display = 'block';
+            
+            // 只有在 itinerary 顯示日期 slider
             if (t === 'itinerary') {
-                document.getElementById('view-itinerary').style.display = 'block';
-                document.getElementById('view-budget').style.display = 'none';
                 document.getElementById('dateSlider').style.display = 'flex';
             } else {
-                document.getElementById('view-itinerary').style.display = 'none';
-                document.getElementById('view-budget').style.display = 'block';
                 document.getElementById('dateSlider').style.display = 'none';
             }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
