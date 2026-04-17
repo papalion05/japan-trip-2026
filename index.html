@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Ultimate Guide V16</title>
+    <title>富士東京旅行｜Ultimate Guide V17</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
@@ -30,17 +30,29 @@
         .day-view.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 35px; background-color: #d1cdc7; }
+        .hero { position: relative; height: 220px; background-size: cover; background-position: center; margin-bottom: 45px; background-color: #d1cdc7; }
         .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0) 100%); }
         .hero-text { position: absolute; top: 20px; left: 20px; color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
         .h-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px;}
         
-        /* 即時氣象組件 */
-        .weather-widget { background: #fff; border-radius: 8px; margin: -25px 20px 20px; position: relative; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border);}
-        .weather-iframe { width: 100%; border: none; height: 120px; display: block; pointer-events: none;}
-        .weather-note { font-size: 0.75rem; color: #666; padding: 12px 15px; background: #f9f9f9; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 4px; font-family: -apple-system, sans-serif; line-height: 1.4;}
-        .weather-note-title { font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px;}
+        /* 💎 原生氣象組件 UI 💎 */
+        .weather-native { background: #fff; border-radius: 12px; margin: -35px 20px 20px; position: relative; z-index: 5; box-shadow: 0 8px 20px rgba(0,0,0,0.06); overflow: hidden; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column;}
+        .wn-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-bottom: 1px solid #eee;}
+        .wn-header.fuji { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #fff;}
+        .wn-header.fuji .wn-temp { color: #fff; }
+        .wn-header.fuji .wn-icon { color: #fff; }
+        .wn-loc { font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 6px; font-family: -apple-system, sans-serif;}
+        .wn-temp { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); line-height: 1;}
+        .wn-icon { font-size: 1.8rem; color: #555;}
+        
+        .wn-stats { display: flex; padding: 12px 20px; background: #fff; justify-content: space-around; border-bottom: 1px solid #f0f0f0;}
+        .wn-stat-item { display: flex; flex-direction: column; align-items: center; font-family: -apple-system, sans-serif;}
+        .wn-stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;}
+        .wn-stat-val { font-size: 0.9rem; font-weight: 600; color: var(--text);}
+        
+        .weather-note { font-size: 0.8rem; color: #555; padding: 12px 20px; background: #fff; display: flex; flex-direction: column; gap: 4px; font-family: -apple-system, sans-serif; line-height: 1.5;}
+        .weather-note-title { font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px;}
         .weather-note-title i { color: var(--accent); }
 
         /* 資訊卡與標籤系統 */
@@ -74,7 +86,6 @@
         .i-row { display: flex; gap: 8px; margin-bottom: 8px; line-height: 1.5;}
         .i-row:last-child { margin-bottom: 0; }
         .i-icon { color: var(--muted); font-size: 0.85rem; width: 16px; text-align: center; margin-top: 2px;}
-        /* 特別標示交通路線的顏色 */
         .t-route { color: #005A9C; font-weight: 600; } /* JR色 */
         .t-subway { color: #F39C12; font-weight: 600; } /* 地鐵色 */
 
@@ -120,11 +131,33 @@
                     <div class="hero-text"><div class="h-tag">DAY 1</div><div class="h-title">東京到着</div></div>
                 </div>
 
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                <div class="weather-native">
+                    <div class="wn-header">
+                        <div>
+                            <div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap: 15px;">
+                            <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-tokyo"></i>
+                            <div class="wn-temp" id="w-temp-tokyo">--°</div>
+                        </div>
+                    </div>
+                    <div class="wn-stats">
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">最高溫</span>
+                            <span class="wn-stat-val" id="w-max-tokyo">--°C</span>
+                        </div>
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">最低溫</span>
+                            <span class="wn-stat-val" id="w-min-tokyo">--°C</span>
+                        </div>
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">降雨機率</span>
+                            <span class="wn-stat-val" id="w-pop-tokyo">--%</span>
+                        </div>
+                    </div>
                     <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-cloud-sun"></i> 東京市區氣象與穿搭指南</div>
-                        <div>抵達日若氣溫在 18~24°C，氣候舒適。建議穿著短袖搭配薄長袖外套，方便進出機場與電車。若預報有雨請隨身攜帶輕便折疊傘，出機場請多利用地下連通道。</div>
+                        <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
+                        <div id="w-note-tokyo">天氣資料載入中...</div>
                     </div>
                 </div>
 
@@ -183,11 +216,33 @@
                     <div class="hero-text"><div class="h-tag">DAY 2</div><div class="h-title">富士山巡禮</div></div>
                 </div>
 
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1862555&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                <div class="weather-native">
+                    <div class="wn-header fuji">
+                        <div>
+                            <div class="wn-loc"><i class="fa-solid fa-mountain"></i> 富士山周邊</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap: 15px;">
+                            <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-fuji"></i>
+                            <div class="wn-temp" id="w-temp-fuji">--°</div>
+                        </div>
+                    </div>
+                    <div class="wn-stats">
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">最高溫</span>
+                            <span class="wn-stat-val" id="w-max-fuji">--°C</span>
+                        </div>
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">最低溫</span>
+                            <span class="wn-stat-val" id="w-min-fuji">--°C</span>
+                        </div>
+                        <div class="wn-stat-item">
+                            <span class="wn-stat-label">降雨機率</span>
+                            <span class="wn-stat-val" id="w-pop-fuji">--%</span>
+                        </div>
+                    </div>
                     <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-mountain-sun"></i> 富士山區氣象與穿搭指南</div>
-                        <div>山區早晚溫差極大 (約 10~18°C)！務必攜帶「防風外套」或輕便羽絨衣，裡面穿長袖。陽光強烈時請準備墨鏡與遮陽帽。注意降雨機率，隨身帶傘。</div>
+                        <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
+                        <div id="w-note-fuji">天氣資料載入中...</div>
                     </div>
                 </div>
 
@@ -268,14 +323,6 @@
                     <div class="hero-text"><div class="h-tag">DAY 3</div><div class="h-title">河口湖水陸</div></div>
                 </div>
                 
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1862555&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
-                    <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-wind"></i> 山中湖氣象與穿搭指南</div>
-                        <div>湖畔風勢強勁，搭乘水陸巴士時務必準備「防風帽」與「保暖圍巾」，避免吹風頭痛。如遇小雨請備折疊傘。</div>
-                    </div>
-                </div>
-
                 <div class="tl-container">
                     <div class="tl-item">
                         <div class="t-marker">10:00</div><div class="dot-m"></div>
@@ -320,14 +367,6 @@
             <div id="day-4" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 4</div><div class="h-title">重返東京</div></div>
-                </div>
-
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
-                    <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-cloud"></i> 移動日氣象與穿搭指南</div>
-                        <div>今天將從山區回到東京市區。建議穿著方便穿脫的針織衫搭配外套，以免在暖氣充足的地鐵內流汗。</div>
-                    </div>
                 </div>
 
                 <div class="highlight-box">
@@ -381,14 +420,6 @@
             <div id="day-5" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1542931287-023b922fa89b?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 5</div><div class="h-title">銀座與潮流</div></div>
-                </div>
-
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
-                    <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-sun"></i> 東京市區氣象與穿搭指南</div>
-                        <div>今天是暴走購物日！天氣較溫暖，請穿上最舒服透氣的平底鞋。百貨公司內冷氣強，記得帶件薄襯衫或薄外套備用。</div>
-                    </div>
                 </div>
                 
                 <div class="tl-container">
@@ -458,14 +489,6 @@
                     <div class="hero-text"><div class="h-tag">DAY 6</div><div class="h-title">滿載歸途</div></div>
                 </div>
 
-                <div class="weather-widget">
-                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
-                    <div class="weather-note">
-                        <div class="weather-note-title"><i class="fa-solid fa-plane-up"></i> 返台日氣象與穿搭指南</div>
-                        <div>準備回台灣囉！建議換上輕薄的短袖，因為台灣 5 月的氣溫已經非常炎熱了！</div>
-                    </div>
-                </div>
-
                 <div class="highlight-box">
                     <div class="tag"><i class="fa-solid fa-plane-departure"></i> 完整航班資訊 (回程)</div>
                     <div class="title">東京成田 (NRT) ➔ 台北桃園 (TPE)</div>
@@ -521,10 +544,7 @@
             <div class="budget-card">
                 <div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Total Budget</div>
                 <div style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent); font-weight: 600; margin-bottom: 10px;">NT$ 52,708</div>
-                <div style="font-size: 0.85rem; color: #555; line-height: 1.5;">
-                    包含雙人來回機票 (NT$ 29,781)<br>
-                    與 5 晚雙人住宿總額 (NT$ 22,927)。
-                </div>
+                <div style="font-size: 0.85rem; color: #555; line-height: 1.5;">包含雙人來回機票與 5 晚住宿。</div>
             </div>
 
             <div class="budget-card">
@@ -532,8 +552,8 @@
                 <div style="font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--text);">Bic Camera 採購專用代碼</div>
                 <div style="font-family: monospace; font-size: 1.4rem; color: #fff; background: #C0392B; padding: 8px 15px; border-radius: 6px; display: inline-block; letter-spacing: 2px;">4USDTV4F</div>
                 <div style="font-size: 0.85rem; color: #555; margin-top: 10px; line-height: 1.5;">
-                    購買按摩椅或電器結帳時出示此條碼，<br>即可享有 <strong>10% 免稅 + 7% 折扣</strong>。<br>
-                    <strong>*記得同時要求辦理「機場配送服務」。</strong>
+                    享 <strong>10% 免稅 + 7% 折扣</strong>。<br>
+                    *記得同時要求辦理「機場配送服務」。
                 </div>
             </div>
         </div>
@@ -549,6 +569,56 @@
     </div>
 
     <script>
+        // 即時天氣 API 抓取邏輯 (使用 Open-Meteo)
+        async function fetchWeather() {
+            try {
+                // 東京天氣 (Day 1, 5, 6)
+                const resTokyo = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current_weather=true&timezone=Asia%2FTokyo');
+                const dataTokyo = await resTokyo.json();
+                
+                // 富士山/河口湖天氣 (Day 2, 3, 4)
+                const resFuji = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.4836&longitude=138.8048&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current_weather=true&timezone=Asia%2FTokyo');
+                const dataFuji = await resFuji.json();
+
+                // 更新 UI - 東京
+                const tTemp = Math.round(dataTokyo.current_weather.temperature);
+                document.getElementById('w-temp-tokyo').innerText = `${tTemp}°`;
+                document.getElementById('w-max-tokyo').innerText = `${Math.round(dataTokyo.daily.temperature_2m_max[0])}°C`;
+                document.getElementById('w-min-tokyo').innerText = `${Math.round(dataTokyo.daily.temperature_2m_min[0])}°C`;
+                document.getElementById('w-pop-tokyo').innerText = `${dataTokyo.daily.precipitation_probability_max[0]}%`;
+                
+                // 根據天氣代碼更換圖示 (東京)
+                const tCode = dataTokyo.current_weather.weathercode;
+                const tIcon = document.getElementById('w-icon-tokyo');
+                if(tCode <= 3) { tIcon.className = "fa-solid fa-sun wn-icon"; document.getElementById('w-note-tokyo').innerText = "今日東京天氣晴朗，建議穿著短袖或薄長袖，記得防曬。"; }
+                else if(tCode <= 49) { tIcon.className = "fa-solid fa-cloud wn-icon"; document.getElementById('w-note-tokyo').innerText = "今日東京多雲，氣候舒適，可帶件薄外套備用。"; }
+                else { tIcon.className = "fa-solid fa-umbrella wn-icon"; document.getElementById('w-note-tokyo').innerText = "今日東京有雨，出門請務必攜帶雨具，鞋子建議穿防水款式。"; }
+
+                // 更新 UI - 富士山
+                const fTemp = Math.round(dataFuji.current_weather.temperature);
+                document.getElementById('w-temp-fuji').innerText = `${fTemp}°`;
+                document.getElementById('w-max-fuji').innerText = `${Math.round(dataFuji.daily.temperature_2m_max[0])}°C`;
+                document.getElementById('w-min-fuji').innerText = `${Math.round(dataFuji.daily.temperature_2m_min[0])}°C`;
+                document.getElementById('w-pop-fuji').innerText = `${dataFuji.daily.precipitation_probability_max[0]}%`;
+
+                // 根據天氣代碼更換圖示 (富士山)
+                const fCode = dataFuji.current_weather.weathercode;
+                const fIcon = document.getElementById('w-icon-fuji');
+                if(fCode <= 3) { fIcon.className = "fa-solid fa-mountain-sun wn-icon"; document.getElementById('w-note-fuji').innerText = "山區天氣晴朗，看到完整富士山的機率極高！但風大請帶防風外套。"; }
+                else if(fCode <= 49) { fIcon.className = "fa-solid fa-cloud wn-icon"; document.getElementById('w-note-fuji').innerText = "山區多雲，富士山可能偶爾露臉。氣溫較低，請注意保暖。"; }
+                else { fIcon.className = "fa-solid fa-cloud-showers-heavy wn-icon"; document.getElementById('w-note-fuji').innerText = "山區有雨，請攜帶雨具並穿著保暖防風衣物。"; }
+
+            } catch (error) {
+                console.error("天氣抓取失敗", error);
+                document.getElementById('w-note-tokyo').innerText = "目前無法取得天氣資訊，請稍後再試。";
+                document.getElementById('w-note-fuji').innerText = "目前無法取得天氣資訊，請稍後再試。";
+            }
+        }
+
+        // 頁面載入時執行抓取天氣
+        document.addEventListener('DOMContentLoaded', fetchWeather);
+
+        // Firebase 初始化 (保持不變)
         const firebaseConfig = { 
             apiKey: "AIzaSyAHKDV4W_O9ie0oXpR9XMuIwRAkcBkJ_JA", 
             authDomain: "fuji-trip-2026-4018b.firebaseapp.com", 
