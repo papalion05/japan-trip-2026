@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Ultimate Guide V15</title>
+    <title>富士東京旅行｜Ultimate Guide V16</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,13 +36,11 @@
         .h-tag { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
         .h-title { font-size: 1.6rem; font-weight: 600; letter-spacing: 2px;}
         
-        /* 氣象與穿搭面板 */
-        .weather-box { background: linear-gradient(135deg, #6dd5ed, #2193b0); color: white; padding: 12px 18px; border-radius: 8px; margin: -25px 20px 20px; position: relative; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; }
-        .weather-box.fuji { background: linear-gradient(135deg, #83a4d4, #b6fbff); color: #2C3E50; }
-        .weather-box i { font-size: 1.8rem; }
-        .w-text { flex: 1; }
-        .w-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; letter-spacing: 1px;}
-        .w-desc { font-size: 0.8rem; line-height: 1.5; font-family: -apple-system, sans-serif;}
+        /* 即時氣象組件 */
+        .weather-widget { background: #fff; border-radius: 8px; margin: -25px 20px 20px; position: relative; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid var(--border);}
+        .weather-iframe { width: 100%; border: none; height: 120px; display: block; pointer-events: none;}
+        .weather-note { font-size: 0.75rem; color: #666; padding: 8px 15px; background: #f9f9f9; border-top: 1px solid #eee; display: flex; align-items: center; gap: 6px; font-family: -apple-system, sans-serif;}
+        .weather-note i { color: var(--accent); }
 
         /* 資訊卡與標籤系統 */
         .highlight-box { margin: 0 20px 20px; padding: 18px; border-radius: 8px; background: #fff; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
@@ -70,10 +68,14 @@
         .cat { font-family: -apple-system, sans-serif; font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; letter-spacing: 1px;}
         .i-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; color: var(--text); line-height: 1.4;}
         
+        /* 資訊卡與整合的交通圖示 */
         .info-box { background: rgba(255,255,255,0.7); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #333; margin-bottom: 12px;}
         .i-row { display: flex; gap: 8px; margin-bottom: 8px; line-height: 1.5;}
         .i-row:last-child { margin-bottom: 0; }
         .i-icon { color: var(--muted); font-size: 0.85rem; width: 16px; text-align: center; margin-top: 2px;}
+        /* 特別標示交通路線的顏色 */
+        .t-route { color: #005A9C; font-weight: 600; } /* JR色 */
+        .t-subway { color: #F39C12; font-weight: 600; } /* 地鐵色 */
 
         /* 導遊說故事區塊 */
         .guide-story { background: #fdfaf5; border-left: 3px solid #C08A5D; padding: 10px 12px; margin-bottom: 12px; font-family: -apple-system, sans-serif; font-size: 0.8rem; color: #444; line-height: 1.6; border-radius: 0 8px 8px 0;}
@@ -117,11 +119,10 @@
                     <div class="hero-text"><div class="h-tag">DAY 1</div><div class="h-title">東京到着</div></div>
                 </div>
 
-                <div class="weather-box">
-                    <i class="fa-solid fa-cloud-sun"></i>
-                    <div class="w-text">
-                        <div class="w-title">東京氣象與穿搭 (約 18~24°C)</div>
-                        <div class="w-desc">抵達日氣候舒適。建議穿著短袖搭配薄長袖外套，方便進出機場與電車。隨身攜帶輕便折疊傘。</div>
+                <div class="weather-widget">
+                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                    <div class="weather-note">
+                        <i class="fa-solid fa-umbrella"></i> 導遊提醒：若降雨機率高，出機場請走地下連通道。
                     </div>
                 </div>
 
@@ -138,7 +139,10 @@
                 <div class="highlight-box">
                     <div class="tag hotel"><i class="fa-solid fa-bed"></i> 住宿資訊</div>
                     <div class="title">新宿西鐵飯店 Nishitetsu Inn</div>
-                    <div class="detail"><strong>地址：</strong>東京都新宿區西新宿7-23-2</div>
+                    <div class="info-box" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都新宿區西新宿7-23-2</div></div>
+                        <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>抵達方式：</strong>搭乘至 <span class="t-route">【JR 新宿站】</span> 後，尋找黃色指標往<strong>「西口」</strong>出站，沿平面馬路直行約 8 分鐘即可抵達。</div></div>
+                    </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=Nishitetsu+Inn+Shinjuku" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
@@ -148,7 +152,7 @@
                         <div class="cat"><i class="fa-solid fa-plane-arrival"></i> FLIGHT</div>
                         <div class="i-title">降落與通關手續</div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-clock"></i> <strong>導遊預估：</strong>約 18:30 完成通關提領 5 咖行李，推車前往 B1 鐵道層的 JR 售票處。
+                            <i class="fa-solid fa-clock"></i> <strong>導遊預估：</strong>約 18:30 完成通關提領 5 咖行李，推車前往機場 B1 鐵道層的 JR 售票處。
                         </div>
                     </div>
                     <div class="tl-item">
@@ -157,17 +161,17 @@
                         <div class="i-title">搭乘 N'EX 成田特快前往新宿</div>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>建議車次：</strong>N'EX 46號 (19:19發) 或 48號 (19:49發)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車月台：</strong>成田 T2 B1F 第1月台</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>JR 新宿站 (車程約 85 分)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車月台：</strong>成田 T2 B1F <span class="t-route">【JR線 第1月台】</span></div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>JR 新宿站 (車程約 85 分鐘)</div></div>
+                        </div>
+                        <div class="guide-story">
+                            <i class="fa-solid fa-lightbulb"></i> <strong>總務攻略：</strong>N'EX 每一節車廂連接處都有密碼鎖大型行李架，務必先鎖好這 5 咖重行李再入座休息。
                         </div>
                     </div>
                     <div class="tl-item">
                         <div class="t-marker">21:00</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
                         <div class="i-title">入住 新宿西鐵飯店</div>
-                        <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>交通轉乘：</strong>抵達【JR 新宿站】後，往<strong>「西口」</strong>方向出站，沿平面馬路直行約 8 分鐘。若搭乘地鐵，可轉乘【丸之內線】至「西新宿站」出站步行 2 分鐘。</div></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -177,18 +181,20 @@
                     <div class="hero-text"><div class="h-tag">DAY 2</div><div class="h-title">富士山巡禮</div></div>
                 </div>
 
-                <div class="weather-box fuji">
-                    <i class="fa-solid fa-mountain-sun"></i>
-                    <div class="w-text">
-                        <div class="w-title">富士山區氣象與穿搭 (約 10~18°C)</div>
-                        <div class="w-desc">山區早晚溫差極大！務必攜帶「防風外套」或輕便羽絨衣，裡面穿長袖。陽光強烈時請準備墨鏡與遮陽帽。</div>
+                <div class="weather-widget">
+                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1862555&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                    <div class="weather-note">
+                        <i class="fa-solid fa-mountain-sun"></i> 導遊提醒：山區溫差大，今天請隨身攜帶防風外套！
                     </div>
                 </div>
 
                 <div class="highlight-box">
                     <div class="tag hotel"><i class="fa-solid fa-bed"></i> 住宿資訊 (連住 2 晚)</div>
                     <div class="title">富士山站酒店 Fujisan Station Hotel</div>
-                    <div class="detail"><strong>地址：</strong>山梨縣富士吉田市松山2-7-12</div>
+                    <div class="info-box" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>山梨縣富士吉田市松山2-7-12</div></div>
+                        <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>抵達方式：</strong>搭乘富士回遊至 <span class="t-route">【富士山站】</span>，出站步行 3 分鐘即可抵達。先至櫃檯寄放行李。</div></div>
+                    </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=Fujisan+Station+Hotel" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
@@ -198,8 +204,8 @@
                         <div class="cat"><i class="fa-solid fa-train-tram"></i> TRANSPORT</div>
                         <div class="i-title">搭乘 富士回遊號 1號</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車：</strong>【JR 新宿站】 <strong>9號或10號月台</strong> (09:30發)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車：</strong>「富士山站 (Mt. Fuji)」 (11:28抵)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車：</strong><span class="t-route">【JR 新宿站】</span> <strong>9號或10號 特急月台</strong> (09:30發)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車：</strong>「富士山站 (Mt. Fuji)」 (11:28抵達)</div></div>
                         </div>
                     </div>
 
@@ -208,7 +214,7 @@
                         <div class="cat"><i class="fa-solid fa-camera"></i> DRAMA SPOTS</div>
                         <div class="i-title">《小鎮星熱點》聖地巡禮</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>從富士山站搭乘【富士急行線 (普通車)】，搭 1 站至<strong>「下吉田站」</strong>(車程3分鐘)，出站開始步行。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>從富士山站搭乘 <span class="t-route">【富士急行線 (普通車)】</span>，搭 1 站至<strong>「下吉田站」</strong>(車程3分鐘)，出站開始步行踩點。</div></div>
                         </div>
                         
                         <div class="sub-spot">
@@ -233,6 +239,10 @@
                         <div class="cat"><i class="fa-solid fa-mug-hot"></i> CAFE</div>
                         <div class="i-title">Mont Blanc 咖啡廳</div>
                         <span class="badge b-menu">【必點菜單】</span> <span class="highlight-text">超浮誇蒙布朗聖代</span>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士吉田市下吉田3-8-4</div></div>
+                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>抵達方式：</strong>位於月江寺通，從市杵島神社步行前往約 5 分鐘。</div></div>
+                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=Mont+Blanc+Cafe+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
                     </div>
 
@@ -240,9 +250,10 @@
                         <div class="t-marker">17:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-bowl-food"></i> DINNER</div>
                         <div class="i-title">不動茶屋 (東戀路店)</div>
-                        <span class="badge b-food">【必吃美食】</span> <span class="highlight-text">味噌蔬菜餺飥麵</span>
+                        <span class="badge b-food">【必吃美食】</span> <span class="highlight-text">味噌蔬菜餺飥麵 (絕無馬肉)</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-taxi i-icon"></i> <div><strong>公車/計程車接駁：</strong>從下吉田站出發，建議直接搭乘「計程車」前往最方便；或至河口湖站轉乘【紅線周遊巴士】。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>南都留郡富士河口湖町船津2458</div></div>
+                            <div class="i-row"><i class="fa-solid fa-taxi i-icon"></i> <div><strong>交通接駁：</strong>距離車站較遠，建議從咖啡廳出來後，直接在路邊攔<strong>「計程車」</strong>前往最省時省力。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
@@ -253,15 +264,14 @@
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 3</div><div class="h-title">河口湖水陸</div></div>
                 </div>
-
-                <div class="weather-box fuji">
-                    <i class="fa-solid fa-wind"></i>
-                    <div class="w-text">
-                        <div class="w-title">山中湖氣象與穿搭 (約 12~19°C)</div>
-                        <div class="w-desc">湖畔風勢強勁，搭乘水陸巴士時務必準備「防風帽」與「保暖圍巾」，避免吹風頭痛。如遇小雨請備折疊傘。</div>
+                
+                <div class="weather-widget">
+                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1862555&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                    <div class="weather-note">
+                        <i class="fa-solid fa-wind"></i> 導遊提醒：在湖畔搭水陸巴士風很大，請戴上毛帽或圍巾保暖！
                     </div>
                 </div>
-                
+
                 <div class="tl-container">
                     <div class="tl-item">
                         <div class="t-marker">10:00</div><div class="dot-m"></div>
@@ -269,10 +279,10 @@
                         <div class="i-title">山中湖 KABA BUS (水陸巴士)</div>
                         <span class="badge b-code">【重要預約代號】</span> <span class="highlight-text">請準備乘車 QR Code</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>公車接駁：</strong>早上從「富士山站」前公車站搭乘<strong>【富士急行巴士 (往平野/山中湖方向)】</strong>，車程約 35 分鐘。</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>「山中湖 旭日丘巴士總站」</div></div>
+                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通接駁：</strong>從「富士山站」站前公車亭，搭乘 <span class="t-subway">【富士急行巴士 (往平野/山中湖方向)】</span>。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>於「山中湖 旭日丘巴士總站」下車，即達乘車報到處。</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=山中湖+旭日丘バスターミナル" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=山中湖のKABA" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至報到處</a>
                     </div>
 
                     <div class="tl-item">
@@ -281,7 +291,8 @@
                         <div class="i-title">吉田烏龍麵 藏之介</div>
                         <span class="badge b-food">【必吃美食】</span> <span class="highlight-text">在地手打肉烏龍麵</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>公車接駁：</strong>搭乘巴士回到富士吉田市區後步行前往。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士吉田市上吉田3-4-23</div></div>
+                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通接駁：</strong>搭乘巴士原路返回富士吉田市區後，步行前往。</div></div>
                             <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>訂位：無法訂位，僅中午營業，麵條賣完即打烊。</strong></div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=手打ちうどん+蔵ノ介" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
@@ -293,7 +304,8 @@
                         <div class="i-title">Fuji Tempura IDATEN</div>
                         <span class="badge b-menu">【必點菜單】</span> <span class="highlight-text">富士山巨大天婦羅盛合</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>地鐵/火車接駁：</strong>餐廳位於「河口湖車站」前步行 3 分鐘。用完餐後，可直接走到車站搭【富士急行線】回富士山站飯店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士河口湖町船津3486-4</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>餐廳位於「河口湖車站」前步行 3 分鐘。用完餐後，走到車站搭 <span class="t-route">【富士急行線】</span> 回富士山站的飯店。</div></div>
                             <div class="i-row"><i class="fa-solid fa-mobile-screen i-icon"></i> <div><strong>訂位：到達現場掃描門口 QR Code 候位。</strong></div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=冨士天ぷら+いだ天" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
@@ -306,18 +318,13 @@
                     <div class="hero-text"><div class="h-tag">DAY 4</div><div class="h-title">重返東京</div></div>
                 </div>
 
-                <div class="weather-box">
-                    <i class="fa-solid fa-cloud"></i>
-                    <div class="w-text">
-                        <div class="w-title">移動日氣象與穿搭 (約 15~22°C)</div>
-                        <div class="w-desc">今天將從寒冷的山區回到溫暖的東京市區。建議穿著方便穿脫的針織衫搭配外套，以免在暖氣充足的地鐵內流汗。</div>
-                    </div>
-                </div>
-
                 <div class="highlight-box">
                     <div class="tag hotel"><i class="fa-solid fa-bed"></i> 住宿資訊 (連住 2 晚)</div>
-                    <div class="title">上野 MONday Premium</div>
-                    <div class="detail"><strong>地址：</strong>東京都台東區台東3-41-7</div>
+                    <div class="title">上野 MONday Premium 飯店</div>
+                    <div class="info-box" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區台東3-41-7</div></div>
+                        <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>抵達方式：</strong>從 <span class="t-route">【JR 御徒町站】</span> 北口出站，步行約 7 分鐘；或搭乘地鐵至 <span class="t-subway">【日比谷線 仲御徒町站】</span> 3號出口步行 3 分鐘。</div></div>
+                    </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
                 
@@ -326,7 +333,7 @@
                         <div class="t-marker">08:30</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-box"></i> LOGISTICS</div>
                         <div class="i-title">黑貓 (Yamato) 寄送行李</div>
-                        <div class="guide-story">退房時，將 2 個最大的行李箱透過飯店櫃檯寄往東京上野的飯店，託運單備註「5/16 Check-in」。</div>
+                        <div class="guide-story">退房時，將 2 個最大的行李箱透過飯店櫃檯寄往東京上野的飯店，託運單備註「5/16 Check-in」。我們輕鬆背小包包去跑行程！</div>
                     </div>
 
                     <div class="tl-item">
@@ -334,7 +341,7 @@
                         <div class="cat"><i class="fa-solid fa-camera"></i> IG SPOT</div>
                         <div class="i-title">Lawson 河口湖站前店</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>搭乘【富士急行線】火車至終點站「河口湖站」，出站即達。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>搭乘 <span class="t-route">【富士急行線】</span> 至終點站「河口湖站」，出站右轉即達。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Kawaguchiko+Station" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Lawson</a>
                     </div>
@@ -346,8 +353,15 @@
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車：</strong>河口湖站 (14:58 發車)</div></div>
                             <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車：</strong>JR 新宿站 (16:58 抵達)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-right-left i-icon"></i> <div><strong>轉乘地鐵：</strong>於新宿站轉乘【JR 山手線 (往池袋/上野方向)】前往「御徒町站」下車步行至飯店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-right-left i-icon"></i> <div><strong>轉乘地鐵：</strong>於新宿站轉乘 <span class="t-route">【JR 山手線 (往池袋/上野方向)】</span>，前往「御徒町站」下車。</div></div>
                         </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="t-marker">18:00</div><div class="dot-m diamond"></div>
+                        <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
+                        <div class="i-title">入住 上野 MONday Premium</div>
+                        <div class="guide-story">抵達東京後直接 Check-in，順便領取早上寄來的大行李。</div>
                     </div>
                 </div>
             </div>
@@ -357,11 +371,10 @@
                     <div class="hero-text"><div class="h-tag">DAY 5</div><div class="h-title">銀座與潮流</div></div>
                 </div>
 
-                <div class="weather-box">
-                    <i class="fa-solid fa-sun"></i>
-                    <div class="w-text">
-                        <div class="w-title">東京市區氣象與穿搭 (約 19~25°C)</div>
-                        <div class="w-desc">今天是暴走購物日！天氣溫暖，請穿著透氣好走的平底鞋。百貨公司內冷氣強，記得帶件薄襯衫備用。若預報有雨請帶傘。</div>
+                <div class="weather-widget">
+                    <iframe class="weather-iframe" src="https://open-meteo.com/en/widget/city?id=1850147&weather_variable=temperature_max&weather_variable=temperature_min&weather_variable=precipitation_probability&days=1&forecast_days=1&timezone=Asia%2FTokyo"></iframe>
+                    <div class="weather-note">
+                        <i class="fa-solid fa-sun"></i> 導遊提醒：今天是暴走購物日，請穿上最舒服透氣的平底鞋！
                     </div>
                 </div>
                 
@@ -369,10 +382,11 @@
                     <div class="tl-item">
                         <div class="t-marker">10:00</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-kitchen-set"></i> BAKING</div>
-                        <div class="i-title">合羽橋道具街</div>
+                        <div class="i-title">合羽橋道具街 (烘焙控聖地)</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">象印烤箱深烤盤、不沾模具</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>地鐵轉乘：</strong>從飯店走到「仲御徒町站」搭乘【東京地鐵日比谷線 (H線)】或搭【銀座線 (G線)】至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區松谷3-18-2周邊</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從飯店走到「仲御徒町站」搭乘 <span class="t-subway">【東京地鐵日比谷線 (H線)】</span> 或搭 <span class="t-subway">【銀座線 (G線)】</span> 至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
                     </div>
@@ -382,12 +396,12 @@
                         <div class="cat"><i class="fa-solid fa-plug"></i> MISSION</div>
                         <div class="i-title">Bic Camera 按摩椅大作戰</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">大型按摩椅</span><br>
-                        <span class="badge b-code">【重要預約代號】</span> <span class="highlight-text">優惠碼 4USDTV4F</span>
+                        <span class="badge b-code">【重要預約代號】</span> <span class="highlight-text">請出示優惠碼 4USDTV4F</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>地鐵轉乘：</strong>搭乘【東京地鐵銀座線 (橘色)】或【JR山手線】至<strong>「有樂町站」</strong>，出站即達 Bic Camera 有樂町店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從田原町站搭乘 <span class="t-subway">【東京地鐵銀座線 (橘色)】</span> 直達「銀座站」，或搭 <span class="t-route">【JR山手線】</span> 至<strong>「有樂町站」</strong>，出站即達 Bic Camera 有樂町店。</div></div>
                         </div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>大型家電結帳時，務必請店員辦理<strong>「空港配送 (機場宅配)」</strong>送至成田 T2！
+                            <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>大型家電結帳時，除了出示護照與折扣碼，務必請店員辦理<strong>「空港配送 (機場宅配)」</strong>送至成田 T2！
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=Bic+Camera+Yurakucho" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 Bic Camera</a>
                     </div>
@@ -397,7 +411,8 @@
                         <div class="cat"><i class="fa-solid fa-shirt"></i> FASHION</div>
                         <div class="i-title">UNIQLO 銀座全球旗艦店</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>交通接駁：</strong>從 Bic Camera 步行約 8 分鐘即可抵達銀座商圈。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都中央區銀座6-9-5</div></div>
+                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>交通接駁：</strong>從 Bic Camera 步行約 8 分鐘即可抵達。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=UNIQLO+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至 UNIQLO</a>
                     </div>
@@ -406,7 +421,10 @@
                         <div class="t-marker">16:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-shoe-prints"></i> SHOES</div>
                         <div class="i-title">ABC-MART GS 銀座</div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=ABC-MART+Grand+Stage+Ginza" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都中央區銀座3-2-12</div></div>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=ABC-MART+GRAND+STAGE+GINZA" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
                     </div>
                     
                     <div class="tl-item">
@@ -415,9 +433,10 @@
                         <div class="i-title">多慶屋 (TAKEYA) 總本館</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">合利他命、EVE、大包裝零食</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>地鐵轉乘：</strong>從銀座搭乘【東京地鐵銀座線】至「上野廣小路站」或【JR山手線】至「御徒町站」，北口出站步行 3 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從銀座搭乘 <span class="t-subway">【東京地鐵銀座線】</span> 至「上野廣小路站」或搭 <span class="t-route">【JR山手線】</span> 至「御徒町站」，北口出站步行 3 分鐘。</div></div>
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=多慶屋+御徒町" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
+                        <div class="guide-story">買完直接手提回旁邊的飯店，把戰利品塞進大行李箱。</div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=多慶屋" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
                     </div>
                 </div>
             </div>
@@ -427,21 +446,13 @@
                     <div class="hero-text"><div class="h-tag">DAY 6</div><div class="h-title">滿載歸途</div></div>
                 </div>
 
-                <div class="weather-box">
-                    <i class="fa-solid fa-plane-up"></i>
-                    <div class="w-text">
-                        <div class="w-title">返台日氣象與穿搭</div>
-                        <div class="w-desc">準備回台灣囉！建議換上輕薄的短袖與好穿脫的外套，因為台灣 5 月的氣溫已經非常炎熱了！</div>
-                    </div>
-                </div>
-
                 <div class="highlight-box">
                     <div class="tag"><i class="fa-solid fa-plane-departure"></i> 完整航班資訊 (回程)</div>
                     <div class="title">東京成田 (NRT) ➔ 台北桃園 (TPE)</div>
                     <div class="detail">
                         <strong>航空公司：</strong>日本航空 (JAL) JL809<br>
-                        <strong>出發時間：</strong>18:05 於 成田 第二航廈 (T2) 起飛<br>
-                        <strong>抵達時間：</strong>21:00 降落 台北桃園機場
+                        <strong>起飛：</strong>18:05 於 成田 第二航廈 (T2) 起飛<br>
+                        <strong>抵達：</strong>21:00 降落 台北桃園機場
                     </div>
                 </div>
                 
@@ -451,6 +462,9 @@
                         <div class="cat"><i class="fa-solid fa-gift"></i> SOUVENIR</div>
                         <div class="i-title">上野站伴手禮最後衝刺</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">Sugar Butter Tree</span>
+                        <div class="info-box">
+                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>地點：</strong>JR 上野站內的 atre 或 ecute 商場。</div></div>
+                        </div>
                     </div>
 
                     <div class="tl-item">
@@ -459,10 +473,10 @@
                         <div class="i-title">搭乘 京成電鐵 Skyliner</div>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>建議車次：</strong>Skyliner 55號 (14:40發) 或 57號 (15:00發)</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車站：</strong>京成上野站 (車程 41 分鐘)</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車站：</strong>京成上野站 (直達車程約 41 分鐘)</div></div>
                         </div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-taxi"></i> <strong>導遊攻略：</strong>直接從飯店搭乘「計程車」帶著 5 咖行李直達京成上野站，免去拖行李過馬路的辛苦。
+                            <i class="fa-solid fa-taxi"></i> <strong>導遊攻略：</strong>退房後，直接從飯店搭乘「計程車」帶著 5 咖行李直達京成上野站，車資在起跳價內，免去拖重物走馬路的崩潰感。
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=京成上野站" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至車站</a>
                     </div>
@@ -472,7 +486,7 @@
                         <div class="cat"><i class="fa-solid fa-box-open"></i> MISSION</div>
                         <div class="i-title">領取按摩椅 & 辦理登機</div>
                         <div class="guide-story">
-                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>【極度重要任務】</strong>抵達成田 T2 後，務必先去「GPA 或 JAL ABC 宅配領貨櫃檯」領回您的按摩椅，再連同 5 咖行李一起去 JAL 櫃檯托運！
+                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>【極度重要任務】</strong>抵達成田 T2 後，務必先去找「GPA 或 JAL ABC 宅配領貨櫃檯」領回您的按摩椅，再連同 5 咖行李一起去 JAL 櫃檯托運！
                         </div>
                     </div>
                 </div>
