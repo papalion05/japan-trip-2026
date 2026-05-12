@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>富士東京旅行｜Ultimate Guide V18</title>
+    <title>富士東京旅行｜Ultimate Guide V20</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
@@ -105,11 +105,25 @@
         .sos-btn.blue { background: #3498DB; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);}
         .sos-btn.green { background: #27AE60; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);}
         .sos-sub-btn { display: inline-flex; align-items: center; gap: 5px; color: #3498DB; text-decoration: none; font-size: 0.85rem; font-weight: 600; margin-top: 10px;}
+
+        /* 🗺️ 路線圖 (Route Map) 專屬樣式 🗺️ */
+        .topo-map { padding: 20px; font-family: -apple-system, sans-serif;}
+        .topo-row { display: flex; align-items: flex-start; position: relative; margin-bottom: 40px; }
+        .topo-left { width: 55px; font-family: 'Cormorant Garamond', serif; font-weight: bold; color: var(--accent); font-size: 1rem; text-align: right; padding-right: 15px; padding-top: 2px;}
+        .topo-center { position: relative; width: 24px; display: flex; flex-direction: column; align-items: center; }
+        .topo-node { width: 16px; height: 16px; background: #fff; border: 4px solid var(--accent); border-radius: 50%; z-index: 2; }
+        .topo-line { position: absolute; top: 16px; bottom: -45px; width: 3px; background: var(--accent); opacity: 0.3; }
+        .topo-right { flex: 1; padding-left: 15px; padding-top: -2px; }
+        .topo-loc { font-size: 1.15rem; font-weight: bold; color: var(--text); margin-bottom: 8px; }
+        .topo-desc { font-size: 0.85rem; color: #444; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03); line-height: 1.5;}
+        .topo-transit { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px;}
+        .topo-transit.fuji { background: #8E44AD; }
+        .topo-transit.tokyo { background: #F39C12; }
         
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 15px 0 var(--safe-bottom); z-index: 50; }
-        .nav-tab { flex: 1; text-align: center; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: 0.3s; font-family: 'Cormorant Garamond', serif; font-weight: 600; letter-spacing: 1px;}
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; padding: 10px 0 var(--safe-bottom); z-index: 50; }
+        .nav-tab { flex: 1; text-align: center; color: var(--muted); font-size: 0.7rem; cursor: pointer; transition: 0.3s; font-family: 'Cormorant Garamond', serif; font-weight: 600; letter-spacing: 1px;}
         .nav-tab.active { color: var(--accent); transform: translateY(-2px); }
-        .nav-tab i { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+        .nav-tab i { display: block; font-size: 1.25rem; margin-bottom: 4px; }
 
         .budget-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin: 0 20px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);}
     </style>
@@ -130,8 +144,10 @@
     </div>
 
     <div class="content-area hide-s">
+        <!-- ================= ITINERARY VIEW ================= -->
         <div id="view-itinerary" class="main-view" style="display: block;">
             
+            <!-- DAY 1: 5/13 -->
             <div id="day-1" class="day-view active">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 1</div><div class="h-title">東京到着</div></div>
@@ -139,27 +155,16 @@
 
                 <div class="weather-native">
                     <div class="wn-header">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-tokyo-1"></i>
                             <div class="wn-temp" id="w-temp-tokyo-1">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-tokyo-1">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-tokyo-1">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-tokyo-1">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-tokyo-1">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-tokyo-1">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-tokyo-1">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -171,7 +176,7 @@
                     <div class="tag"><i class="fa-solid fa-plane-departure"></i> 完整航班資訊 (去程)</div>
                     <div class="title">台北桃園 (TPE) ➔ 東京成田 (NRT)</div>
                     <div class="detail">
-                        <strong>航空公司：</strong>日本航空 (JAL) JL804<br>
+                        <strong>航空公司：</strong>日本航空 (JAL) JL8664<br>
                         <strong>出發：</strong>12:45 於 台北桃園機場 起飛<br>
                         <strong>抵達：</strong>17:15 降落 東京成田 第二航廈 (T2)
                     </div>
@@ -192,9 +197,7 @@
                         <div class="t-marker">17:15</div><div class="dot-m"></div>
                         <div class="cat"><i class="fa-solid fa-plane-arrival"></i> FLIGHT</div>
                         <div class="i-title">降落與通關手續</div>
-                        <div class="guide-story">
-                            <i class="fa-solid fa-clock"></i> <strong>導遊預估：</strong>約 18:30 完成通關提領 5 咖行李，推車前往 B1 鐵道層的 JR 售票處。
-                        </div>
+                        <div class="guide-story"><i class="fa-solid fa-clock"></i> <strong>導遊預估：</strong>約 18:30 完成通關提領 5 咖行李，推車前往 B1 鐵道層的 JR 售票處。</div>
                     </div>
                     <div class="tl-item">
                         <div class="t-marker">19:19</div><div class="dot-m diamond"></div>
@@ -205,9 +208,7 @@
                             <div class="i-row"><i class="fa-solid fa-circle-up i-icon"></i> <div><strong>上車月台：</strong>成田 T2 B1F <span class="t-route">【JR線 第1月台】</span></div></div>
                             <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>JR 新宿站 (車程約 85 分鐘)</div></div>
                         </div>
-                        <div class="guide-story">
-                            <i class="fa-solid fa-lightbulb"></i> <strong>總務攻略：</strong>N'EX 每一節車廂連接處都有密碼鎖大型行李架，務必先鎖好這 5 咖重行李再入座休息。
-                        </div>
+                        <div class="guide-story"><i class="fa-solid fa-lightbulb"></i> <strong>總務攻略：</strong>N'EX 每一節車廂連接處都有密碼鎖大型行李架，務必先鎖好這 5 咖重行李再入座休息。</div>
                     </div>
                     <div class="tl-item">
                         <div class="t-marker">21:00</div><div class="dot-m"></div>
@@ -217,6 +218,7 @@
                 </div>
             </div>
 
+            <!-- DAY 2: 5/14 -->
             <div id="day-2" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 2</div><div class="h-title">富士山巡禮</div></div>
@@ -224,27 +226,16 @@
 
                 <div class="weather-native">
                     <div class="wn-header fuji">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-mountain"></i> 富士山周邊</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-mountain"></i> 富士山周邊</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-fuji-2"></i>
                             <div class="wn-temp" id="w-temp-fuji-2">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-fuji-2">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-fuji-2">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-fuji-2">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-fuji-2">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-fuji-2">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-fuji-2">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -278,23 +269,15 @@
                         <div class="cat"><i class="fa-solid fa-camera"></i> DRAMA SPOTS</div>
                         <div class="i-title">《小鎮星熱點》聖地巡禮</div>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>從富士山站搭乘 <span class="t-route">【富士急行線 (普通車)】</span>，搭 1 站至<strong>「下吉田站」</strong>(車程3分鐘)，出站開始步行踩點。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通：</strong>從富士山站搭 <span class="t-route">【富士急行線】</span>，搭 1 站至<strong>「下吉田站」</strong>(3分鐘)。</div></div>
                         </div>
-                        
                         <div class="sub-spot">
                             <div class="sub-spot-title">📍 1. 金鳥居</div>
                             <a href="https://www.google.com/maps/search/?api=1&query=金鳥居+富士吉田" class="map-btn map-btn-sm" target="_blank">導航至金鳥居</a>
                         </div>
-                        
                         <div class="sub-spot">
                             <div class="sub-spot-title">📍 2. 富士吉田本町通</div>
                             <a href="https://www.google.com/maps/search/?api=1&query=富士吉田本町通" class="map-btn map-btn-sm" target="_blank">導航至本町通</a>
-                        </div>
-
-                        <div class="sub-spot">
-                            <div class="sub-spot-title">📍 3. 市杵島神社</div>
-                            <div class="guide-story">高橋先生發揮外星人神力救下清美的定情十字路口！</div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=市杵島神社+富士吉田" class="map-btn map-btn-sm" target="_blank">導航至神社</a>
                         </div>
                     </div>
 
@@ -303,10 +286,6 @@
                         <div class="cat"><i class="fa-solid fa-mug-hot"></i> CAFE</div>
                         <div class="i-title">Mont Blanc 咖啡廳</div>
                         <span class="badge b-menu">【必點菜單】</span> <span class="highlight-text">超浮誇蒙布朗聖代</span>
-                        <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士吉田市下吉田3-8-4</div></div>
-                            <div class="i-row"><i class="fa-solid fa-person-walking i-icon"></i> <div><strong>抵達方式：</strong>位於月江寺通，從市杵島神社步行前往約 5 分鐘。</div></div>
-                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=Mont+Blanc+Cafe+Fujiyoshida" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至咖啡廳</a>
                     </div>
 
@@ -316,14 +295,14 @@
                         <div class="i-title">不動茶屋 (東戀路店)</div>
                         <span class="badge b-food">【必吃美食】</span> <span class="highlight-text">味噌蔬菜餺飥麵 (絕無馬肉)</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>南都留郡富士河口湖町船津2458</div></div>
-                            <div class="i-row"><i class="fa-solid fa-taxi i-icon"></i> <div><strong>交通接駁：</strong>距離車站較遠，建議從咖啡廳出來後，直接在路邊攔<strong>「計程車」</strong>前往最省時省力。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-taxi i-icon"></i> <div><strong>交通：</strong>距離車站較遠，建議直接在路邊攔<strong>「計程車」</strong>前往最省時。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=ほうとう不動+東恋路店" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
                     </div>
                 </div>
             </div>
 
+            <!-- DAY 3: 5/15 -->
             <div id="day-3" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 3</div><div class="h-title">河口湖水陸</div></div>
@@ -331,27 +310,16 @@
                 
                 <div class="weather-native">
                     <div class="wn-header fuji">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-mountain"></i> 富士山周邊</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-mountain"></i> 富士山周邊</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-fuji-3"></i>
                             <div class="wn-temp" id="w-temp-fuji-3">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-fuji-3">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-fuji-3">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-fuji-3">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-fuji-3">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-fuji-3">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-fuji-3">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -366,8 +334,8 @@
                         <div class="i-title">山中湖 KABA BUS (水陸巴士)</div>
                         <span class="badge b-code">【重要預約代號】</span> <span class="highlight-text">請準備乘車 QR Code</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通接駁：</strong>早上從「富士山站」站前公車亭，搭乘 <span class="t-subway">【富士急行巴士 (往平野/山中湖方向)】</span>，車程約 35 分鐘。</div></div>
-                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>於「山中湖 旭日丘巴士總站」下車，即達乘車報到處。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通接駁：</strong>從「富士山站」搭乘 <span class="t-subway">【富士急行巴士 (往平野/山中湖方向)】</span>，車程約 35 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-circle-down i-icon"></i> <div><strong>下車站：</strong>「山中湖 旭日丘巴士總站」下車即達。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=山中湖のKABA" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至乘車處</a>
                     </div>
@@ -379,7 +347,6 @@
                         <span class="badge b-food">【必吃美食】</span> <span class="highlight-text">在地手打肉烏龍麵</span>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士吉田市上吉田3-4-23</div></div>
-                            <div class="i-row"><i class="fa-solid fa-bus i-icon"></i> <div><strong>交通接駁：</strong>搭乘巴士原路返回富士吉田市區後，步行前往。</div></div>
                             <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>訂位：無法訂位，僅中午營業，麵條賣完即打烊。</strong></div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=手打ちうどん+蔵ノ介" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
@@ -391,8 +358,7 @@
                         <div class="i-title">Fuji Tempura IDATEN</div>
                         <span class="badge b-menu">【必點菜單】</span> <span class="highlight-text">富士山巨大天婦羅盛合</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>富士河口湖町船津3486-4</div></div>
-                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通接駁：</strong>餐廳位於「河口湖車站」前步行 3 分鐘。用完餐後，走到車站搭 <span class="t-route">【富士急行線】</span> 回富士山站的飯店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train i-icon"></i> <div><strong>交通：</strong>位於「河口湖車站」前。用完餐後搭 <span class="t-route">【富士急行線】</span> 回富士山站的飯店。</div></div>
                             <div class="i-row"><i class="fa-solid fa-mobile-screen i-icon"></i> <div><strong>訂位：到達現場掃描門口 QR Code 候位。</strong></div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=冨士天ぷら+いだ天" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至餐廳</a>
@@ -400,6 +366,7 @@
                 </div>
             </div>
 
+            <!-- DAY 4: 5/16 -->
             <div id="day-4" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 4</div><div class="h-title">重返東京</div></div>
@@ -407,27 +374,16 @@
 
                 <div class="weather-native">
                     <div class="wn-header">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-tokyo-4"></i>
                             <div class="wn-temp" id="w-temp-tokyo-4">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-tokyo-4">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-tokyo-4">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-tokyo-4">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-tokyo-4">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-tokyo-4">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-tokyo-4">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -442,7 +398,7 @@
                     <div class="info-box" style="margin-top: 10px; margin-bottom: 10px;">
                         <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區台東3-41-7</div></div>
                         <div class="i-row"><i class="fa-solid fa-clock i-icon"></i> <div><strong>入住時間：</strong>15:00 - 24:00</div></div>
-                        <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>抵達方式：</strong>從東京市區搭乘 <span class="t-route">【JR 山手線/京濱東北線】</span> 至「御徒町站」南口出站，步行約 7 分鐘；或搭乘地鐵至 <span class="t-subway">【日比谷線 仲御徒町站】</span> 1號出口步行 3 分鐘。</div></div>
+                        <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>抵達方式：</strong>搭乘 <span class="t-route">【JR 山手線】</span> 至「御徒町站」南口出站，步行約 7 分鐘。</div></div>
                     </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=hotel+MONday+Premium+Ueno+Okachimachi" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 開啟飯店地圖</a>
                 </div>
@@ -480,11 +436,12 @@
                         <div class="t-marker">18:00</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-bed"></i> CHECK-IN</div>
                         <div class="i-title">入住 上野御徒町曼迪高級酒店</div>
-                        <div class="guide-story">抵達東京後直接 Check-in，順便向櫃檯領取早上寄來的大行李。20.38 平方公尺大空間，終於可以把行李箱攤開啦！</div>
+                        <div class="guide-story">抵達東京後直接 Check-in，向櫃檯領取早上寄來的大行李。20.38 平方公尺大空間，終於可以把行李箱全部攤開啦！</div>
                     </div>
                 </div>
             </div>
 
+            <!-- DAY 5: 5/17 -->
             <div id="day-5" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1542931287-023b922fa89b?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 5</div><div class="h-title">銀座與潮流</div></div>
@@ -492,27 +449,16 @@
 
                 <div class="weather-native">
                     <div class="wn-header">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-tokyo-5"></i>
                             <div class="wn-temp" id="w-temp-tokyo-5">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-tokyo-5">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-tokyo-5">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-tokyo-5">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-tokyo-5">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-tokyo-5">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-tokyo-5">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -528,7 +474,7 @@
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">象印烤箱深烤盤、不沾模具</span>
                         <div class="info-box">
                             <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都台東區松谷3-18-2周邊</div></div>
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從飯店走到「仲御徒町站」搭乘 <span class="t-subway">【東京地鐵日比谷線 (H線)】</span> 至「上野站」，轉乘 <span class="t-subway">【銀座線 (G線)】</span> 至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從飯店搭乘地鐵至<strong>「田原町站」</strong>，走 3 號出口步行 5 分鐘。</div></div>
                         </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=合羽橋道具街" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至道具街</a>
                     </div>
@@ -540,7 +486,7 @@
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">大型按摩椅</span><br>
                         <span class="badge b-code">【重要預約代號】</span> <span class="highlight-text">請出示優惠碼 4USDTV4F</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從田原町站搭乘 <span class="t-subway">【東京地鐵銀座線 (橘色)】</span> 直達「銀座站」，或搭 <span class="t-route">【JR山手線】</span> 至<strong>「有樂町站」</strong>，出站即達 Bic Camera 有樂町店。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通：</strong>搭乘 <span class="t-subway">【銀座線 (橘色)】</span> 直達「銀座站」，或搭 <span class="t-route">【JR山手線】</span> 至<strong>「有樂町站」</strong>，出站即達 Bic Camera。</div></div>
                         </div>
                         <div class="guide-story">
                             <i class="fa-solid fa-bullhorn"></i> <strong>導遊攻略：</strong>大型家電結帳時，除了出示護照與折扣碼，務必請店員辦理<strong>「空港配送 (機場宅配)」</strong>送至成田 T2！
@@ -563,9 +509,6 @@
                         <div class="t-marker">16:30</div><div class="dot-m diamond"></div>
                         <div class="cat"><i class="fa-solid fa-shoe-prints"></i> SHOES</div>
                         <div class="i-title">ABC-MART GS 銀座</div>
-                        <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-map-pin i-icon"></i> <div><strong>地址：</strong>東京都中央區銀座3-2-12</div></div>
-                        </div>
                         <a href="https://www.google.com/maps/search/?api=1&query=ABC-MART+GRAND+STAGE+GINZA" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至鞋店</a>
                     </div>
                     
@@ -575,14 +518,15 @@
                         <div class="i-title">多慶屋 (TAKEYA) 總本館</div>
                         <span class="badge b-buy">【必買伴手禮】</span> <span class="highlight-text">合利他命、EVE、大包裝零食</span>
                         <div class="info-box">
-                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從銀座搭乘 <span class="t-subway">【東京地鐵銀座線】</span> 至「上野廣小路站」或搭 <span class="t-route">【JR山手線】</span> 至「御徒町站」，北口出站步行 3 分鐘。</div></div>
+                            <div class="i-row"><i class="fa-solid fa-train-subway i-icon"></i> <div><strong>交通轉乘：</strong>從銀座搭乘 <span class="t-subway">【銀座線】</span> 至「上野廣小路站」或搭 <span class="t-route">【JR山手線】</span> 至「御徒町站」，北口出站步行 3 分鐘。</div></div>
                         </div>
-                        <div class="guide-story">多慶屋離我們的曼迪高級酒店超近！買完直接手提回飯店，把戰利品塞進大行李箱。</div>
+                        <div class="guide-story">多慶屋離飯店超近！買完直接手提回飯店，把戰利品塞進大行李箱。</div>
                         <a href="https://www.google.com/maps/search/?api=1&query=多慶屋" class="map-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i> 導航至多慶屋</a>
                     </div>
                 </div>
             </div>
 
+            <!-- DAY 6: 5/18 -->
             <div id="day-6" class="day-view">
                 <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80');">
                     <div class="hero-text"><div class="h-tag">DAY 6</div><div class="h-title">滿載歸途</div></div>
@@ -590,27 +534,16 @@
 
                 <div class="weather-native">
                     <div class="wn-header">
-                        <div>
-                            <div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div>
-                        </div>
+                        <div><div class="wn-loc"><i class="fa-solid fa-location-dot"></i> 東京都 (Tokyo)</div></div>
                         <div style="display:flex; align-items:center; gap: 15px;">
                             <i class="fa-solid fa-cloud-sun wn-icon" id="w-icon-tokyo-6"></i>
                             <div class="wn-temp" id="w-temp-tokyo-6">--°</div>
                         </div>
                     </div>
                     <div class="wn-stats">
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最高溫</span>
-                            <span class="wn-stat-val" id="w-max-tokyo-6">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">最低溫</span>
-                            <span class="wn-stat-val" id="w-min-tokyo-6">--°C</span>
-                        </div>
-                        <div class="wn-stat-item">
-                            <span class="wn-stat-label">降雨機率</span>
-                            <span class="wn-stat-val" id="w-pop-tokyo-6">--%</span>
-                        </div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最高溫</span><span class="wn-stat-val" id="w-max-tokyo-6">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">最低溫</span><span class="wn-stat-val" id="w-min-tokyo-6">--°C</span></div>
+                        <div class="wn-stat-item"><span class="wn-stat-label">降雨機率</span><span class="wn-stat-val" id="w-pop-tokyo-6">--%</span></div>
                     </div>
                     <div class="weather-note">
                         <div class="weather-note-title"><i class="fa-solid fa-shirt"></i> 導遊穿搭與出門建議</div>
@@ -674,6 +607,116 @@
             </div>
         </div>
 
+        <!-- ================= MAP VIEW (路線圖) ================= -->
+        <div id="view-map" class="main-view">
+            <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1544257121-650047248f72?auto=format&fit=crop&w=800&q=80'); height: 260px; margin-bottom: 20px;">
+                <div class="hero-text" style="top: 40px;"><div class="h-tag">TRANSIT MAP</div><div class="h-title">全域交通路線圖</div></div>
+            </div>
+
+            <div class="topo-map">
+                <!-- Node 1 -->
+                <div class="topo-row">
+                    <div class="topo-left">Day 1</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line"></div>
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">東京成田機場 (NRT)</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit tokyo"><i class="fa-solid fa-train"></i> N'EX 成田特快</div>
+                            <div>搭乘 85 分鐘直達新宿，車上備有大型行李鎖。</div>
+                            <a href="https://www.google.com/maps/dir/?api=1&origin=成田機場第2航廈&destination=新宿西鐵飯店&travelmode=transit" target="_blank" class="map-btn map-btn-sm" style="margin-top:10px;"><i class="fa-solid fa-route"></i> 跨城導航</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Node 2 -->
+                <div class="topo-row">
+                    <div class="topo-left">Day 2</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line"></div>
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">新宿 (西鐵飯店)</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit fuji"><i class="fa-solid fa-train-tram"></i> 富士回遊號 1號</div>
+                            <div>搭乘直達特急列車，113分鐘直達富士山腳下。</div>
+                            <a href="https://www.google.com/maps/dir/?api=1&origin=新宿西鐵飯店&destination=富士山站酒店&travelmode=transit" target="_blank" class="map-btn map-btn-sm" style="margin-top:10px;"><i class="fa-solid fa-route"></i> 跨城導航</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 3 -->
+                <div class="topo-row">
+                    <div class="topo-left">Day<br>2-4</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line"></div>
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">富士山區 (河口湖/下吉田)</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit fuji"><i class="fa-solid fa-bus"></i> 富士急行線 / 巴士</div>
+                            <div>於當地短程移動，搭乘水陸巴士、打卡 Lawson 與本町通。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 4 -->
+                <div class="topo-row">
+                    <div class="topo-left">Day 4</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line"></div>
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">河口湖站</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit tokyo"><i class="fa-solid fa-train-tram"></i> 富士回遊號 36號</div>
+                            <div>14:58 發車返回新宿，再轉乘山手線抵達上野御徒町。</div>
+                            <a href="https://www.google.com/maps/dir/?api=1&origin=河口湖站&destination=hotel+MONday+Premium+Ueno+Okachimachi&travelmode=transit" target="_blank" class="map-btn map-btn-sm" style="margin-top:10px;"><i class="fa-solid fa-route"></i> 跨城導航</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 5 -->
+                <div class="topo-row">
+                    <div class="topo-left">Day<br>4-6</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line"></div>
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">上野 / 御徒町 (曼迪飯店)</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit tokyo"><i class="fa-solid fa-subway"></i> 東京地鐵 / JR 山手線</div>
+                            <div>放射狀前往淺草田原町(合羽橋)與銀座，進行採買任務。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 6 -->
+                <div class="topo-row" style="margin-bottom: 20px;">
+                    <div class="topo-left">Day 6</div>
+                    <div class="topo-center">
+                        <div class="topo-node"></div>
+                        <div class="topo-line" style="background:transparent;"></div> <!-- End line -->
+                    </div>
+                    <div class="topo-right">
+                        <div class="topo-loc">京成上野站</div>
+                        <div class="topo-desc">
+                            <div class="topo-transit tokyo"><i class="fa-solid fa-train"></i> 京成 Skyliner</div>
+                            <div>搭乘全車對號座快車，41分鐘舒適直達機場航廈。</div>
+                            <a href="https://www.google.com/maps/dir/?api=1&origin=京成上野站&destination=成田機場第2航廈&travelmode=transit" target="_blank" class="map-btn map-btn-sm" style="margin-top:10px;"><i class="fa-solid fa-route"></i> 跨城導航</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= BUDGET VIEW ================= -->
         <div id="view-budget" class="main-view">
             <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80'); height: 260px;">
                 <div class="hero-text" style="top: 40px;"><div class="h-tag">EXPENSES & INFO</div><div class="h-title">預算與後勤資訊</div></div>
@@ -696,11 +739,13 @@
             </div>
         </div>
 
+        <!-- ================= SOS VIEW ================= -->
         <div id="view-sos" class="main-view">
             <div class="hero" style="background-image: url('https://images.unsplash.com/photo-1573455494060-c5595004fb6c?auto=format&fit=crop&w=800&q=80'); height: 260px; margin-bottom: 20px;">
                 <div class="hero-text" style="top: 40px;"><div class="h-tag">EMERGENCY & HELP</div><div class="h-title">急難救助與指南</div></div>
             </div>
 
+            <!-- 1. 24小時官方中文熱線 -->
             <div class="sos-card blue">
                 <div class="sos-title"><i class="fa-solid fa-headset"></i> 24H 日本官方中文旅遊熱線</div>
                 <div class="sos-desc">由日本國家旅遊局 (JNTO) 提供，遇到護照遺失、交通阻斷、急病或需要翻譯協助時，隨時撥打。對應中文、英文。</div>
@@ -710,6 +755,7 @@
                 </div>
             </div>
 
+            <!-- 2. 緊急報案與醫療 -->
             <div class="sos-card">
                 <div class="sos-title"><i class="fa-solid fa-truck-medical"></i> 緊急報案 / 救護車</div>
                 <div class="sos-desc">在日本遇到重大事故、火災或需要救護車時，無需投幣即可使用公共電話或手機撥打。請用簡單英文說 "Taiwanese" 請求中文翻譯。</div>
@@ -723,29 +769,32 @@
                 </div>
             </div>
 
+            <!-- 3. 醫療溝通與指指通 -->
             <div class="sos-card green">
                 <div class="sos-title"><i class="fa-solid fa-language"></i> 醫療溝通「指指通」會話卡</div>
                 <div class="sos-desc">身體不適到藥妝店買藥，或是去醫院就診時，若語言不通，請點擊下方按鈕開啟官方「手指會話卡」，直接指給店員或醫生看您的症狀。</div>
                 <a href="https://www.jnto.go.jp/safety-tips/chc/cmcard/index.html" target="_blank" class="sos-btn green"><i class="fa-regular fa-hand-pointer"></i> 開啟醫療手指會話卡</a>
             </div>
-
         </div>
     </div>
 
+    <!-- BOTTOM NAV -->
     <div class="nav-bar">
         <div id="nav-itinerary" class="nav-tab active" onclick="tab('itinerary')">
-            <i class="fa-solid fa-compass"></i><span>ITINERARY</span>
+            <i class="fa-solid fa-compass"></i><span>行程表</span>
+        </div>
+        <div id="nav-map" class="nav-tab" onclick="tab('map')">
+            <i class="fa-solid fa-map"></i><span>路線圖</span>
         </div>
         <div id="nav-budget" class="nav-tab" onclick="tab('budget')">
-            <i class="fa-solid fa-wallet"></i><span>BUDGET</span>
+            <i class="fa-solid fa-wallet"></i><span>預算</span>
         </div>
         <div id="nav-sos" class="nav-tab" onclick="tab('sos')">
-            <i class="fa-solid fa-truck-medical"></i><span>SOS 求助</span>
+            <i class="fa-solid fa-truck-medical"></i><span>SOS</span>
         </div>
     </div>
 
     <script>
-        // 即時天氣 API 抓取邏輯 (使用 Open-Meteo)
         async function fetchWeather() {
             try {
                 const resTokyo = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current_weather=true&timezone=Asia%2FTokyo');
@@ -759,20 +808,11 @@
                 
                 function getWeatherInfo(code, isFuji) {
                     if(code <= 3) {
-                        return {
-                            icon: isFuji ? "fa-solid fa-mountain-sun wn-icon" : "fa-solid fa-sun wn-icon",
-                            note: isFuji ? "山區天氣晴朗，看到完整富士山的機率極高！但風大請帶防風外套。" : "今日市區天氣晴朗，建議穿著短袖或薄長袖，記得防曬。"
-                        };
+                        return { icon: isFuji ? "fa-solid fa-mountain-sun wn-icon" : "fa-solid fa-sun wn-icon", note: isFuji ? "山區天氣晴朗，看到完整富士山的機率極高！但風大請帶防風外套。" : "今日市區天氣晴朗，建議穿著短袖或薄長袖，記得防曬。" };
                     } else if(code <= 49) {
-                        return {
-                            icon: "fa-solid fa-cloud wn-icon",
-                            note: isFuji ? "山區多雲，富士山可能偶爾露臉。氣溫較低，請注意保暖。" : "今日市區多雲，氣候舒適，可帶件薄外套備用。"
-                        };
+                        return { icon: "fa-solid fa-cloud wn-icon", note: isFuji ? "山區多雲，富士山可能偶爾露臉。氣溫較低，請注意保暖。" : "今日市區多雲，氣候舒適，可帶件薄外套備用。" };
                     } else {
-                        return {
-                            icon: isFuji ? "fa-solid fa-cloud-showers-heavy wn-icon" : "fa-solid fa-umbrella wn-icon",
-                            note: isFuji ? "山區有雨，請務必攜帶雨具並穿著保暖防風衣物。" : "今日市區有雨，出門請攜帶雨具，盡量走地下通道。"
-                        };
+                        return { icon: isFuji ? "fa-solid fa-cloud-showers-heavy wn-icon" : "fa-solid fa-umbrella wn-icon", note: isFuji ? "山區有雨，請務必攜帶雨具並穿著保暖防風衣物。" : "今日市區有雨，出門請攜帶雨具，盡量走地下通道。" };
                     }
                 }
 
@@ -786,7 +826,6 @@
                         tempEl.innerText = `${Math.round(dataTokyo.current_weather.temperature)}°`;
                         document.getElementById(`w-max-tokyo-${day}`).innerText = `${Math.round(dataTokyo.daily.temperature_2m_max[0])}°C`;
                         document.getElementById(`w-min-tokyo-${day}`).innerText = `${Math.round(dataTokyo.daily.temperature_2m_min[0])}°C`;
-                        
                         const tPop = dataTokyo.daily.precipitation_probability_max ? dataTokyo.daily.precipitation_probability_max[0] : '--';
                         document.getElementById(`w-pop-tokyo-${day}`).innerText = `${tPop}%`;
                         document.getElementById(`w-icon-tokyo-${day}`).className = tInfo.icon;
@@ -807,7 +846,6 @@
                         tempEl.innerText = `${Math.round(dataFuji.current_weather.temperature)}°`;
                         document.getElementById(`w-max-fuji-${day}`).innerText = `${Math.round(dataFuji.daily.temperature_2m_max[0])}°C`;
                         document.getElementById(`w-min-fuji-${day}`).innerText = `${Math.round(dataFuji.daily.temperature_2m_min[0])}°C`;
-                        
                         const fPop = dataFuji.daily.precipitation_probability_max ? dataFuji.daily.precipitation_probability_max[0] : '--';
                         document.getElementById(`w-pop-fuji-${day}`).innerText = `${fPop}%`;
                         document.getElementById(`w-icon-fuji-${day}`).className = fInfo.icon;
@@ -819,9 +857,7 @@
                     }
                 });
 
-            } catch (error) {
-                console.error("天氣抓取失敗", error);
-            }
+            } catch (error) { console.error("天氣抓取失敗", error); }
         }
 
         document.addEventListener('DOMContentLoaded', fetchWeather);
@@ -840,15 +876,13 @@
             document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
             document.getElementById('nav-' + t).classList.add('active');
             
-            // 隱藏所有 view
             document.getElementById('view-itinerary').style.display = 'none';
             document.getElementById('view-budget').style.display = 'none';
             document.getElementById('view-sos').style.display = 'none';
+            document.getElementById('view-map').style.display = 'none';
             
-            // 根據點擊顯示對應 view
             document.getElementById('view-' + t).style.display = 'block';
             
-            // 只有在 itinerary 顯示日期 slider
             if (t === 'itinerary') {
                 document.getElementById('dateSlider').style.display = 'flex';
             } else {
